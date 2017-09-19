@@ -21,13 +21,22 @@ void setup() {
   background(BACKGROUND_COLOR);
 }
 
+// CIRCLE_SPEED makes the circles move. Instead of being X and Y coordinates, we simply place the original circle at the center by indicating that it 
+// is situated at half the height and half the lenght of our given surface, which is 640x480. 
+
 void draw() {
     if (dist(mouseX, mouseY, circleX, circleY) < CIRCLE_SIZE/2) {
     fill(CLICK_FILL_COLOR);
   }
+  
   else {
     fill(NO_CLICK_FILL_COLOR);
   }
+  
+// This indicates that if the mouse crosses the circle's path, the color is changed for the one that has been attributed to CLICK_FILL_COLOR which is blue. 
+// The "else" variable is important because it specifies that the circle must be blue ONLY when meeting the cursor, and as soon as it moves away, it becomes
+// pink again.
+  
   ellipse(circleX, circleY, CIRCLE_SIZE, CIRCLE_SIZE);
   circleX += circleVX;
   circleY += circleVY;
@@ -38,6 +47,9 @@ void draw() {
     circleVY = -circleVY;
   }
 }
+
+// || means that it's true if either one condition or the other is true, otherwise it's false. The first "it" tells the circle that once it touches either the
+// right or the left side of the screen, it has to bounce back. The second "if" means that it's the same thing but if it touches either the bottom or the top.
 
 void mousePressed() {
   background(BACKGROUND_COLOR);
