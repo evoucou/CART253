@@ -53,6 +53,11 @@ void draw()
    for the one that has been attributed to CLICK_FILL_COLOR which is blue. The "else" variable is important because it specifies that the circle 
    must be blue ONLY when meeting the cursor, and as soon as it moves away, it becomes pink again. 
    
+      ----CHANGES: A third color value has been added. This time, it's random, because the red tones are a random number between 0 and 255. Everytime the circle is 100 pixels or less from either the top or the bottom
+   border, it changes from pink to this random color. For this to work, we had to add fill(circleColor), meaning that everytime we define a color for the variable circleColor inside a curly bracket, it's meant to
+   be for the ellipse's fill color. We also had to add int circleColor at the top so that the program doesn't tell you that circleColor doesn't exist. Doing it this way allows us to give the ellipse's fill
+   any color possible color, it gives us more freedom. We can either define a variable from the start (like NO_CLICK_FILL_COLOR for example), or choose a random color by using color=(x,x,x). It's really
+   easy to change this way.*/
 
   ellipse(circleX, circleY, CIRCLE_SIZE, CIRCLE_SIZE);
   circleX += circleVX;
