@@ -43,8 +43,6 @@ void setup() {
   setupBall();
   ballColor = regularBallColor; //ADDED: defining that at the beginning, the ball has its regular color.
   
-  lineX += lineLenght;
-  line(lineX,lineY,lineX,lineY+lineLenght);
 }
 
 //defining the beginning of the animation
@@ -67,22 +65,26 @@ void setupBall() {
 void setupLine() {
  lineX = width/2;
  lineY = height/2;
- lineLenght = 20;
+ lineLenght = 50;
  lineSpacing = 5;
+ while (lineX- < width && lineX- > 0) {
+  rect(lineX,lineY,7,lineY);
+  lineX += lineSpacing; }
 }
 
 //defining the position of ball at the beginning
 
 void draw() {
-  drawLine();
+ 
   background(backgroundColor);
 
   newBallColor = color(random(255),random(255),random(255)); //ADDED: we are defining the value of newBallColor here, in the void draw, so that every time the ball
   //touches the paddle, the value is recalculated again, therefore giving it a new color each time.
 
- 
-  drawStatic();
+  drawLine();
+  //drawStatic();
 
+  //updateLine();
   updatePaddle();
   updateBall();
 
@@ -94,12 +96,13 @@ void draw() {
 //static for the background
 
 void drawLine() {
-  stroke(5);
-  color(0,0,0);
+  noStroke();
+  color(255);
+
   }
   
 
-void drawStatic() {
+/*void drawStatic() {
   for (int i = 0; i < numStatic; i++) {
    float x = random(0,width);
    float y = random(0,height);
@@ -107,7 +110,7 @@ void drawStatic() {
    fill(staticColor);
    rect(x,y,staticSize,staticSize);
   }
-}
+}*/
 
 
 void updatePaddle() {
@@ -127,6 +130,13 @@ void updateBall() {
 }
 
 //allows the ball to move
+
+/*void updateLine() {
+  while (lineX < width) {
+  rect(lineX,lineY,7,lineY+lineSpacing);
+  lineX += lineSpacing;
+} }*/
+
 
 void drawPaddle() {
   rectMode(CENTER);
