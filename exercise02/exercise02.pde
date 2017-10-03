@@ -21,6 +21,8 @@ int ballSpeed = 5;
 int ballSize = 16;
 color ballColor = color(255);
 
+// properties
+
 void setup() {
   size(640, 480);
   
@@ -28,11 +30,15 @@ void setup() {
   setupBall();
 }
 
+//defining the beginning of the animation
+
 void setupPaddle() {
   paddleX = width/2;
   paddleY = height - paddleHeight;
   paddleVX = 0;
 }
+
+//defining the position of the paddle at the beginning
 
 void setupBall() {
   ballX = width/2;
@@ -40,6 +46,8 @@ void setupBall() {
   ballVX = ballSpeed;
   ballVY = ballSpeed;
 }
+
+//defining the position of ball at the beginning
 
 void draw() {
   background(backgroundColor);
@@ -53,6 +61,7 @@ void draw() {
   drawBall();
 }
 
+
 void drawStatic() {
   for (int i = 0; i < numStatic; i++) {
    float x = random(0,width);
@@ -63,10 +72,14 @@ void drawStatic() {
   }
 }
 
+//static for the background
+
 void updatePaddle() {
   paddleX += paddleVX;  
   paddleX = constrain(paddleX,0+paddleWidth/2,width-paddleWidth/2);
 }
+
+//allows the paddle to move, and also tells it that it cannot go further than the screen limits
 
 void updateBall() {
   ballX += ballVX;
@@ -77,12 +90,16 @@ void updateBall() {
   handleBallOffBottom();
 }
 
+//allows the ball to move
+
 void drawPaddle() {
   rectMode(CENTER);
   noStroke();
   fill(paddleColor);
   rect(paddleX, paddleY, paddleWidth, paddleHeight);
 }
+
+//paddle properties
 
 void drawBall() {
   rectMode(CENTER);
@@ -91,12 +108,16 @@ void drawBall() {
   rect(ballX, ballY, ballSize, ballSize);
 }
 
+//ball properties
+
 void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
     ballY = paddleY - paddleHeight/2 - ballSize/2;
     ballVY = -ballVY;
   }
 }
+
+//meaning that if the ball touches the paddle, it has to bounce back in the opposite direction. This only defines how the ball reacts.
 
 boolean ballOverlapsPaddle() {
   if (ballX - ballSize/2 > paddleX - paddleWidth/2 && ballX + ballSize/2 < paddleX + paddleWidth/2) {
@@ -118,6 +139,11 @@ boolean ballOffBottom() {
   return (ballY - ballSize/2 > height);
 }
 
+ //this tells the ball to bounce off the paddle when it touches it (it is telling it when). The first boolean tells us that, everytime the ball
+ //has the same x position as the paddle, it bounces off. BUT, the Y position also has to be true: so then, it checks the Y position of
+ //the paddle. If it is true, then it bounces back. If not, then it does not. The void handleBallOffBottom tells the program that the ball
+ //always has to reappear in the center of the screen if return is true.
+
 void handleBallHitWall() {
   if (ballX - ballSize/2 < 0) {
     ballX = 0 + ballSize/2;
@@ -127,11 +153,15 @@ void handleBallHitWall() {
     ballVX = -ballVX;
   }
   
+ //this tells the ball to bounce back when it touches either the right or the left side of the screen.
+  
   if (ballY - ballSize/2 < 0) {
     ballY = 0 + ballSize/2;
     ballVY = -ballVY;
   }
 }
+
+//this tells the ball to boune back when it touches the top of the screen.
 
 void keyPressed() {
   if (keyCode == LEFT) {
@@ -141,6 +171,8 @@ void keyPressed() {
   }
 }
 
+//this allows us to move the paddle with right/left arrows on the keyboard
+
 void keyReleased() {
   if (keyCode == LEFT && paddleVX < 0) {
     paddleVX = 0;
@@ -148,3 +180,5 @@ void keyReleased() {
     paddleVX = 0;
   }
 }
+
+//this tells the program that when the key is released, the paddle has to stop moving.
