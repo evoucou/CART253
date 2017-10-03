@@ -19,15 +19,21 @@ int ballVX;
 int ballVY;
 int ballSpeed = 5;
 int ballSize = 16;
-color ballColor = color(255);
+int ballColor;
+
+
+color regularBallColor = color(255); //ADDED: because we want the ball to change color, we added a new variable, newBallColor, and added a new integer, ballColor, which allows us to change the color any time.
+color newBallColor;
 
 // properties
+
 
 void setup() {
   size(640, 480);
   
   setupPaddle();
   setupBall();
+  ballColor = regularBallColor; //ADDED: defining that at the beginning, the ball has its regular color.
 }
 
 //defining the beginning of the animation
@@ -52,6 +58,9 @@ void setupBall() {
 void draw() {
   background(backgroundColor);
 
+  newBallColor = color(random(255),random(255),random(255)); //ADDED: we are defining the value of newBallColor here, in the void draw, so that every time the ball
+  //touches the paddle, the value is recalculated again, therefore giving it a new color each time.
+
   drawStatic();
 
   updatePaddle();
@@ -60,6 +69,7 @@ void draw() {
   drawPaddle();
   drawBall();
 }
+
 
 
 void drawStatic() {
@@ -104,7 +114,7 @@ void drawPaddle() {
 void drawBall() {
   rectMode(CENTER);
   noStroke();
-  fill(ballColor);
+  fill(ballColor); //ADDED: this tells the program that the value of ballColor is always the fill for the ball.
   rect(ballX, ballY, ballSize, ballSize);
 }
 
@@ -114,6 +124,7 @@ void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
     ballY = paddleY - paddleHeight/2 - ballSize/2;
     ballVY = -ballVY;
+    ballColor = newBallColor;//ADDED: this tells the program that everytime the ball hits the paddle, the fill (which is related to ballColor as we've seen before) is going to take the value of newBallColor.
   }
 }
 
