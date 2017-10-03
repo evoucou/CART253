@@ -13,6 +13,12 @@ int paddleWidth = 128;
 int paddleHeight = 16;
 color paddleColor = color(255);
 
+int lineY;
+int lineX;
+int lineLenght;
+int lineSpacing;
+
+
 int ballX;
 int ballY;
 int ballVX;
@@ -28,12 +34,17 @@ color newBallColor;
 // properties
 
 
+
 void setup() {
   size(640, 480);
-  
+ 
+  setupLine();
   setupPaddle();
   setupBall();
   ballColor = regularBallColor; //ADDED: defining that at the beginning, the ball has its regular color.
+  
+  lineX += lineLenght;
+  line(lineX,lineY,lineX,lineY+lineLenght);
 }
 
 //defining the beginning of the animation
@@ -53,14 +64,23 @@ void setupBall() {
   ballVY = ballSpeed;
 }
 
+void setupLine() {
+ lineX = width/2;
+ lineY = height/2;
+ lineLenght = 20;
+ lineSpacing = 5;
+}
+
 //defining the position of ball at the beginning
 
 void draw() {
+  drawLine();
   background(backgroundColor);
 
   newBallColor = color(random(255),random(255),random(255)); //ADDED: we are defining the value of newBallColor here, in the void draw, so that every time the ball
   //touches the paddle, the value is recalculated again, therefore giving it a new color each time.
 
+ 
   drawStatic();
 
   updatePaddle();
@@ -71,6 +91,13 @@ void draw() {
 }
 
 
+//static for the background
+
+void drawLine() {
+  stroke(5);
+  color(0,0,0);
+  }
+  
 
 void drawStatic() {
   for (int i = 0; i < numStatic; i++) {
@@ -82,7 +109,6 @@ void drawStatic() {
   }
 }
 
-//static for the background
 
 void updatePaddle() {
   paddleX += paddleVX;  
@@ -149,6 +175,7 @@ void handleBallOffBottom() {
 boolean ballOffBottom() {
   return (ballY - ballSize/2 > height);
 }
+
 
  //this tells the ball to bounce off the paddle when it touches it (it is telling it when). The first boolean tells us that, everytime the ball
  //has the same x position as the paddle, it bounces off. BUT, the Y position also has to be true: so then, it checks the Y position of
