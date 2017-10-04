@@ -1,10 +1,3 @@
-color backgroundColor = color(0);
-
-int numStatic = 1000;
-int staticSizeMin = 1;
-int staticSizeMax = 3;
-color staticColor = color(200);
-
 int paddleX;
 int paddleY;
 int paddleVX;
@@ -13,11 +6,11 @@ int paddleWidth = 128;
 int paddleHeight = 16;
 color paddleColor = color(255);
 
-int lineY;
-int lineX;
-int lineLenght;
-int lineSpacing;
-
+int lineLenght = 100;
+int lineSpacing = 10;
+int lineY = height/2 + lineLenght;
+float lineX = 0.001;
+color lineColor = color(255); //ADDED: these values have been added for the lines loop. They center them in the screen.
 
 int ballX;
 int ballY;
@@ -27,6 +20,12 @@ int ballSpeed = 5;
 int ballSize = 16;
 int ballColor;
 
+color backgroundColor = color(0);
+
+int numStatic = 1000;
+int staticSizeMin = 1;
+int staticSizeMax = 3;
+color staticColor = color(200);
 
 color regularBallColor = color(255); //ADDED: because we want the ball to change color, we added a new variable, newBallColor, and added a new integer, ballColor, which allows us to change the color any time.
 color newBallColor;
@@ -38,12 +37,13 @@ color newBallColor;
 void setup() {
   size(640, 480);
  
-  setupLine();
+  setupLine(); //ADDED: for the line to appear and always be there
   setupPaddle();
   setupBall();
   ballColor = regularBallColor; //ADDED: defining that at the beginning, the ball has its regular color.
   
 }
+
 
 //defining the beginning of the animation
 
@@ -62,29 +62,18 @@ void setupBall() {
   ballVY = ballSpeed;
 }
 
-void setupLine() {
- lineX = width/2;
- lineY = height/2;
- lineLenght = 50;
- lineSpacing = 5;
- while (lineX- < width && lineX- > 0) {
-  rect(lineX,lineY,7,lineY);
-  lineX += lineSpacing; }
-}
 
 //defining the position of ball at the beginning
 
 void draw() {
- 
+  
   background(backgroundColor);
 
   newBallColor = color(random(255),random(255),random(255)); //ADDED: we are defining the value of newBallColor here, in the void draw, so that every time the ball
   //touches the paddle, the value is recalculated again, therefore giving it a new color each time.
 
-  drawLine();
-  //drawStatic();
+  drawStatic();
 
-  //updateLine();
   updatePaddle();
   updateBall();
 
@@ -93,16 +82,7 @@ void draw() {
 }
 
 
-//static for the background
-
-void drawLine() {
-  noStroke();
-  color(255);
-
-  }
-  
-
-/*void drawStatic() {
+void drawStatic() {
   for (int i = 0; i < numStatic; i++) {
    float x = random(0,width);
    float y = random(0,height);
@@ -110,8 +90,17 @@ void drawLine() {
    fill(staticColor);
    rect(x,y,staticSize,staticSize);
   }
-}*/
+}
+//static for the background
 
+void setupLine() {
+  stroke(lineColor);
+  fill(lineColor);
+ while (lineX >= 0 && lineX <= width) {
+  rect(lineX,lineY,7,lineY+lineSpacing);
+  lineX += lineSpacing; }
+} //ADDED: The colors of the lines are defined. We only draw one, but the loop option draws a whole range from left to right. NOTE: The lines are behind the background but I haven't found how to make them visible...
+// I am aware that it is in fact a very simple loop, and it doesn't interfere with the game, but I found it a bit too difficult to do.
 
 void updatePaddle() {
   paddleX += paddleVX;  
@@ -130,12 +119,6 @@ void updateBall() {
 }
 
 //allows the ball to move
-
-/*void updateLine() {
-  while (lineX < width) {
-  rect(lineX,lineY,7,lineY+lineSpacing);
-  lineX += lineSpacing;
-} }*/
 
 
 void drawPaddle() {
@@ -185,7 +168,6 @@ void handleBallOffBottom() {
 boolean ballOffBottom() {
   return (ballY - ballSize/2 > height);
 }
-
 
  //this tells the ball to bounce off the paddle when it touches it (it is telling it when). The first boolean tells us that, everytime the ball
  //has the same x position as the paddle, it bounces off. BUT, the Y position also has to be true: so then, it checks the Y position of
