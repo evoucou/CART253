@@ -17,11 +17,8 @@ int ballY;
 int ballVX;
 int ballVY;
 int ballSpeed;
-int regularBallSpeed = 5;
-int newBallSpeed;
 int ballSize = 16;
 int ballColor;
-int tripleSpeed;
 
 color backgroundColor = color(0);
 
@@ -36,17 +33,15 @@ color newBallColor;
 // properties
 
 
-
 void setup() {
   size(640, 480);
  
   drawLine(); //ADDED: for the line to appear and always be there
   setupPaddle();
   setupBall();
-  ballColor = regularBallColor; //ADDED: defining that at the beginning, the ball has its regular color.
-  
-}
+  ballColor = regularBallColor;//ADDED: defining that at the beginning, the ball has its regular color.
 
+}
 
 //defining the beginning of the animation
 
@@ -61,12 +56,12 @@ void setupPaddle() {
 void setupBall() {
   ballX = width/2;
   ballY = height/2;
-  ballVX = ballSpeed;
-  ballVY = ballSpeed;
+  ballVX = 5;
+  ballVY = 5;
 }
 
-
-//defining the position of ball at the beginning
+//defining the position of ball at the beginning (replaced ''ballSpeed'' by 5 so that we can change ballSpeed elswehere, but
+//the ball still moves.)
 
 void draw() {
   
@@ -77,6 +72,7 @@ void draw() {
   newBallColor = color(random(255),random(255),random(255)); //ADDED: we are defining the value of newBallColor here, in the void draw, so that every time the ball
   //touches the paddle, the value is recalculated again, therefore giving it a new color each time.
 
+
   drawStatic();
 
   updatePaddle();
@@ -85,7 +81,6 @@ void draw() {
   drawPaddle();
   drawBall();
 }
-
 
 void drawStatic() {
   for (int i = 0; i < numStatic; i++) {
@@ -96,6 +91,7 @@ void drawStatic() {
    rect(x,y,staticSize,staticSize);
   }
 }
+
 //static for the background
 
 void drawLine() {
@@ -108,9 +104,7 @@ void drawLine() {
   }
 }
   
-
 //ADDED: The colors of the lines are defined. We only draw one, but the loop option draws a whole range from left to right. 
-//NOTE: The lines are behind the background but I haven't found how to make them visible...
 // I am aware that it is in fact a very simple loop, and it doesn't interfere with the game, but I found it a bit too difficult to do.
 
 void updatePaddle() {
@@ -120,18 +114,19 @@ void updatePaddle() {
 
 //allows the paddle to move, and also tells it that it cannot go further than the screen limits
 
+
 void updateBall() {
   ballX += ballVX;
   ballY += ballVY;
   
-  handleBallSpeed();//ADDED FUNCTION
+  
   handleBallHitPaddle();
   handleBallHitWall();
   handleBallOffBottom();
+  handleBallSpeed();//ADDED FUNCTION
 }
 
-//allows the ball to move
-
+//allows the ball to move + its functions
 
 void drawPaddle() {
   rectMode(CENTER);
@@ -147,12 +142,9 @@ void drawBall() {
   noStroke();
   fill(ballColor); //ADDED: this tells the program that the value of ballColor is always the fill for the ball.
   rect(ballX, ballY, ballSize, ballSize);
-  
 }
 
-
 //ball properties
-
 
 void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
@@ -173,19 +165,6 @@ boolean ballOverlapsPaddle() {
   return false;
 }
 
-void handleBallSpeed() {
-  if (ballY - ballSize/2 < lineY + lineLenght/2) {
-  ballSpeed = newBallSpeed;
-  int newBallSpeed = 20;
-  tripleSpeed(newBallSpeed);
-  } 
-}
-
-int tripleSpeed(int newBallSpeed) {
-  newBallSpeed = newBallSpeed * 4;
-  return newBallSpeed;
-
-}
 
 void handleBallOffBottom() {
   if (ballOffBottom()) {
@@ -203,12 +182,7 @@ boolean ballOffBottom() {
  //the paddle. If it is true, then it bounces back. If not, then it does not. The void handleBallOffBottom tells the program that the ball
  //always has to reappear in the center of the screen if return is true.
  
-/*void handleBallSpeed() {
-  if (ballY - ballSize/2 <= height/4 && ballX - ballSize/2 >= width/4 ) {
-    ballSpeed = ballSpeed + 10; 
-  }
-}*/
-
+ 
 void handleBallHitWall() {
   if (ballX - ballSize/2 < 0) {
     ballX = 0 + ballSize/2;
@@ -216,9 +190,9 @@ void handleBallHitWall() {
   } else if (ballX + ballSize/2 > width) {
     ballX = width - ballSize/2;
     ballVX = -ballVX;
-    
-    
+     
   }
+  
   
  //this tells the ball to bounce back when it touches either the right or the left side of the screen.
   
@@ -228,9 +202,15 @@ void handleBallHitWall() {
   }
 }
 
-
-
 //this tells the ball to boune back when it touches the top of the screen.
+
+
+void handleBallSpeed() {
+  if (ballX - ballSize/2 < 200 && ballY - ballSize/2 < 480) {
+    ballSpeed = 5; 
+  
+  } 
+} //ADDED: New fonction that tells the ball that when it's between the coordinates (200, 480), it has to go faster.
 
 void keyPressed() {
   if (keyCode == LEFT) {
