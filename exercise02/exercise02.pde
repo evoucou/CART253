@@ -6,19 +6,22 @@ int paddleWidth = 128;
 int paddleHeight = 16;
 color paddleColor = color(255);
 
-int lineLenght = 100;
 int lineSpacing = 10;
-int lineY = height/2 + lineLenght;
-int lineX = 1;
+int lineY = 100;
+int lineX;
+int lineLenght = 100;
 color lineColor = color(255); //ADDED: these values have been added for the lines loop. They center them in the screen.
 
 int ballX;
 int ballY;
 int ballVX;
 int ballVY;
-int ballSpeed = 5;
+int ballSpeed;
+int regularBallSpeed = 5;
+int newBallSpeed;
 int ballSize = 16;
 int ballColor;
+int tripleSpeed;
 
 color backgroundColor = color(0);
 
@@ -100,13 +103,12 @@ void drawLine() {
   fill(lineColor);
   int lineX = 0;
   while (lineX >= 0 && lineX <= width) {
-    rect(lineX, lineY, 7, lineY+lineSpacing);
+    rect(lineX, lineY, 7, lineLenght);
     lineX += lineSpacing;
   }
 }
   
-  
-  
+
 //ADDED: The colors of the lines are defined. We only draw one, but the loop option draws a whole range from left to right. 
 //NOTE: The lines are behind the background but I haven't found how to make them visible...
 // I am aware that it is in fact a very simple loop, and it doesn't interfere with the game, but I found it a bit too difficult to do.
@@ -122,6 +124,7 @@ void updateBall() {
   ballX += ballVX;
   ballY += ballVY;
   
+  handleBallSpeed();//ADDED FUNCTION
   handleBallHitPaddle();
   handleBallHitWall();
   handleBallOffBottom();
@@ -144,9 +147,12 @@ void drawBall() {
   noStroke();
   fill(ballColor); //ADDED: this tells the program that the value of ballColor is always the fill for the ball.
   rect(ballX, ballY, ballSize, ballSize);
+  
 }
 
+
 //ball properties
+
 
 void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
@@ -167,6 +173,20 @@ boolean ballOverlapsPaddle() {
   return false;
 }
 
+void handleBallSpeed() {
+  if (ballY - ballSize/2 < lineY + lineLenght/2) {
+  ballSpeed = newBallSpeed;
+  int newBallSpeed = 20;
+  tripleSpeed(newBallSpeed);
+  } 
+}
+
+int tripleSpeed(int newBallSpeed) {
+  newBallSpeed = newBallSpeed * 4;
+  return newBallSpeed;
+
+}
+
 void handleBallOffBottom() {
   if (ballOffBottom()) {
     ballX = width/2;
@@ -182,6 +202,12 @@ boolean ballOffBottom() {
  //has the same x position as the paddle, it bounces off. BUT, the Y position also has to be true: so then, it checks the Y position of
  //the paddle. If it is true, then it bounces back. If not, then it does not. The void handleBallOffBottom tells the program that the ball
  //always has to reappear in the center of the screen if return is true.
+ 
+/*void handleBallSpeed() {
+  if (ballY - ballSize/2 <= height/4 && ballX - ballSize/2 >= width/4 ) {
+    ballSpeed = ballSpeed + 10; 
+  }
+}*/
 
 void handleBallHitWall() {
   if (ballX - ballSize/2 < 0) {
@@ -190,15 +216,19 @@ void handleBallHitWall() {
   } else if (ballX + ballSize/2 > width) {
     ballX = width - ballSize/2;
     ballVX = -ballVX;
+    
+    
   }
   
  //this tells the ball to bounce back when it touches either the right or the left side of the screen.
   
-  if (ballY - ballSize/2 < 0) {
-    ballY = 0 + ballSize/2;
+  if (ballY - ballSize/2 < lineY + lineLenght/2) { //CHANGED: the ball now bounces back when it touches the edge of the line loop.
+    ballY = (lineY + lineLenght/2) + ballSize/2;
     ballVY = -ballVY;
   }
 }
+
+
 
 //this tells the ball to boune back when it touches the top of the screen.
 
