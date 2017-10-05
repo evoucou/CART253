@@ -9,7 +9,7 @@ color paddleColor = color(255);
 int lineLenght = 100;
 int lineSpacing = 10;
 int lineY = height/2 + lineLenght;
-float lineX = 0.001;
+int lineX = 1;
 color lineColor = color(255); //ADDED: these values have been added for the lines loop. They center them in the screen.
 
 int ballX;
@@ -37,7 +37,7 @@ color newBallColor;
 void setup() {
   size(640, 480);
  
-  setupLine(); //ADDED: for the line to appear and always be there
+  drawLine(); //ADDED: for the line to appear and always be there
   setupPaddle();
   setupBall();
   ballColor = regularBallColor; //ADDED: defining that at the beginning, the ball has its regular color.
@@ -68,6 +68,8 @@ void setupBall() {
 void draw() {
   
   background(backgroundColor);
+  
+  drawLine();//ADDED: so the lines get drawn over and over again and are visible.
 
   newBallColor = color(random(255),random(255),random(255)); //ADDED: we are defining the value of newBallColor here, in the void draw, so that every time the ball
   //touches the paddle, the value is recalculated again, therefore giving it a new color each time.
@@ -93,13 +95,20 @@ void drawStatic() {
 }
 //static for the background
 
-void setupLine() {
+void drawLine() {
   stroke(lineColor);
   fill(lineColor);
- while (lineX >= 0 && lineX <= width) {
-  rect(lineX,lineY,7,lineY+lineSpacing);
-  lineX += lineSpacing; }
-} //ADDED: The colors of the lines are defined. We only draw one, but the loop option draws a whole range from left to right. NOTE: The lines are behind the background but I haven't found how to make them visible...
+  int lineX = 0;
+  while (lineX >= 0 && lineX <= width) {
+    rect(lineX, lineY, 7, lineY+lineSpacing);
+    lineX += lineSpacing;
+  }
+}
+  
+  
+  
+//ADDED: The colors of the lines are defined. We only draw one, but the loop option draws a whole range from left to right. 
+//NOTE: The lines are behind the background but I haven't found how to make them visible...
 // I am aware that it is in fact a very simple loop, and it doesn't interfere with the game, but I found it a bit too difficult to do.
 
 void updatePaddle() {
