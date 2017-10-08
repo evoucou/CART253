@@ -16,7 +16,7 @@ int ballX;
 int ballY;
 int ballVX;
 int ballVY;
-int ballSpeed;
+int ballSpeed = 5;
 int ballSize = 16;
 int ballColor;
 
@@ -36,7 +36,7 @@ color newBallColor;
 void setup() {
   size(640, 480);
  
-  drawLine(); //ADDED: for the line to appear and always be there
+  drawLine(); //ADDED: for the lines to appear and always be there
   setupPaddle();
   setupBall();
   ballColor = regularBallColor;//ADDED: defining that at the beginning, the ball has its regular color.
@@ -56,12 +56,11 @@ void setupPaddle() {
 void setupBall() {
   ballX = width/2;
   ballY = height/2;
-  ballVX = 5;
-  ballVY = 5;
+  ballVX = ballSpeed;
+  ballVY = ballSpeed;
 }
 
-//defining the position of ball at the beginning (replaced ''ballSpeed'' by 5 so that we can change ballSpeed elswehere, but
-//the ball still moves.)
+//defining the position of ball at the beginning 
 
 void draw() {
   
@@ -105,7 +104,6 @@ void drawLine() {
 }
   
 //ADDED: The colors of the lines are defined. We only draw one, but the loop option draws a whole range from left to right. 
-// I am aware that it is in fact a very simple loop, and it doesn't interfere with the game, but I found it a bit too difficult to do.
 
 void updatePaddle() {
   paddleX += paddleVX;  
@@ -126,7 +124,7 @@ void updateBall() {
   handleBallSpeed();//ADDED FUNCTION
 }
 
-//allows the ball to move + its functions
+//allows the ball to move + its functions in order
 
 void drawPaddle() {
   rectMode(CENTER);
@@ -206,11 +204,30 @@ void handleBallHitWall() {
 
 
 void handleBallSpeed() {
-  if (ballX - ballSize/2 < 200 && ballY - ballSize/2 < 480) {
-    ballSpeed = 5; 
-  
-  } 
-} //ADDED: New fonction that tells the ball that when it's between the coordinates (200, 480), it has to go faster.
+  if (ballX - ballSize/2 < width/2 && ballY - ballSize/2 <= height) {
+    println("true");
+ if(ballVX < 0) 
+ {ballVX=-10; }
+ else {
+   ballVX=10; }
+   
+    if(ballVY < 0) 
+ {ballVY=-10; }
+ else {
+   ballVY=10; }
+  }
+  else {
+     if(ballVX < 0) 
+ {ballVX=-ballSpeed; }
+ else {
+   ballVX=ballSpeed; }
+   
+    if(ballVY < 0) 
+ {ballVY=-ballSpeed; }
+ else {
+   ballVY=ballSpeed; }
+  }
+} //ADDED: New fonction that tells the ball that when it's in the left half of the screen, it has to go faster.
 
 void keyPressed() {
   if (keyCode == LEFT) {
