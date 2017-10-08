@@ -9,7 +9,7 @@ void setup() {
   size(640,480);
   background(backgroundColor);
   bouncer = new Bouncer(width/2,height/2,2,2,50,color(150,0,0,50),color(255,0,0,50));
-  bouncer2 = new Bouncer(width/2,height/2,-2,2,50,color(0,0,150,50),color(0,0,255,50)); //CONSTRUCTOR, CREATES A NEW OBJECT
+  bouncer2 = new Bouncer(width/2,height/2,-2,-2,50,color(0,0,150,50),color(0,0,255,50)); //CONSTRUCTOR, CREATES A NEW OBJECT
 }
 
 void draw() {
