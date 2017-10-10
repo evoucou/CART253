@@ -12,9 +12,10 @@ void setup() {
   bouncer2 = new Bouncer(width/2,height/2,-2,-2,50,color(0,0,150,50),color(0,0,255,50)); //CONSTRUCTOR, CREATES A NEW OBJECT
 }
 
+//METHODS of the object
 void draw() {
   bouncer.update();
   bouncer2.update();
   bouncer.draw(); //or bouncer.display
   bouncer2.draw();
-} //METHODS of the object
+} 
