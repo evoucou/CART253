@@ -8,11 +8,12 @@ class Bouncer {
  int vx;
  int vy;
  int size;
+ int clickSize;
  color fillColor;
  color defaultColor;
  color hoverColor;
  
- Bouncer(int tempX, int tempY, int tempVX, int tempVY, int tempSize, color tempDefaultColor, color tempHoverColor) /*here, we create new variables for the bouncer.
+ Bouncer(int tempX, int tempY, int tempVX, int tempVY, int tempSize, int tempClickSize, color tempDefaultColor, color tempHoverColor) /*here, we create new variables for the bouncer.
  They're defined in the main file, for example, (width/2,height/2,2,2,50,color(150,0,0,50),color(255,0,0,50)). This way, we can give them different
  sizes, color, etc. */ {
    x = tempX;
@@ -20,10 +21,12 @@ class Bouncer {
    vx = tempVX;
    vy = tempVY;
    size = tempSize;
+   clickSize = tempClickSize;
    defaultColor = tempDefaultColor;
    hoverColor = tempHoverColor;
    fillColor = defaultColor;
  } 
+ 
  
  void update() /*void update updates the ball each frame and makes it move*/ {
    x += vx;
@@ -31,7 +34,9 @@ class Bouncer {
    
    handleMouse(); //functions of the bouncer
    handleBounce();
+
  }
+ 
  
 //this condition tells the object to bounce back when it hits any side of the screen. 
 void handleBounce() {
@@ -56,6 +61,7 @@ void handleBounce() {
    y = constrain(y,size/2,height-size/2);
  }
  
+
  //this condition tells the object that if it crosses the mouth's path, it changes color. If not, default color.
  void handleMouse() {
    if (dist(mouseX,mouseY,x,y) < size/2) {
@@ -65,11 +71,18 @@ void handleBounce() {
      fillColor = defaultColor;
    }
  } 
+
  
- //draws the object itself and specifies it's an ellipse
+ //draws the object itself and specifies it's an ellipse, its color etc.
  void draw() {
    noStroke();
    fill(fillColor);
-   ellipse(x,y,size,size);
+   ellipse(x,y,size,size); 
  }
-}  
+
+
+ void mouseClicked() {
+ size = clickSize;
+ println("true");
+ }
+}
