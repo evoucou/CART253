@@ -13,6 +13,8 @@
 Paddle leftPaddle;
 Paddle rightPaddle;
 Ball ball;
+Avatar avatarPlayer1;
+Avatar avatarPlayer2;
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 8;
@@ -36,6 +38,8 @@ void setup() {
   // different accented characters in text editors (so avoid those if you're changing this)
   leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
+  avatarPlayer1 = new Avatar(width/2,height/2,50);
+  avatarPlayer2 = new Avatar(width/2+10,height/2+10,50);
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
@@ -54,6 +58,8 @@ void draw() {
   leftPaddle.update();
   rightPaddle.update();
   ball.update();
+  avatarPlayer1.update();
+  //avatarPlayer2.update();
 
   // Check if the ball has collided with either paddle
   ball.collide(leftPaddle);
@@ -69,6 +75,8 @@ void draw() {
   leftPaddle.display();
   rightPaddle.display();
   ball.display();
+  avatarPlayer1.display();
+  avatarPlayer2.display();
 }
 
 // keyPressed()
