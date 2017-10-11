@@ -64,23 +64,24 @@ class Avatar {
   // Resets the avatar to the centre of the screen when it touches the ball
   // Note that it KEEPS its velocity
 
-  /*void reset() {
-   avatarX = width/2;
-   avatarY = height/2;
-   }*/
-
   // collide(Avatar avatarPlayer1)
   //
   // Checks whether this avatar is colliding with the ball passed as an argument
   // If it is, it makes the avatar restart at the center (reset) and the player
   // loses 1 pt
 
-  void collide(Ball ball) {
-    if ((avatarX + avatarSize/2 == ball.x - ball.SIZE/2) || (avatarY + avatarSize/2 == ball.y - ball.SIZE/2)) {
-      avatarX = width/2;
-      avatarY = height/2;
+  /*void collide(Ball ball) {
+    if ((avatarX + avatarSize/2 == ball.x - ball.SIZE/2) && (avatarY + avatarSize/2 == ball.y - ball.SIZE/2)) 
+    }*/
+      boolean touchesBall() {
+        return ((avatarX + avatarSize/2 == ball.x - ball.SIZE/2) && (avatarY + avatarSize/2 == ball.y - ball.SIZE/2));
     }
 
+
+  void reset() {
+   avatarX = width/2;
+   avatarY = height/2;
+   }
 
     // Calculate possible overlaps with the paddle side by side
     /*boolean insideLeft = (avatarX + avatarSize/2 > ball.x - ball.SIZE/2);
@@ -102,7 +103,7 @@ class Avatar {
      avatarX = width/2;
      avatarY = height/2;
      }*/
-  }
+  
 
   // keyPressed()
   //
@@ -110,22 +111,22 @@ class Avatar {
 
   void keyPressed() {
     avatarSpeed = 5;
-    
+
     // Check if the key is our up key
     if (key == upKey) {
       // If so we want a negative y velocity
       avatarVY = -avatarSpeed;
-        println("top");
+      println("top");
     } // Otherwise check if the key is our down key 
     else if (key == downKey) {
       // If so we want a positive y velocity
       avatarVY = avatarSpeed;
-        println("down");
+      println("down");
     } // Otherwise check if the key is our down key 
     else if (key == leftKey) {
       // If so we want a negative x velocity
       avatarVX = -avatarSpeed;
-        println("left");
+      println("left");
     } // Otherwise check if the key is our down key 
     else if (key == rightKey) {
       // If so we want a positive x velocity

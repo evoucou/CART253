@@ -38,8 +38,8 @@ void setup() {
   // different accented characters in text editors (so avoid those if you're changing this)
   leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
-  avatarPlayer1 = new Avatar(width/2, height/2, 50, 'r', 'f', 'd', 'g');
-  avatarPlayer2 = new Avatar(width/2+10, height/2+10, 50, 'u', 'j', 'h', 'k');
+  avatarPlayer1 = new Avatar(width/2, height/2, 20, 'r', 'f', 'd', 'g');
+  avatarPlayer2 = new Avatar(width/2+10, height/2+10, 20, 'u', 'j', 'h', 'k');
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
@@ -64,15 +64,19 @@ void draw() {
   // Check if the ball has collided with either paddle
   ball.collide(leftPaddle);
   ball.collide(rightPaddle);
-  avatarPlayer1.collide(ball);
-  avatarPlayer2.collide(ball);
+  //avatarPlayer1.collide(ball);
+  //avatarPlayer2.collide(ball);
 
   // Check if the ball has gone off the screen
   if (ball.isOffScreen()) {
     // If it has, reset the ball
     ball.reset();
-    //avatarPlayer1.reset();
-    //avatarPlayer2.reset();
+  }  
+  if (avatarPlayer1.touchesBall()) {
+    avatarPlayer1.reset();
+  }  
+  if (avatarPlayer2.touchesBall()) {
+    avatarPlayer2.reset();
   }
 
   // Display the paddles and the ball
