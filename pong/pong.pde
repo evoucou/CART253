@@ -38,8 +38,8 @@ void setup() {
   // different accented characters in text editors (so avoid those if you're changing this)
   leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
-  avatarPlayer1 = new Avatar(width/2,height/2,50);
-  avatarPlayer2 = new Avatar(width/2+10,height/2+10,50);
+  avatarPlayer1 = new Avatar(width/2, height/2, 50, 'r', 'f', 'd', 'g');
+  avatarPlayer2 = new Avatar(width/2+10, height/2+10, 50, 'u', 'j', 'h', 'k');
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
@@ -59,16 +59,20 @@ void draw() {
   rightPaddle.update();
   ball.update();
   avatarPlayer1.update();
-  //avatarPlayer2.update();
+  avatarPlayer2.update();
 
   // Check if the ball has collided with either paddle
   ball.collide(leftPaddle);
   ball.collide(rightPaddle);
+  avatarPlayer1.collide(ball);
+  avatarPlayer2.collide(ball);
 
   // Check if the ball has gone off the screen
   if (ball.isOffScreen()) {
     // If it has, reset the ball
     ball.reset();
+    //avatarPlayer1.reset();
+    //avatarPlayer2.reset();
   }
 
   // Display the paddles and the ball
@@ -86,9 +90,11 @@ void draw() {
 // tell the paddles
 
 void keyPressed() {
-  // Just call both paddles' own keyPressed methods
+  // Just call both paddles' and avatars' own keyPressed methods
   leftPaddle.keyPressed();
   rightPaddle.keyPressed();
+  avatarPlayer1.keyPressed();
+  avatarPlayer2.keyPressed();
 }
 
 // keyReleased()
@@ -96,7 +102,9 @@ void keyPressed() {
 // As for keyPressed, except for released!
 
 void keyReleased() {
-  // Call both paddles' keyReleased methods
+  // Call both paddles' and avatars' keyReleased methods
   leftPaddle.keyReleased();
   rightPaddle.keyReleased();
+  avatarPlayer1.keyReleased();
+  avatarPlayer2.keyReleased();
 }
