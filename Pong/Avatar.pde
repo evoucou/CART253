@@ -119,7 +119,7 @@ class Avatar {
       println("top");
     } // Otherwise check if the key is our down key 
     else if (key == downKey) {
-      // If so we want a positive y velocity
+      // If so we want22 a positive y velocity
       avatarVY = avatarSpeed;
       println("down");
     } // Otherwise check if the key is our down key 

@@ -8,7 +8,7 @@ class Ball {
   /////////////// Properties ///////////////
 
   // Default values for speed and size
-  int SPEED = 5;
+  int SPEED;
   int SIZE = 16;
 
   // The location of the ball
@@ -21,6 +21,8 @@ class Ball {
 
   // The colour of the ball
   color ballColor = color(255);
+  char startKey1;
+  char startKey2;
 
 
   /////////////// Constructor ///////////////
@@ -34,11 +36,13 @@ class Ball {
   // NOTE that I'm using an underscore in front of the arguments to distinguish
   // them from the class's properties
 
-  Ball(int _x, int _y) {
+  Ball(int _x, int _y, char _startKey1, char _startKey2) {
     x = _x;
     y = _y;
     vx = SPEED;
     vy = SPEED;
+    startKey1 = _startKey1;
+    startKey2 = _startKey2;
   }
 
 
@@ -55,23 +59,24 @@ class Ball {
     x += vx;
     y += vy;
 
+
     // Check if the ball is going off the top of bottom
     if (y - SIZE/2 < 0 || y + SIZE/2 > height) {
       // If it is, then make it "bounce" by reversing its velocity
       vy = -vy;
     }
   }
-  
+
   // reset()
   //
   // Resets the ball to the centre of the screen.
   // Note that it KEEPS its velocity
-  
+
   void reset() {
     x = width/2;
     y = height/2;
   }
-  
+
   // isOffScreen()
   //
   // Returns true if the ball is off the left or right side of the window
@@ -79,7 +84,7 @@ class Ball {
   // (If we wanted to return WHICH side it had gone off, we'd have to return
   // something like an int (e.g. 0 = not off, 1 = off left, 2 = off right)
   // or a String (e.g. "ON SCREEN", "OFF LEFT", "OFF RIGHT")
-  
+
   boolean isOffScreen() {
     return (x + SIZE/2 < 0 || x - SIZE/2 > width);
   }
@@ -96,7 +101,7 @@ class Ball {
     boolean insideRight = (x - SIZE/2 < paddle.x + paddle.WIDTH/2);
     boolean insideTop = (y + SIZE/2 > paddle.y - paddle.HEIGHT/2);
     boolean insideBottom = (y - SIZE/2 < paddle.y + paddle.HEIGHT/2);
-    
+
     // Check if the ball overlaps with the paddle
     if (insideLeft && insideRight && insideTop && insideBottom) {
       // If it was moving to the left
@@ -109,6 +114,30 @@ class Ball {
       }
       // And make it bounce
       vx = -vx;
+    }
+  }
+
+  void keyPressed() {
+
+
+    // Check if the key is the start key for player 1
+    if ((x == width/2) && (y == height/2)) {
+      
+      if  (key == startKey1) {
+        // If so the ball is sent towards the opponent (player 2)
+        vy = -vy;
+        SPEED = 5;
+        println("v");
+      } // Otherwise check if the key is the start key for player 2
+      else if (key == startKey2) {
+        // Same thing
+        vy = -vy;
+        vx = -vx;
+        SPEED = 5;
+        println("b");
+      }
+    } else {
+      SPEED = 0;
     }
   }
 

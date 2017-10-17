@@ -15,6 +15,7 @@ Paddle rightPaddle;
 Ball ball;
 Avatar avatarPlayer1;
 Avatar avatarPlayer2;
+Score score;
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 8;
@@ -42,7 +43,7 @@ void setup() {
   avatarPlayer2 = new Avatar(width/2+10, height/2+10, 20, 'u', 'j', 'h', 'k');
 
   // Create the ball at the centre of the screen
-  ball = new Ball(width/2, height/2);
+  ball = new Ball(width/2, height/2, 'v', 'b');
 }
 
 // draw()
@@ -53,6 +54,14 @@ void setup() {
 void draw() {
   // Fill the background each frame so we have animation
   background(backgroundColor);
+  
+  
+  
+ // Display the score 
+  Bouncer[] bouncers = new Bouncer[100];
+for (int i = 0; i < 100; i++) {
+  bouncers[i] = new Bouncer(10*i,10,2,2,10,color(255,0,0,50),color(0,0,255,50));
+}
 
   // Update the paddles and ball by calling their update methods
   leftPaddle.update();
@@ -99,6 +108,7 @@ void keyPressed() {
   rightPaddle.keyPressed();
   avatarPlayer1.keyPressed();
   avatarPlayer2.keyPressed();
+  ball.keyPressed();
 }
 
 // keyReleased()
@@ -111,4 +121,17 @@ void keyReleased() {
   rightPaddle.keyReleased();
   avatarPlayer1.keyReleased();
   avatarPlayer2.keyReleased();
+}
+  
+  
+  /////////////// Labyrinth ///////////////
+  
+void display() {
+    // Set up the appearance of each wall
+    noStroke();
+    fill(color(250));
+    rectMode(CENTER);
+
+    // Draw the ball
+    rect(10, 10, 20, 20);
 }
