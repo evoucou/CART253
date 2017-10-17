@@ -15,10 +15,19 @@ Paddle rightPaddle;
 Ball ball;
 Avatar avatarPlayer1;
 Avatar avatarPlayer2;
-Score score;
+Score scorePlayer1;
+Score scorePlayer2;
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 8;
+
+// Varaibles for score
+int player1Points;
+int player2Points;
+int numberTimesBallTouchesP1;
+int numberTimesBallTouchesP2;
+//text("score ="+score,10,10);
+
 
 // The background colour during play (black)
 color backgroundColor = color(0);
@@ -44,89 +53,88 @@ void setup() {
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2, 'v', 'b');
+  
+  // Create the score for both players
+  scorePlayer2 = new Score(width/2, height/2, color(250));
+  scorePlayer1 = new Score(width/2, height/2, color(150));
 }
+  // draw()
+  //
+  // Handles all the magic of making the paddles and ball move, checking
+  // if the ball has hit a paddle, and displaying everything.
 
-// draw()
-//
-// Handles all the magic of making the paddles and ball move, checking
-// if the ball has hit a paddle, and displaying everything.
+  void draw() {
+    // Fill the background each frame so we have animation
+    background(backgroundColor);
 
-void draw() {
-  // Fill the background each frame so we have animation
-  background(backgroundColor);
-  
-  
-  
- // Display the score 
-  Bouncer[] bouncers = new Bouncer[100];
-for (int i = 0; i < 100; i++) {
-  bouncers[i] = new Bouncer(10*i,10,2,2,10,color(255,0,0,50),color(0,0,255,50));
-}
+    // Update the paddles and ball by calling their update methods
+    leftPaddle.update();
+    rightPaddle.update();
+    ball.update();
+    avatarPlayer1.update();
+    avatarPlayer2.update();
+    //score.update();
 
-  // Update the paddles and ball by calling their update methods
-  leftPaddle.update();
-  rightPaddle.update();
-  ball.update();
-  avatarPlayer1.update();
-  avatarPlayer2.update();
+    // Check if the ball has collided with either paddle
+    ball.collide(leftPaddle);
+    ball.collide(rightPaddle);
+    //avatarPlayer1.collide(ball);
+    //avatarPlayer2.collide(ball);
 
-  // Check if the ball has collided with either paddle
-  ball.collide(leftPaddle);
-  ball.collide(rightPaddle);
-  //avatarPlayer1.collide(ball);
-  //avatarPlayer2.collide(ball);
+    // Check if the ball has gone off the screen
+    if (ball.isOffScreen()) {
+      // If it has, reset the ball
+      ball.reset();
+    }  
+    if (avatarPlayer1.touchesBall()) {
+      avatarPlayer1.reset();
+    }  
+    if (avatarPlayer2.touchesBall()) {
+      avatarPlayer2.reset();
+    }
 
-  // Check if the ball has gone off the screen
-  if (ball.isOffScreen()) {
-    // If it has, reset the ball
-    ball.reset();
-  }  
-  if (avatarPlayer1.touchesBall()) {
-    avatarPlayer1.reset();
-  }  
-  if (avatarPlayer2.touchesBall()) {
-    avatarPlayer2.reset();
+    // Display the paddles and the ball
+    leftPaddle.display();
+    rightPaddle.display();
+    ball.display();
+    avatarPlayer1.display();
+    avatarPlayer2.display();
+    scorePlayer1.display();
+    scorePlayer2.display();
   }
 
-  // Display the paddles and the ball
-  leftPaddle.display();
-  rightPaddle.display();
-  ball.display();
-  avatarPlayer1.display();
-  avatarPlayer2.display();
-}
 
-// keyPressed()
-//
-// The paddles need to know if they should move based on a keypress
-// so when the keypress is detected in the main program we need to
-// tell the paddles
+  // keyPressed()
+  //
+  // The paddles need to know if they should move based on a keypress
+  // so when the keypress is detected in the main program we need to
+  // tell the paddles
 
-void keyPressed() {
-  // Just call both paddles' and avatars' own keyPressed methods
-  leftPaddle.keyPressed();
-  rightPaddle.keyPressed();
-  avatarPlayer1.keyPressed();
-  avatarPlayer2.keyPressed();
-  ball.keyPressed();
-}
+  void keyPressed() {
+    // Just call both paddles' and avatars' own keyPressed methods
+    leftPaddle.keyPressed();
+    rightPaddle.keyPressed();
+    avatarPlayer1.keyPressed();
+    avatarPlayer2.keyPressed();
+    ball.keyPressed();
+  }
 
-// keyReleased()
-//
-// As for keyPressed, except for released!
+  // keyReleased()
+  //
+  // As for keyPressed, except for released!
 
-void keyReleased() {
-  // Call both paddles' and avatars' keyReleased methods
-  leftPaddle.keyReleased();
-  rightPaddle.keyReleased();
-  avatarPlayer1.keyReleased();
-  avatarPlayer2.keyReleased();
-}
-  
-  
+  void keyReleased() {
+    // Call both paddles' and avatars' keyReleased methods
+    leftPaddle.keyReleased();
+    rightPaddle.keyReleased();
+    avatarPlayer1.keyReleased();
+    avatarPlayer2.keyReleased();
+  }
+
+
   /////////////// Labyrinth ///////////////
-  
-void display() {
+
+  void display() {
     // Set up the appearance of each wall
     noStroke();
     fill(color(250));
@@ -134,4 +142,4 @@ void display() {
 
     // Draw the ball
     rect(10, 10, 20, 20);
-}
+  }
