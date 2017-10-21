@@ -15,8 +15,15 @@ Paddle rightPaddle;
 Ball ball;
 Avatar avatarPlayer1;
 Avatar avatarPlayer2;
+<<<<<<< HEAD
 //Score scorePlayer1;
 //Score scorePlayer2;
+=======
+Score scorePlayer1;
+Score scorePlayer2;
+Score scorePlayer1Plus;
+Score scorePlayer2Plus;
+>>>>>>> 7b3b15b20252db1a6c55dcb2d3cc549d17507df9
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 8;
@@ -26,7 +33,6 @@ int player1Points;
 int player2Points;
 int numberTimesBallTouchesP1;
 int numberTimesBallTouchesP2;
-//text("score ="+score,10,10);
 
 
 // The background colour during play (black)
@@ -56,9 +62,18 @@ void setup() {
  
   
   // Create the score for both players
+<<<<<<< HEAD
   //scorePlayer2 = new Score(width/2, height/2, color(250));
   //scorePlayer1 = new Score(width/2, height/2, color(150));
+=======
+  scorePlayer2 = new Score(width/2+10, height/2+10, color(250), "score="+player2Points);
+  scorePlayer1 = new Score(width/2, height/2, color(150), "score="+player1Points);
+  scorePlayer1Plus = new Score(width/2+20, height/2+20, color(150), "+1");
+  scorePlayer2Plus = new Score(width/2+30, height/2+30, color(250), "+1"); 
+>>>>>>> 7b3b15b20252db1a6c55dcb2d3cc549d17507df9
 }
+  
+
   // draw()
   //
   // Handles all the magic of making the paddles and ball move, checking
@@ -136,7 +151,7 @@ void setup() {
 
   /////////////// Labyrinth ///////////////
 
-  void display() {
+ /* void display() {
     // Set up the appearance of each wall
     noStroke();
     fill(color(250));
@@ -144,4 +159,4 @@ void setup() {
 
     // Draw the ball
     rect(10, 10, 20, 20);
-  }
+  }*/

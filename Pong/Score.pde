@@ -11,46 +11,29 @@
   // The location of the avatar
   int scoreX;
   int scoreY;
-  int scoreNumber;
-
-  // The speed and size of the avatar
-  int scoreSize;
+  int scoreText;
 
   // The color of the avatar
-  color scoreColor;
+  int scoreColor;
 
   /////////////// Constructor ///////////////
 
-  Score(int _scoreX, int _scoreY, int _scoreColor) {
+  Score(int _scoreX, int _scoreY, int _scoreColor, int _scoreText) {
     scoreX = _scoreX;
     scoreY = _scoreY;
     scoreColor = _scoreColor;
+    scoreText = _scoreText;
   
   }
 
   /////////////// Methods ///////////////
-
-  // reset()
-  //
-  // Resets the avatar to the centre of the screen when it touches the ball
-  // Note that it KEEPS its velocity
-
-  // collide(Avatar avatarPlayer1)
-  //
-  // Checks whether this avatar is colliding with the ball passed as an argument
-  // If it is, it makes the avatar restart at the center (reset) and the player
-  // loses 1 pt
-
-  /*void collide(Ball ball) {
-    if ((avatarX + avatarSize/2 == ball.x - ball.SIZE/2) && (avatarY + avatarSize/2 == ball.y - ball.SIZE/2)) 
-    }*/
-
 
   /*void update() {
    scoreX = width/2;
    scoreY = height/2;
    }*/
 
+<<<<<<< HEAD
     // Calculate possible overlaps with the paddle side by side
     /*boolean insideLeft = (avatarX + avatarSize/2 > ball.x - ball.SIZE/2);
      boolean insideRight = (avatarX - avatarSize/2 < ball.x + ball.SIZE/2);
@@ -72,11 +55,13 @@
      avatarY = height/2;
      }
 
+=======
+>>>>>>> 7b3b15b20252db1a6c55dcb2d3cc549d17507df9
 
   void display() {
-    // Set up the body of the avatar
-    text("score="+scoreNumber, 10,10);
-    textAlign(CENTER, CENTER);
+    // Set up the body of the score
+    text(scoreText,scoreX,scoreY);
+    textAlign(CENTER,CENTER);
     textSize(32);
   }
 }*/
