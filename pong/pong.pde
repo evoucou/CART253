@@ -15,8 +15,8 @@ Paddle rightPaddle;
 Ball ball;
 Avatar avatarPlayer1;
 Avatar avatarPlayer2;
-Score scorePlayer1;
-Score scorePlayer2;
+//Score scorePlayer1;
+//Score scorePlayer2;
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 8;
@@ -52,11 +52,12 @@ void setup() {
   avatarPlayer2 = new Avatar(width/2+10, height/2+10, 20, 'u', 'j', 'h', 'k');
 
   // Create the ball at the centre of the screen
-  ball = new Ball(width/2, height/2, 'v', 'b');
+  ball = new Ball(width/2, height/2);
+ 
   
   // Create the score for both players
-  scorePlayer2 = new Score(width/2, height/2, color(250));
-  scorePlayer1 = new Score(width/2, height/2, color(150));
+  //scorePlayer2 = new Score(width/2, height/2, color(250));
+  //scorePlayer1 = new Score(width/2, height/2, color(150));
 }
   // draw()
   //
@@ -66,7 +67,8 @@ void setup() {
   void draw() {
     // Fill the background each frame so we have animation
     background(backgroundColor);
-
+   
+    
     // Update the paddles and ball by calling their update methods
     leftPaddle.update();
     rightPaddle.update();
@@ -99,8 +101,8 @@ void setup() {
     ball.display();
     avatarPlayer1.display();
     avatarPlayer2.display();
-    scorePlayer1.display();
-    scorePlayer2.display();
+    //scorePlayer1.display();
+    //scorePlayer2.display();
   }
 
 
@@ -116,7 +118,7 @@ void setup() {
     rightPaddle.keyPressed();
     avatarPlayer1.keyPressed();
     avatarPlayer2.keyPressed();
-    ball.keyPressed();
+    //ball.keyPressed();
   }
 
   // keyReleased()

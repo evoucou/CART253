@@ -4,7 +4,7 @@
 // when pressing keys
 
 
-class Score {
+/*class Score {
 
   /////////////// Properties ///////////////
 
@@ -70,7 +70,7 @@ class Score {
      // And make it reappear at the center
      avatarX = width/2;
      avatarY = height/2;
-     }*/
+     }
 
 
   void display() {
@@ -79,4 +79,4 @@ class Score {
     textAlign(CENTER, CENTER);
     textSize(32);
   }
-}
+}*/

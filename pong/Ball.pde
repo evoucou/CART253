@@ -4,7 +4,6 @@
 // of the top and bottom, and can detect collision with a paddle and bounce off that.
 
 class Ball {
-
   /////////////// Properties ///////////////
 
   // Default values for speed and size
@@ -24,7 +23,6 @@ class Ball {
   char startKey1;
   char startKey2;
 
-
   /////////////// Constructor ///////////////
 
   // Ball(int _x, int _y)
@@ -36,13 +34,35 @@ class Ball {
   // NOTE that I'm using an underscore in front of the arguments to distinguish
   // them from the class's properties
 
-  Ball(int _x, int _y, char _startKey1, char _startKey2) {
+  Ball(int _x, int _y) {
     x = _x;
     y = _y;
-    vx = SPEED;
-    vy = SPEED;
-    startKey1 = _startKey1;
-    startKey2 = _startKey2;
+    //vx = SPEED;
+    //vy = SPEED;
+  }
+
+
+  void miseOjeu() {
+
+    if (x==width/2 && y== height/2) {
+      if (keyPressed) {
+        if (key == 'v') {
+          SPEED = 5;
+          vx = SPEED;
+          vy = SPEED;
+          println("aaay");
+        }
+      }
+      if (keyPressed) {
+        if (key == 'b') {
+          vx = -vx;
+          SPEED = 5;
+          vx = SPEED;
+          vy = SPEED;
+          println("aarrrrr");
+        }
+      }
+    }
   }
 
 
@@ -117,34 +137,32 @@ class Ball {
     }
   }
 
-  void keyPressed() {
 
 
-    // Check if the key is the start key for player 1
-    if ((x == width/2) && (y == height/2)) {
-      
-      if  (key == startKey1) {
-        // If so the ball is sent towards the opponent (player 2)
-        vy = -vy;
-        SPEED = 5;
-        println("v");
-      } // Otherwise check if the key is the start key for player 2
-      else if (key == startKey2) {
-        // Same thing
-        vy = -vy;
-        vx = -vx;
-        SPEED = 5;
-        println("b");
-      }
-    } else {
-      SPEED = 0;
-    }
-  }
-
-  // display()
-  //
-  // Draw the ball at its position
-
+  /* void keyPressed() {
+   
+   // Check if the key is the start key for player 1
+   int a = SPEED;
+   if ((x == width/2) && (y == height/2)) {
+   
+   if  (key == startKey1) {
+   // If so the ball is sent towards the opponent (player 2)
+   vy = -vy;
+   a = 5;
+   println("yea");
+   } // Otherwise check if the key is the start key for player 2
+   else if (key == startKey2) {
+   // Same thing
+   vy = -vy;
+   vx = -vx;
+   a = 5;
+   println("b");
+   }
+   }
+   }
+   
+   // Draw the ball at its position
+   */
   void display() {
     // Set up the appearance of the ball (no stroke, a fill, and rectMode as CENTER)
     noStroke();
