@@ -15,8 +15,15 @@ Paddle rightPaddle;
 Ball ball;
 Avatar avatarPlayer1;
 Avatar avatarPlayer2;
+
 //Score scorePlayer1;
 //Score scorePlayer2;
+
+Score scorePlayer1;
+Score scorePlayer2;
+Score scorePlayer1Plus;
+Score scorePlayer2Plus;
+
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 8;
@@ -26,9 +33,6 @@ int player1Points;
 int player2Points;
 int numberTimesBallTouchesP1;
 int numberTimesBallTouchesP2;
-
-int a=0;
-//text("score ="+score,10,10);
 
 
 // The background colour during play (black)
@@ -43,8 +47,6 @@ void setup() {
   // Set the size
   size(640, 480);
 
-
-
   // Create the paddles on either side of the screen. 
   // Use PADDLE_INSET to to position them on x, position them both at centre on y
   // Also pass through the two keys used to control 'up' and 'down' respectively
@@ -57,20 +59,31 @@ void setup() {
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
-
+ 
   
   // Create the score for both players
+
   //scorePlayer2 = new Score(width/2, height/2, color(250));
   //scorePlayer1 = new Score(width/2, height/2, color(150));
+
+  scorePlayer2 = new Score(width/2+10, height/2+10, color(250), "score="+player2Points);
+  scorePlayer1 = new Score(width/2, height/2, color(150), "score="+player1Points);
+  scorePlayer1Plus = new Score(width/2+20, height/2+20, color(150), "+1");
+  scorePlayer2Plus = new Score(width/2+30, height/2+30, color(250), "+1"); 
+>>>>>>> 7b3b15b20252db1a6c55dcb2d3cc549d17507df9
 }
+  
+
   // draw()
   //
   // Handles all the magic of making the paddles and ball move, checking
   // if the ball has hit a paddle, and displaying everything.
+
   void draw() {
     // Fill the background each frame so we have animation
     background(backgroundColor);
-  
+   
+    
     // Update the paddles and ball by calling their update methods
     leftPaddle.update();
     rightPaddle.update();
@@ -84,14 +97,11 @@ void setup() {
     ball.collide(rightPaddle);
     //avatarPlayer1.collide(ball);
     //avatarPlayer2.collide(ball);
+
     // Check if the ball has gone off the screen
-    if (ball.ballMiddle()){
-      ball.miseOjeu();
-    }
     if (ball.isOffScreen()) {
       // If it has, reset the ball
-      ball.reset(); //<>//
-      ball.miseOjeu(); //<>//
+      ball.reset();
     }  
     if (avatarPlayer1.touchesBall()) {
       avatarPlayer1.reset();
@@ -141,7 +151,7 @@ void setup() {
 
   /////////////// Labyrinth ///////////////
 
-  void display() {
+ /* void display() {
     // Set up the appearance of each wall
     noStroke();
     fill(color(250));
@@ -149,4 +159,4 @@ void setup() {
 
     // Draw the ball
     rect(10, 10, 20, 20);
-  }
+  }*/

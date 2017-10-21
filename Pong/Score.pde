@@ -33,7 +33,6 @@
    scoreY = height/2;
    }*/
 
-<<<<<<< HEAD
     // Calculate possible overlaps with the paddle side by side
     /*boolean insideLeft = (avatarX + avatarSize/2 > ball.x - ball.SIZE/2);
      boolean insideRight = (avatarX - avatarSize/2 < ball.x + ball.SIZE/2);

@@ -7,7 +7,7 @@ class Ball {
   /////////////// Properties ///////////////
 
   // Default values for speed and size
-  int SPEED;
+  int SPEED =0;
   int SIZE = 16;
 
   // The location of the ball
@@ -43,7 +43,6 @@ class Ball {
 
 
   void miseOjeu() {
-
     if (x==width/2 && y== height/2) {
       if (keyPressed) {
         if (key == 'v') {
@@ -55,10 +54,11 @@ class Ball {
       }
       if (keyPressed) {
         if (key == 'b') {
-          vx = -vx;
+         
           SPEED = 5;
           vx = SPEED;
           vy = SPEED;
+          vx = -vx;
           println("aarrrrr");
         }
       }
@@ -93,8 +93,11 @@ class Ball {
   // Note that it KEEPS its velocity
 
   void reset() {
+     vx = 0;
+     vy = 0;
     x = width/2;
     y = height/2;
+  
   }
 
   // isOffScreen()
@@ -109,6 +112,9 @@ class Ball {
     return (x + SIZE/2 < 0 || x - SIZE/2 > width);
   }
 
+  boolean ballMiddle() {
+    return (x == width/2 && y== height/2);
+  }
   // collide(Paddle paddle)
   //
   // Checks whether this ball is colliding with the paddle passed as an argument
