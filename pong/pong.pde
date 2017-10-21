@@ -15,19 +15,12 @@ Paddle rightPaddle;
 Ball ball;
 Avatar avatarPlayer1;
 Avatar avatarPlayer2;
-//Score scorePlayer1;
-//Score scorePlayer2;
+Score scorePlayer1;
+Score scorePlayer2;
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 8;
 
-// Varaibles for score
-int player1Points;
-int player2Points;
-int numberTimesBallTouchesP1;
-int numberTimesBallTouchesP2;
-
-int a=0;
 //text("score ="+score,10,10);
 
 
@@ -60,14 +53,18 @@ void setup() {
 
   
   // Create the score for both players
-  //scorePlayer2 = new Score(width/2, height/2, color(250));
-  //scorePlayer1 = new Score(width/2, height/2, color(150));
+  scorePlayer1 = new Score((width/2 - 20),10,color(250));
+  scorePlayer2 = new Score((width/2 + 20),10,color(150));  
+
 }
   // draw()
   //
   // Handles all the magic of making the paddles and ball move, checking
   // if the ball has hit a paddle, and displaying everything.
   void draw() {
+                    
+  fill(0);                         
+  text("Hello Strings!",10,100);
     // Fill the background each frame so we have animation
     background(backgroundColor);
   
@@ -90,11 +87,11 @@ void setup() {
     }
     if (ball.isOffScreen()) {
       // If it has, reset the ball
-      ball.reset(); //<>//
-      ball.miseOjeu(); //<>//
+      ball.reset();
+      ball.miseOjeu();
     }  
-    if (avatarPlayer1.touchesBall()) {
-      avatarPlayer1.reset();
+    if (avatarPlayer1.touchesBall()) { //<>//
+      avatarPlayer1.reset(); //<>//
     }  
     if (avatarPlayer2.touchesBall()) {
       avatarPlayer2.reset();
@@ -106,8 +103,8 @@ void setup() {
     ball.display();
     avatarPlayer1.display();
     avatarPlayer2.display();
-    //scorePlayer1.display();
-    //scorePlayer2.display();
+    scorePlayer1.draw();
+    scorePlayer2.draw();
   }
 
 
@@ -137,16 +134,5 @@ void setup() {
     avatarPlayer1.keyReleased();
     avatarPlayer2.keyReleased();
   }
-
-
-  /////////////// Labyrinth ///////////////
-
-  void display() {
-    // Set up the appearance of each wall
-    noStroke();
-    fill(color(250));
-    rectMode(CENTER);
-
-    // Draw the ball
-    rect(10, 10, 20, 20);
-  }
+  
+  //PImage img = loadImage("filename.jpg"); 

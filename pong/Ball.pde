@@ -112,6 +112,8 @@ class Ball {
     return (x + SIZE/2 < 0 || x - SIZE/2 > width);
   }
 
+//This fonction makes the mise au jeu work even at the beginning, before any reset is called.
+
   boolean ballMiddle() {
     return (x == width/2 && y== height/2);
   }
