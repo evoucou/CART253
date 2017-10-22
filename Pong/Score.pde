@@ -1,11 +1,10 @@
-// Item
+// Score
 //
-// A class that defines an object that appears randomly on the screen
-// and if the player gets it with its avatar, he gets +1 point
+// A class that defines the score
 
 
 
-class Item {
+class Score {
 
   /////////////// Properties ///////////////
 

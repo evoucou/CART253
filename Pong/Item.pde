@@ -1,54 +1,31 @@
-// Avatar
+// Item
 //
-// A class that defines an avatar that the players can move whereverthey please
-// when pressing keys
+// A class that defines an object that appears randomly on the screen
+// and if the player gets it with its avatar, he gets +1 point
 
 
 
-class Score {
+class Item {
 
   /////////////// Properties ///////////////
 
-  // The location of the avatar
-  //int scoreXPlayer1 = (width/2 - 20);
-  //int scoreY = 10;
-  //int scoreXPlayer2 = (width/2 + 20);
-  int scoreX;
-  int scoreY;
-  int scorePlayer;
-  char scoreText;
-
-  // The color of the avatar
-  int scoreColor;
+  // The location of the item
+  float itemX;
+  float itemY;
 
   /////////////// Constructor ///////////////
 
- Score(int _scoreX, int _scoreY, int _scoreColor) {
-   scoreX = _scoreX;
-   scoreY = _scoreY;
-   scoreColor = _scoreColor; 
- }
-
-  /*Score() {
+  Item(float _itemX, float _itemY) {
+    itemX = _itemX;
+    itemY = _itemY;
   }
-  void Player1() {
-    if (ball.x - ball.SIZE/2 > width) {
-      scorePlayer1++;
-    }
-  }
-  void Player2() {
-    if (ball.x + ball.SIZE/2 < 0) {
-      scorePlayer2++;
-    }
-  }*/
 
   /////////////// Methods ///////////////
 
 
-
-void display() { 
-//text(scoreText,scoreX, scoreY);
-rect(scoreX,scoreY,10,10);
-}
-
+  void display() { 
+    //text(scoreText,scoreX, scoreY);
+    fill(color(150));
+    rect(itemX, itemY, 10, 10);
+  }
 }

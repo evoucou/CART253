@@ -4,10 +4,11 @@
 // Allows to people to bounce a ball back and forth between
 // two paddles that they control.
 
-// Global variables for the paddles and the ball
+// Global variables for the paddles, ball, avatars, item and score
 Paddle leftPaddle;
 Paddle rightPaddle;
 Ball ball;
+Item item;
 Avatar avatarPlayer1;
 Avatar avatarPlayer2;
 Score scorePlayer1;
@@ -53,6 +54,9 @@ void setup() {
   scorePlayer1 = new Score((width/2 - 20),10,color(250));
   scorePlayer2 = new Score((width/2 + 20),10,color(150));  
 
+ //Create the random item
+ item = new Item(random(0,width), random(0,height));
+ 
 }
   // draw()
   //
@@ -95,6 +99,7 @@ void setup() {
     avatarPlayer2.display();
     scorePlayer1.display();
     scorePlayer2.display();
+    item.display();
     
     // Display the images
     image(avatarPlayer2.imagePlayer,avatarPlayer2.avatarX,avatarPlayer2.avatarY);
