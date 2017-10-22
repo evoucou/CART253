@@ -63,8 +63,7 @@ void setup() {
   // if the ball has hit a paddle, and displaying everything.
   void draw() {
                     
-  fill(0);                         
-  text("Hello Strings!",10,100);
+
     // Fill the background each frame so we have animation
     background(backgroundColor);
   
@@ -79,23 +78,25 @@ void setup() {
     // Check if the ball has collided with either paddle
     ball.collide(leftPaddle);
     ball.collide(rightPaddle);
-    //avatarPlayer1.collide(ball);
-    //avatarPlayer2.collide(ball);
+    avatarPlayer1.collide(ball);
+    avatarPlayer2.collide(ball);
     // Check if the ball has gone off the screen
     if (ball.ballMiddle()){
-      ball.miseOjeu();
+      ball.faceOff();
     }
     if (ball.isOffScreen()) {
       // If it has, reset the ball
       ball.reset();
-      ball.miseOjeu();
+      ball.faceOff();
     }  
-    if (avatarPlayer1.touchesBall()) { //<>//
+    /*if (avatarPlayer1.touchesBall()) { //<>//
       avatarPlayer1.reset(); //<>//
+         println("reset");
     }  
     if (avatarPlayer2.touchesBall()) {
       avatarPlayer2.reset();
-    }
+      println("reset");
+    }*/
 
     // Display the paddles and the ball
     leftPaddle.display();
@@ -103,8 +104,8 @@ void setup() {
     ball.display();
     avatarPlayer1.display();
     avatarPlayer2.display();
-    scorePlayer1.draw();
-    scorePlayer2.draw();
+    scorePlayer1.display();
+    scorePlayer2.display();
   }
 
 

@@ -17,7 +17,7 @@ class Score {
   int scoreX;
   int scoreY;
   int scorePlayer;
-  int scoreText;
+  char scoreText;
 
   // The color of the avatar
   int scoreColor;
@@ -47,7 +47,9 @@ class Score {
 
 
 
-void draw() {   
+void display() { 
+//text(scoreText,scoreX, scoreY);
+rect(scoreX,scoreY,10,10);
 }
 
 }

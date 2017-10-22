@@ -42,7 +42,7 @@ class Ball {
   }
 
 
-  void miseOjeu() {
+  void faceOff() {
     if (x==width/2 && y== height/2) {
       if (keyPressed) {
         if (key == 'v') {

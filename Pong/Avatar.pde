@@ -70,40 +70,57 @@ class Avatar {
   // If it is, it makes the avatar restart at the center (reset) and the player
   // loses 1 pt
 
-  /*void collide(Ball ball) {
-    if ((avatarX + avatarSize/2 == ball.x - ball.SIZE/2) && (avatarY + avatarSize/2 == ball.y - ball.SIZE/2)) 
-    }*/
-      boolean touchesBall() {
-        return ((avatarX + avatarSize/2 == ball.x - ball.SIZE/2) && (avatarY + avatarSize/2 == ball.y - ball.SIZE/2));
+  /*void collide() {
+   if (avatarX + avatarSize == ball.x + ball.SIZE) {
+   avatarX = width/2;
+   println("touchesballs");
+   } 
+   if (avatarY + avatarSize == ball.y + ball.SIZE) {
+   avatarY = height/2;
+   println("touchesball");
+   } }
+   
+   boolean touchesBall() {
+   return ((avatarX == ball.x - ball.SIZE/2) && (avatarY == ball.y - ball.SIZE/2));
+   
+   }*/
+
+  void collide(Ball ball) {
+    // Calculate possible overlaps with the ball side by side
+    boolean insideLeft = (avatarX + avatarSize/2 > ball.x - ball.SIZE/2);
+    boolean insideRight = (avatarX - avatarSize/2 < ball.x + ball.SIZE/2);
+    boolean insideTop = (avatarY + avatarSize/2 > ball.y - ball.SIZE/2);
+    boolean insideBottom = (avatarY - avatarSize/2 < ball.y + ball.SIZE/2);
+
+    // Check if the ball overlaps with the avatar
+    if (insideLeft && insideRight && insideTop && insideBottom) {
+      //If it's the case, reset it to the center
+      avatarX = width/2;
+      avatarY = height/2;
     }
+  }
 
-
-  void reset() {
+  // Calculate possible overlaps with the paddle side by side
+  /*boolean insideLeft = (avatarX + avatarSize/2 > ball.x - ball.SIZE/2);
+   boolean insideRight = (avatarX - avatarSize/2 < ball.x + ball.SIZE/2);
+   boolean insideTop = (avatarY + avatarSize/2 > ball.y - ball.SIZE/2);
+   boolean insideBottom = (avatarY - avatarSize/2 < ball.y + ball.SIZE/2);
+   
+   // Check if the avatar overlaps with the ball
+   if (insideLeft && insideRight && insideTop && insideBottom) {
+   // If it was moving to the left
+   if (avatarVX < 0) {
+   // Reset its position to align with the right side of the ball
+   avatarX = ball.x + 16/2;
+   } else if (avatarVX > 0) {
+   // Reset its position to align with the left side of the ball
+   avatarX = ball.x - 16/2;
+   }
+   // And make it reappear at the center
    avatarX = width/2;
    avatarY = height/2;
-   }
+   }*/
 
-    // Calculate possible overlaps with the paddle side by side
-    /*boolean insideLeft = (avatarX + avatarSize/2 > ball.x - ball.SIZE/2);
-     boolean insideRight = (avatarX - avatarSize/2 < ball.x + ball.SIZE/2);
-     boolean insideTop = (avatarY + avatarSize/2 > ball.y - ball.SIZE/2);
-     boolean insideBottom = (avatarY - avatarSize/2 < ball.y + ball.SIZE/2);
-     
-     // Check if the avatar overlaps with the ball
-     if (insideLeft && insideRight && insideTop && insideBottom) {
-     // If it was moving to the left
-     if (avatarVX < 0) {
-     // Reset its position to align with the right side of the ball
-     avatarX = ball.x + 16/2;
-     } else if (avatarVX > 0) {
-     // Reset its position to align with the left side of the ball
-     avatarX = ball.x - 16/2;
-     }
-     // And make it reappear at the center
-     avatarX = width/2;
-     avatarY = height/2;
-     }*/
-  
 
   // keyPressed()
   //
