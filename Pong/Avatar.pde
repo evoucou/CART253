@@ -9,9 +9,14 @@ class Avatar {
 
   /////////////// Properties ///////////////
 
-  // The location of the avatar
+  // The inital location of the avatar
   int avatarX;
   int avatarY;
+  
+  // The location everytime it resets
+  int avatarResetX;
+  int avatarResetY;
+
 
   // The velocity of the avatar
   int avatarVX;
@@ -26,7 +31,7 @@ class Avatar {
   char downKey;
   char rightKey;
   char leftKey;
-  
+
   // Image of the avatar
   PImage imagePlayer;
 
@@ -35,6 +40,10 @@ class Avatar {
   Avatar (int _avatarX, int _avatarY, char _upKey, char _downKey, char _leftKey, char _rightKey, PImage _imagePlayer) {
     avatarX = _avatarX;
     avatarY = _avatarY;
+    avatarResetX = _avatarX;
+    avatarResetY = _avatarY;
+
+    
     imagePlayer = _imagePlayer;
 
     upKey = _upKey;
@@ -72,11 +81,11 @@ class Avatar {
     boolean insideTop = (avatarY + avatarSize/2 > ball.y - ball.SIZE/2);
     boolean insideBottom = (avatarY - avatarSize/2 < ball.y + ball.SIZE/2);
 
-    // Check if the ball overlaps with the avatar
+    // Check if the ball overlaps with the avatar //<>//
     if (insideLeft && insideRight && insideTop && insideBottom) {
-    //If it's the case, reset it to the center and the player loses a point
-      avatarX = width/2;
-      avatarY = height/2;
+      //If it's the case, reset it to the center and the player loses a point
+      avatarX = avatarResetX;
+      avatarY = avatarResetY; //<>//
     }
   }
 
@@ -89,19 +98,19 @@ class Avatar {
 
     // Check if the key is our up key
     if (key == upKey) {
-    // If so we want a negative y velocity
+      // If so we want a negative y velocity
       avatarVY = -avatarSpeed;
     } // Otherwise check if the key is our down key 
     else if (key == downKey) {
-    // If so we want a positive y velocity
+      // If so we want a positive y velocity
       avatarVY = avatarSpeed;
     } // Otherwise check if the key is our down key 
     else if (key == leftKey) {
-    // If so we want a negative x velocity
+      // If so we want a negative x velocity
       avatarVX = -avatarSpeed;
     } // Otherwise check if the key is our down key 
     else if (key == rightKey) {
-    // If so we want a positive x velocity
+      // If so we want a positive x velocity
       avatarVX = avatarSpeed;
     }
   }
@@ -113,19 +122,19 @@ class Avatar {
   void keyReleased() {
     // Check if the key is our up key and the avatar is moving up
     if (key == upKey && avatarVY < 0) {
-    // If so it should stop
+      // If so it should stop
       avatarVY = 0;
     } // Otherwise check if the key is our down key and avatar is moving down 
     else if (key == downKey && avatarVY > 0) {
-    // Same
+      // Same
       avatarVY = 0;
     } // Otherwise check if the key is our left key and avatar is moving left
     else if (key == leftKey && avatarVX < 0) {
-    // Same
+      // Same
       avatarVX = 0;
     } // Otherwise check if the key is our right key and avatar is moving right
     else if (key == rightKey && avatarVX > 0) {
-    // Same
+      // Same
       avatarVX = 0;
     }
   }
@@ -135,6 +144,7 @@ class Avatar {
   // Display the avatar at its location
 
   void display() {
-   rect(avatarX, avatarY, avatarSize, avatarSize);
+    noFill();
+    rect(avatarX, avatarY, avatarSize, avatarSize);
   }
 }

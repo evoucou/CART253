@@ -19,8 +19,8 @@ int PADDLE_INSET = 8;
 //text("score ="+score,10,10);
 
 
-// The background colour during play (black)
-color backgroundColor = color(0);
+// The background image
+PImage bgImage;
 
 
 // setup()
@@ -30,6 +30,9 @@ color backgroundColor = color(0);
 void setup() {
   // Set the size
   size(640, 480);
+  
+  // Loat the background image
+  bgImage = loadImage("background.jpg");
 
   // Create the paddles on either side of the screen. 
   // Use PADDLE_INSET to to position them on x, position them both at centre on y
@@ -40,13 +43,12 @@ void setup() {
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
   
   // Create both avatars at the center of the screen
-  avatarPlayer1 = new Avatar(width/2, height/2, 'r', 'f', 'd', 'g', loadImage("monster1.png"));
-  avatarPlayer2 = new Avatar(width/2, height/2, 'u', 'j', 'h', 'k', loadImage("monster1.png"));
+  avatarPlayer1 = new Avatar(width/2 - 35, height/2, 'r', 'f', 'd', 'g', loadImage("monster1.png"));
+  avatarPlayer2 = new Avatar(width/2 + 35, height/2, 'u', 'j', 'h', 'k', loadImage("monster2.png"));
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
 
-  
   // Create the score for both players
   scorePlayer1 = new Score((width/2 - 20),10,color(250));
   scorePlayer2 = new Score((width/2 + 20),10,color(150));  
@@ -59,7 +61,7 @@ void setup() {
   void draw() {
     
     // Fill the background each frame so we have animation
-    background(backgroundColor);
+    background(bgImage);
   
     // Update the paddles, ball and avatars by calling their update methods
     leftPaddle.update();

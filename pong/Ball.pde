@@ -4,6 +4,7 @@
 // of the top and bottom, and can detect collision with a paddle and bounce off that.
 
 
+
 class Ball {
   
   /////////////// Properties ///////////////
