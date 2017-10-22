@@ -3,11 +3,6 @@
 // A simple version of Pong using object-oriented programming.
 // Allows to people to bounce a ball back and forth between
 // two paddles that they control.
-//
-// No scoring. (Yet!)
-// No score display. (Yet!)
-// Pretty ugly. (Now!)
-// Only two paddles. (So far!)
 
 // Global variables for the paddles and the ball
 Paddle leftPaddle;
@@ -36,8 +31,6 @@ void setup() {
   // Set the size
   size(640, 480);
 
-
-
   // Create the paddles on either side of the screen. 
   // Use PADDLE_INSET to to position them on x, position them both at centre on y
   // Also pass through the two keys used to control 'up' and 'down' respectively
@@ -45,8 +38,10 @@ void setup() {
   // different accented characters in text editors (so avoid those if you're changing this)
   leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
-  avatarPlayer1 = new Avatar(width/2, height/2, 20, 'r', 'f', 'd', 'g');
-  avatarPlayer2 = new Avatar(width/2+10, height/2+10, 20, 'u', 'j', 'h', 'k');
+  
+  // Create both avatars at the center of the screen
+  avatarPlayer1 = new Avatar(width/2, height/2, 'r', 'f', 'd', 'g', loadImage("monster1.png"));
+  avatarPlayer2 = new Avatar(width/2, height/2, 'u', 'j', 'h', 'k', loadImage("monster1.png"));
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
@@ -62,12 +57,11 @@ void setup() {
   // Handles all the magic of making the paddles and ball move, checking
   // if the ball has hit a paddle, and displaying everything.
   void draw() {
-                    
-
+    
     // Fill the background each frame so we have animation
     background(backgroundColor);
   
-    // Update the paddles and ball by calling their update methods
+    // Update the paddles, ball and avatars by calling their update methods
     leftPaddle.update();
     rightPaddle.update();
     ball.update();
@@ -80,25 +74,18 @@ void setup() {
     ball.collide(rightPaddle);
     avatarPlayer1.collide(ball);
     avatarPlayer2.collide(ball);
-    // Check if the ball has gone off the screen
+    
     if (ball.ballMiddle()){
+      // If it is, start the face-off (before any ball reset is called)
       ball.faceOff();
     }
     if (ball.isOffScreen()) {
       // If it has, reset the ball
       ball.reset();
       ball.faceOff();
-    }  
-    /*if (avatarPlayer1.touchesBall()) { //<>//
-      avatarPlayer1.reset(); //<>//
-         println("reset");
-    }  
-    if (avatarPlayer2.touchesBall()) {
-      avatarPlayer2.reset();
-      println("reset");
-    }*/
+    }   //<>// //<>//
 
-    // Display the paddles and the ball
+    // Display the paddles, the ball and the avatars
     leftPaddle.display();
     rightPaddle.display();
     ball.display();
@@ -106,6 +93,11 @@ void setup() {
     avatarPlayer2.display();
     scorePlayer1.display();
     scorePlayer2.display();
+    
+    // Display the images
+    image(avatarPlayer2.imagePlayer,avatarPlayer2.avatarX,avatarPlayer2.avatarY);
+    image(avatarPlayer1.imagePlayer,avatarPlayer1.avatarX,avatarPlayer1.avatarY);
+    imageMode(CENTER);
   }
 
 
@@ -136,4 +128,3 @@ void setup() {
     avatarPlayer2.keyReleased();
   }
   
-  //PImage img = loadImage("filename.jpg"); 

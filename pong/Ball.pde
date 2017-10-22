@@ -3,7 +3,9 @@
 // A class that defines a ball that can move around in the window, bouncing
 // of the top and bottom, and can detect collision with a paddle and bounce off that.
 
+
 class Ball {
+  
   /////////////// Properties ///////////////
 
   // Default values for speed and size
@@ -37,35 +39,8 @@ class Ball {
   Ball(int _x, int _y) {
     x = _x;
     y = _y;
-    //vx = SPEED;
-    //vy = SPEED;
   }
-
-
-  void faceOff() {
-    if (x==width/2 && y== height/2) {
-      if (keyPressed) {
-        if (key == 'v') {
-          SPEED = 5;
-          vx = SPEED;
-          vy = SPEED;
-          println("aaay");
-        }
-      }
-      if (keyPressed) {
-        if (key == 'b') {
-         
-          SPEED = 5;
-          vx = SPEED;
-          vy = SPEED;
-          vx = -vx;
-          println("aarrrrr");
-        }
-      }
-    }
-  }
-
-
+  
   /////////////// Methods ///////////////
 
   // update()
@@ -99,6 +74,35 @@ class Ball {
     y = height/2;
   
   }
+  
+    // faceOff()
+  //
+  // This function creates the face-off after each reset of the ball
+
+  void faceOff() {
+    if (x == width/2 && y == height/2) {
+      // Check if the ball is located in the middle
+      if (keyPressed) {
+      // Then check if a key is pressed by player 1 ('V')
+        if (key == 'v') {
+      // Tell the ball to move and to go in direction of the opposite player
+          SPEED = 5;
+          vx = SPEED;
+          vy = SPEED;
+        }
+      }
+      if (keyPressed) {
+      // Then check if a key is pressed by player 2 ('B')
+        if (key == 'b') {
+      // Tell the ball to move and to go in direction of the opposite player
+          SPEED = 5;
+          vx = SPEED;
+          vy = SPEED;
+          vx = -vx;
+        }
+      }
+    }
+  }
 
   // isOffScreen()
   //
@@ -112,11 +116,14 @@ class Ball {
     return (x + SIZE/2 < 0 || x - SIZE/2 > width);
   }
 
-//This fonction makes the mise au jeu work even at the beginning, before any reset is called.
-
+  // ballMiddle()
+  //
+  // Makes the face-off work even at the beginning, before any reset is called.
+  
   boolean ballMiddle() {
     return (x == width/2 && y== height/2);
   }
+  
   // collide(Paddle paddle)
   //
   // Checks whether this ball is colliding with the paddle passed as an argument
@@ -144,33 +151,9 @@ class Ball {
       vx = -vx;
     }
   }
-
-
-
-  /* void keyPressed() {
-   
-   // Check if the key is the start key for player 1
-   int a = SPEED;
-   if ((x == width/2) && (y == height/2)) {
-   
-   if  (key == startKey1) {
-   // If so the ball is sent towards the opponent (player 2)
-   vy = -vy;
-   a = 5;
-   println("yea");
-   } // Otherwise check if the key is the start key for player 2
-   else if (key == startKey2) {
-   // Same thing
-   vy = -vy;
-   vx = -vx;
-   a = 5;
-   println("b");
-   }
-   }
-   }
    
    // Draw the ball at its position
-   */
+   
   void display() {
     // Set up the appearance of the ball (no stroke, a fill, and rectMode as CENTER)
     noStroke();
