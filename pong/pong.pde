@@ -1,4 +1,4 @@
-// Pong //<>// //<>//
+// Pong //<>//
 //
 // A simple version of Pong using object-oriented programming.
 // Allows to people to bounce a ball back and forth between
