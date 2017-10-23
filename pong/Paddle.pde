@@ -19,6 +19,8 @@ class Paddle {
   int y;
   int vx;
   int vy;
+  int unfrozenX;
+  int unfrozenY;
   
   // How long the paddle is frozen
   int frozenSeconds;
@@ -41,6 +43,8 @@ class Paddle {
   Paddle(int _x, int _y, char _upKey, char _downKey) {
     x = _x;
     y = _y;
+    _x = unfrozenX;
+    _y = unfrozenY;
     vx = 0;
     vy = 0;
 
@@ -62,17 +66,6 @@ class Paddle {
 
     // Constrain the paddle's y position to be in the window
     y = constrain(y,0 + HEIGHT/2,height - HEIGHT/2);
-  }
-  
-  // frozen()
-  //
-  // Freezes the paddle
-  
-  void frozen() {
-  SPEED = 0;
-  vy = 0;
-  vx = 0;
-  println("frozen");
   }
   
   // scorePointPlayer()
@@ -132,4 +125,5 @@ class Paddle {
       vy = 0;
     }
   }
+  
 }

@@ -85,7 +85,7 @@ class Ball {
       // Check if the ball is located in the middle
       if (keyPressed) {
       // Then check if a key is pressed by player 1 ('V')
-        if (key == 'v') {
+        if (key == 'z') {
       // Tell the ball to move and to go in direction of the opposite player
           SPEED = 5;
           vx = SPEED;
@@ -94,7 +94,7 @@ class Ball {
       }
       if (keyPressed) {
       // Then check if a key is pressed by player 2 ('B')
-        if (key == 'b') {
+        if (key == 'm') {
       // Tell the ball to move and to go in direction of the opposite player
           SPEED = 5;
           vx = SPEED;
