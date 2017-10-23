@@ -1,4 +1,4 @@
-// Avatar
+// Avatar //<>//
 //
 // A class that defines an avatar that the player can move to go get bonus point scores
 // but he can also lose points by getting hit by the ball
@@ -12,7 +12,7 @@ class Avatar {
   // The inital location of the avatar
   int avatarX;
   int avatarY;
-  
+
   // The location everytime it resets
   int avatarResetX;
   int avatarResetY;
@@ -43,7 +43,7 @@ class Avatar {
     avatarResetX = _avatarX;
     avatarResetY = _avatarY;
 
-    
+
     imagePlayer = _imagePlayer;
 
     upKey = _upKey;
@@ -68,25 +68,34 @@ class Avatar {
     avatarX = constrain(avatarX, 0 + avatarSize/2, width - avatarSize/2);
   }
 
-  // collide(Ball ball)
+  // ballTouch
   //
   // Checks whether this avatar is colliding with the ball passed as an argument
   // If it is, it makes the avatar restart at the center (reset) and the player
   // loses 1 point
 
-  void collide(Ball ball) {
+  boolean ballTouch() {
     // Calculate possible overlaps with the ball side by side
     boolean insideLeft = (avatarX + avatarSize/2 > ball.x - ball.SIZE/2);
     boolean insideRight = (avatarX - avatarSize/2 < ball.x + ball.SIZE/2);
     boolean insideTop = (avatarY + avatarSize/2 > ball.y - ball.SIZE/2);
     boolean insideBottom = (avatarY - avatarSize/2 < ball.y + ball.SIZE/2);
+    
+    return(insideLeft && insideRight && insideTop && insideBottom); //<>//
+  }
 
-    // Check if the ball overlaps with the avatar //<>//
-    if (insideLeft && insideRight && insideTop && insideBottom) {
-      //If it's the case, reset it to the center and the player loses a point
-      avatarX = avatarResetX;
-      avatarY = avatarResetY; //<>//
-    }
+  // itemTouch
+  //
+  // Checks whether this avatar has touched the item
+
+  boolean itemTouch() {
+    // Calculate possible overlaps with the item side by side
+    boolean insideLeft = (avatarX + avatarSize/2 > item.x - item.size/2);
+    boolean insideRight = (avatarX - avatarSize/2 < item.x + item.size/2);
+    boolean insideTop = (avatarY + avatarSize/2 > item.y - item.size/2);
+    boolean insideBottom = (avatarY - avatarSize/2 < item.y + item.size/2);
+
+    return(insideLeft && insideRight && insideTop && insideBottom);
   }
 
   // keyPressed()

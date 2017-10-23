@@ -20,6 +20,9 @@ class Paddle {
   int vx;
   int vy;
   
+  // How long the paddle is frozen
+  int frozenSeconds;
+  
   // The fill color of the paddle
   color paddleColor = color(255);
 
@@ -60,6 +63,29 @@ class Paddle {
     // Constrain the paddle's y position to be in the window
     y = constrain(y,0 + HEIGHT/2,height - HEIGHT/2);
   }
+  
+  // frozen()
+  //
+  // Freezes the paddle
+  
+  void frozen() {
+  SPEED = 0;
+  vy = 0;
+  vx = 0;
+  println("frozen");
+  }
+  
+  // scorePointPlayer()
+  //
+  // Keeps the paddle's score
+  
+  boolean scorePointPlayer2() {
+  return (ball.x + ball.SIZE/2 < 0);
+  }
+  
+  boolean scorePointPlayer1() {
+  return (ball.x - ball.SIZE/2 > width);
+}
 
   // display()
   //

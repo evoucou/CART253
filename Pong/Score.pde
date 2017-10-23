@@ -4,7 +4,7 @@
 
 
 
-class Score {
+/*class Score {
 
   /////////////// Properties ///////////////
 
@@ -28,26 +28,22 @@ class Score {
    scoreColor = _scoreColor; 
  }
 
-  /*Score() {
-  }
   void Player1() {
     if (ball.x - ball.SIZE/2 > width) {
       scorePlayer1++;
     }
-  }
   void Player2() {
     if (ball.x + ball.SIZE/2 < 0) {
       scorePlayer2++;
     }
-  }*/
+  }
 
   /////////////// Methods ///////////////
 
 
 
 void display() { 
-//text(scoreText,scoreX, scoreY);
-rect(scoreX,scoreY,10,10);
+text(scoreText,scoreX,scoreY);
 }
 
-}
+}*/
