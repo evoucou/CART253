@@ -10,6 +10,7 @@
 int gridSize = 20;
 // An array storing all the griddies
 Griddie[] griddies = new Griddie[100];
+Bobbie[] bobbies = new Bobbie[100];
 
 // setup()
 //
@@ -28,6 +29,14 @@ void setup() {
     int y = floor(random(0, height/gridSize));
     griddies[i] = new Griddie(x * gridSize, y * gridSize, gridSize);
   }
+  
+    /////////////////// BOBBIES ///////////////////
+  
+    for (int i = 0; i < bobbies.length; i++) {
+    int x = floor(random(0, width/gridSize));
+    int y = floor(random(0, height/gridSize));
+    bobbies[i] = new Bobbie(x * gridSize, y * gridSize, gridSize);
+  }
 }
 
 // draw()
@@ -41,7 +50,8 @@ void draw() {
   for (int i = 0; i < griddies.length; i++) {
 
     // Update the griddies
-    griddies[i].update(); //
+    griddies[i].update();
+    bobbies[i].update();
 
     // Now go through all the griddies a second time...
     for (int j = 0; j < griddies.length; j++) {
@@ -54,8 +64,25 @@ void draw() {
         griddies[i].collide(griddies[j]);
       }
     } 
+      
+      /////////////////// BOBBIES ///////////////////
+      
+        for (int j = 0; j < griddies.length; j++) {
+      // QUESTION: What is this if-statement for?
+      // if j is the same value as i, the program goes back up to check the loop and j++ (so j isn't equal to i anymore)
+      // they can't be equal because it would be a ''fake'' collide because it's the same griddie
+      if (j != i) {
+        // QUESTION: What does this line check?
+        // This line checks if the cell checked by int i is colliding with the cell checked by int j
+        bobbies[i].collide(bobbies[j]);
+      }
+    } 
+
+  
+    
     
     // Display the griddies
     griddies[i].display();
+    bobbies[i].display();
   }
 }
