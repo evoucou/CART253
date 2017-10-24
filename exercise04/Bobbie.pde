@@ -1,4 +1,4 @@
-// Bobbie
+// Bobbie //<>//
 //
 // A class defining the behaviour of a single Bobbie
 // which can move randomly in the window (within the grid),
@@ -17,7 +17,7 @@ class Bobbie {
   int size;
   int energy;
   color fill = color(0, 150, 150);
-  color newFill = color (0, 255, 0);
+
 
   // Griddie(tempX, tempY, tempSize)
   //
@@ -30,7 +30,7 @@ class Bobbie {
     energy = maxEnergy;
   }
 
-  // update()
+ // update()
   //
   // Move the Griddie and update its energy levels
   void update() {
@@ -45,8 +45,8 @@ class Bobbie {
     // THIS MAKES A SINGLE GRIDDIE MOVE
     // The griddie moves between backwards 1 and upwards 2, so that gives the new location
     // We multiply the size with these variables to make sure that the griddie doesn't overlaps one (moves at least its size further).
-    int xMoveType = floor(random(-2, 1));
-    int yMoveType = floor(random(-2, 1));
+    int xMoveType = floor(random(-3, 3));
+    int yMoveType = floor(random(-3, 3));
     x += size * xMoveType;
     y += size * yMoveType;
 
@@ -62,7 +62,7 @@ class Bobbie {
     } else if (y >= height) {
       y -= height;
     }
-
+    
     // Update the Griddie's energy
     // Note that moveEnergy is negative, so this _loses_ energy
     energy += moveEnergy;
@@ -73,23 +73,17 @@ class Bobbie {
 
   // collide(other)
   //
-  // Checks for collision with the other Griddie
-  // and updates energy level
+  // Checks if a bobbie collided with a griddie
 
-  void collide(Bobbie other) {
-    // QUESTION: What is this if-statement for?
-    // If the energy of the value int i OR the value of int j equals zero, the rest of the function is ignored and the program moves on because the griddie is 'dead'
-    if (energy == 0 || other.energy == 0) {
-      return;
-    }
-    
-    // QUESTION: What does this if-statement check?
-    // Checks if they have the same x and y location (value of int i and value of int j)
+  void collide(Griddie other) {
+
     if (x == other.x && y == other.y) {
-      // Increase this Griddie's energy
+      // Change the color
+      fill(fill, energy);
       energy += collideEnergy;
       // Constrain the energy level to be within bounds
       energy = constrain(energy, 0, maxEnergy);
+      println(x,y);
     }
   }
 
@@ -100,7 +94,6 @@ class Bobbie {
   void display() {
     // QUESTION: What does this fill line do?
     // It tells the program that the less energy, the less the opacity
-    fill(fill, energy); 
     noStroke();
     rect(x, y, size, size);
   }
