@@ -1,4 +1,7 @@
 PImage bg;
+boolean timerRunning = false;
+int startTime = 0;
+char spaceValue = ' ';
 
 void setup() {
   size(600, 400);
@@ -8,16 +11,45 @@ void setup() {
 
 void draw() {
   if (width == 600 && height == 400) {
-  text("Press any key and try to find the logic behing the screen resizing interaction", 300, 200);
-  textAlign(CENTER);
-  textSize(10);
+    text("Press SPACE to begin and then any key and try to find the logic behing the screen resizing interaction", 300, 200);
+    textAlign(CENTER);
+    textSize(10);
   }
   image(bg, 0, 0);
+
+  if (timerRunning) {
+    int timeElapsed = (millis() - startTime)/1000;
+    println(timeElapsed);
+    spaceValue = 0;
+
+    if (timeElapsed == 40) {
+      println("over");
+      timerRunning = false;
+      text("Just kidding! There is no logic, all random :)", 300, 200);
+      textAlign(CENTER);
+    }
+  }
 }
 
+// keyPressed calls the clickSize function
+
+
 void keyPressed() {
-  clickSize();
+  if (key == spaceValue) {
+    startTime = millis();
+    timerRunning = true; 
+
+    /*while (timerRunning) {
+      key = 0;*/
+    }
+   else {
+    clickSize();
+  }
 }
+
+
+
+// Here, we use a controlled random float to give the user the impression that there is in fact a logic.
 
 float clickSize() {
   float value = random(0, 1);
@@ -29,7 +61,7 @@ float clickSize() {
     surface.setSize(80, 80);
   } else if (value < 0.39) {
     println("1600,200");
-     surface.setSize(100, 800);
+    surface.setSize(100, 800);
   } else if (value < 0.54) {
     println("1000,860");
     surface.setSize(1000, 860);
