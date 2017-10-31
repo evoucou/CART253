@@ -1,4 +1,4 @@
-PImage bg;
+//PImage bg;
 boolean timerRunning = false;
 int startTime = 0;
 char spaceValue = ' ';
@@ -6,16 +6,26 @@ char spaceValue = ' ';
 void setup() {
   size(600, 400);
   background(color(243, 156, 18));
-  bg = loadImage("halloween.png");
+  //bg = loadImage("halloween.png");
 }
 
 void draw() {
   if (width == 600 && height == 400) {
-    text("Press SPACE to begin and then any key and try to find the logic behing the screen resizing interaction", 300, 200);
+    text("Press SPACE to begin", 300, 200);
     textAlign(CENTER);
     textSize(10);
+    if (timerRunning == true) {
+      text("Press any key to see what happens, and try to find the logic", 300, 200);
+      textAlign(CENTER);
+      textSize(10);
+          /*if (keyPressed() = true) {
+      text("Press any key to see what happens, and try to find the logic", 300, 200);
+      textAlign(CENTER);
+      textSize(10);
+    }*/
+    }
   }
-  image(bg, 0, 0);
+  //image(bg, 0, 0);
 
   if (timerRunning) {
     int timeElapsed = (millis() - startTime)/1000;
@@ -23,7 +33,7 @@ void draw() {
     spaceValue = 0;
 
     if (timeElapsed == 40) {
-      println("over");
+      println("Prank message");
       timerRunning = false;
       text("Just kidding! There is no logic, all random :)", 300, 200);
       textAlign(CENTER);
@@ -38,14 +48,11 @@ void keyPressed() {
   if (key == spaceValue) {
     startTime = millis();
     timerRunning = true; 
-
-    /*while (timerRunning) {
-      key = 0;*/
-    }
-   else {
+  } else {
     clickSize();
   }
 }
+
 
 
 
