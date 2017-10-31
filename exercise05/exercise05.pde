@@ -1,45 +1,44 @@
-//PImage bg;
+PImage bg;
 boolean timerRunning = false;
 int startTime = 0;
 char spaceValue = ' ';
+String firstText = "Press SPACE to begin";
+String secondText = "Press any other key and try to undestand the logic behind the screen resizing";
+String displayed = "";
+PFont font;
 
 void setup() {
   size(600, 400);
-  background(color(243, 156, 18));
-  //bg = loadImage("halloween.png");
+  bg = loadImage("halloween.png");
+  displayed = firstText;
+  font = createFont("arial", 20);
+  textFont(font);
+  fill(255);
 }
 
 void draw() {
-  if (width == 600 && height == 400) {
-    text("Press SPACE to begin", 300, 200);
-    textAlign(CENTER);
-    textSize(10);
-    if (timerRunning == true) {
-      text("Press any key to see what happens, and try to find the logic", 300, 200);
-      textAlign(CENTER);
-      textSize(10);
-          /*if (keyPressed() = true) {
-      text("Press any key to see what happens, and try to find the logic", 300, 200);
-      textAlign(CENTER);
-      textSize(10);
-    }*/
-    }
-  }
-  //image(bg, 0, 0);
+
+  image(bg, 0, 0);
+  text(displayed, width/2 - textWidth(displayed)/2, height/2);
+  
 
   if (timerRunning) {
     int timeElapsed = (millis() - startTime)/1000;
     println(timeElapsed);
     spaceValue = 0;
+    
 
-    if (timeElapsed == 40) {
+    if (timeElapsed == 20) {
       println("Prank message");
       timerRunning = false;
       text("Just kidding! There is no logic, all random :)", 300, 200);
       textAlign(CENTER);
+      surface.setSize(600, 400);
+      //with this variable, we make sure the second text doesn't appear again at the end
     }
   }
 }
+
 
 // keyPressed calls the clickSize function
 
@@ -47,7 +46,8 @@ void draw() {
 void keyPressed() {
   if (key == spaceValue) {
     startTime = millis();
-    timerRunning = true; 
+    timerRunning = true;
+    displayed = displayed.equals(firstText)? secondText:firstText;
   } else {
     clickSize();
   }
