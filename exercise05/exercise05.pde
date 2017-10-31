@@ -1,8 +1,9 @@
-
+PImage bg;
 
 void setup() {
   size(600, 400);
   background(color(243, 156, 18));
+  bg = loadImage("halloween.png");
 }
 
 void draw() {
@@ -11,6 +12,7 @@ void draw() {
   textAlign(CENTER);
   textSize(10);
   }
+  image(bg, 0, 0);
 }
 
 void keyPressed() {
