@@ -1,11 +1,16 @@
 
 
 void setup() {
-  size(400, 600);
+  size(600, 400);
+  background(color(243, 156, 18));
 }
 
 void draw() {
-  text("Press any key and try to find the logic", height/2, width/2);
+  if (width == 600 && height == 400) {
+  text("Press any key and try to find the logic behing the screen resizing interaction", 300, 200);
+  textAlign(CENTER);
+  textSize(10);
+  }
 }
 
 void keyPressed() {
