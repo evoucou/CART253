@@ -10,8 +10,8 @@ class Bouncer {
   float y;
 
   // Variables for velocity
-  float vx = random(-10, 10);
-  float vy = random(-10, 10);
+  float vx;
+  float vy;
   
   float speed;
 

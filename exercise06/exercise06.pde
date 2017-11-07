@@ -14,10 +14,11 @@ Capture video;
 // as a default value)
 PVector reddestPixel = new PVector(-1, -1);
 
-float newSpeed;
 
 // An array of bouncers to play with
 Bouncer[] bouncers = new Bouncer[10];
+
+float newSpeed;
 
 // setup()
 //
@@ -97,11 +98,10 @@ void handleVideoInput() {
       color pixelColor = video.pixels[loc];
       // Get the level of red of the pixel we're looking at
       float pixelRedness = dist(255, 0, 0, red(pixelColor), green(pixelColor), blue(pixelColor));
-      // Bouncers' speed correlates with level of red
-      newSpeed = pixelRedness;
-      //println(newSpeed);
+      // Bouncers' speed correlates with levels of red
+      newSpeed = (floor(pixelRedness)) / 100;
       // Check if this pixel is the reddest we've seen so far
-      if (pixelRedness < record) {
+      if (pixelRedness < record) { //<>//
         // If it is, change the record value
         record = pixelRedness;
         // Remember where this pixel is in the the grid of pixels
