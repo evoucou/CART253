@@ -13,6 +13,7 @@ class Bouncer {
   float vx;
   float vy;
   
+  // Variable for speed
   float speed;
 
   // The size of the Bouncer
@@ -31,7 +32,6 @@ class Bouncer {
   Bouncer(float tempX, float tempY, float tempVX, float tempVY, float tempSize, color tempDefaultColor) {
     x = tempX;
     y = tempY; 
-    //speed = tempSpeed;
     vx = tempVX;
     vy = tempVY;
     size = tempSize;
@@ -49,6 +49,10 @@ class Bouncer {
 
     handleBounce();
   }
+  
+  // SetSpeed()
+  //
+  // Set the value of newSpeed to negative depending of the bouncer's direction
   
   void setSpeed(float newSpeed) {
     if (vx < 0) {

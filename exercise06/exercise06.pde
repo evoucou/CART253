@@ -9,16 +9,16 @@ import processing.video.*;
 // The capture object for reading from the webcam
 Capture video;
 
-// A PVector allows us to store an x and y location in a single object
-// When we create it we give it the starting x and y (which I'm setting to -1, -1
-// as a default value)
-PVector reddestPixel = new PVector(-1, -1);
-
 
 // An array of bouncers to play with
 Bouncer[] bouncers = new Bouncer[10];
 
+// New value which allows to change the bouncers' speed
 float newSpeed;
+
+// Set the text
+String text = "THEIR FAVORITE COLOR IS RED BUT THEY'RE SCARED OF BLUE";
+String line = "";
 
 // setup()
 //
@@ -26,6 +26,10 @@ float newSpeed;
 
 void setup() {
   size(640, 480);
+  
+  // Set the text
+  line = text;
+  fill(255);
 
   // Our old friend the for-loop used to go through the length of an
   // array adding new objects to it (Bouncers in this case)
@@ -48,25 +52,22 @@ void setup() {
 void draw() {
   // A function that processes the current frame of video
   handleVideoInput();
-
-  // Draw the video frame to the screen
-  //image(video, 0, 0);
+  
+  // Draw the background
   background(0);
+  
+   // Draw the text
+  text(line, width/2 - textWidth(line)/2, height/2);
 
   // Our old friend the for-loop running through the length of an array to
   // update and display objects, in this case Bouncers.
   // If the brightness (or other video property) is going to interact with all the
   // Bouncers, it will need to happen in here.
   for (int i = 0; i < bouncers.length; i++) {
-    println("Setting new speed to " + newSpeed);
     bouncers[i].setSpeed(newSpeed);
     bouncers[i].update();
     bouncers[i].display();
   }
-
-  // For now we just draw a crappy ellipse at the brightest pixel
-  fill(#ff0000);
-  ellipse(reddestPixel.x, reddestPixel.y, 20, 20);
 }
 
 // handleVideoInput
@@ -81,7 +82,6 @@ void handleVideoInput() {
     return;
   }
 
-
   // If we're here, there IS a frame to look at so read it in
   video.read();
 
@@ -89,7 +89,7 @@ void handleVideoInput() {
   // so that we'll definitely find something better
   float record = 1000;
 
-  newSpeed = 0;
+  newSpeed = 2;
 
   // Go through every pixel in the grid of pixels made by this
   // frame of video
@@ -105,14 +105,8 @@ void handleVideoInput() {
       if (pixelRedness < record) {
         // If it is, change the record value
         record = pixelRedness;
-        // Remember where this pixel is in the the grid of pixels
-        // (and therefore on the screen) by setting the PVector
-        // reddestPixel's x and y properties.
-        reddestPixel.x = x;
-        reddestPixel.y = y;
         // Bouncers' speed correlates with levels of red
-
-        if (red(pixelColor) > 50 && green(pixelColor) < 50 && blue(pixelColor) < 50) {
+        if (red(pixelColor) > 55 && green(pixelColor) < 45 && blue(pixelColor) < 45) {
           newSpeed = 10;
         }
       }
