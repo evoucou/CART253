@@ -1,3 +1,4 @@
+
 // Exercise 06
 //
 // Using the webcam as input to play with Bouncers.
@@ -11,7 +12,7 @@ Capture video;
 // A PVector allows us to store an x and y location in a single object
 // When we create it we give it the starting x and y (which I'm setting to -1, -1
 // as a default value)
-PVector brightestPixel = new PVector(-1,-1);
+PVector reddestPixel = new PVector(-1,-1);
 
 // An array of bouncers to play with
 Bouncer[] bouncers = new Bouncer[10];
@@ -27,7 +28,7 @@ void setup() {
   // array adding new objects to it (Bouncers in this case)
   for (int i = 0; i < bouncers.length; i++) {
     // Each Bouncer just starts with random values 
-    bouncers[i] = new Bouncer(random(0,width),random(0,height),random(-10,10),random(-10,10),random(20,50),color(random(255)));
+    bouncers[i] = new Bouncer(random(0,width),random(0,height),random(-10,10),random(-10,10),random(20,50),color(255));
   }
   
   // Start up the webcam
@@ -61,12 +62,12 @@ void draw() {
   fill(#ff0000);
   stroke(#ffff00);
   strokeWeight(10);
-  ellipse(brightestPixel.x,brightestPixel.y,20,20);
+  ellipse(reddestPixel.x,reddestPixel.y,20,20);
 }
 
 // handleVideoInput
 //
-// Checks for available video, reads the frame, and then finds the brightest pixel
+// Checks for available video, reads the frame, and then finds the reddest pixel
 // in that frame and stores its location in brightestPixel.
 
 void handleVideoInput() {
@@ -81,7 +82,7 @@ void handleVideoInput() {
 
   // Start with a very low "record" for the brightest pixel
   // so that we'll definitely find something better
-  float brightnessRecord = 0;
+  float record = 1000;
 
   // Go through every pixel in the grid of pixels made by this
   // frame of video
@@ -91,17 +92,17 @@ void handleVideoInput() {
       int loc = x + y * width;
       // Get the color of the pixel we're looking at
       color pixelColor = video.pixels[loc];
-      // Get the brightness of the pixel we're looking at
-      float pixelBrightness = brightness(pixelColor);
+      // Get the level of red of the pixel we're looking at
+      float pixelRedness = dist(255,0,0,red(pixelColor),green(pixelColor),blue(pixelColor));
       // Check if this pixel is the brighest we've seen so far
-      if (pixelBrightness > brightnessRecord) {
+      if (pixelRedness < record) {
         // If it is, change the record value
-        brightnessRecord = pixelBrightness;
+        record = pixelRedness;
         // Remember where this pixel is in the the grid of pixels
         // (and therefore on the screen) by setting the PVector
         // brightestPixel's x and y properties.
-        brightestPixel.x = x;
-        brightestPixel.y = y;
+        reddestPixel.x = x;
+        reddestPixel.y = y;
       }
     }
   }
