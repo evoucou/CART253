@@ -10,8 +10,10 @@ class Bouncer {
   float y;
 
   // Variables for velocity
-  float vx;
-  float vy;
+  float vx = random(-10, 10);
+  float vy = random(-10, 10);
+  
+  float speed;
 
   // The size of the Bouncer
   float size;
@@ -26,11 +28,12 @@ class Bouncer {
   //
   // Creates a Bouncer with the provided values by remembering them.
 
-  Bouncer(float tempX, float tempY, float tempVX, float tempVY, float tempSize, color tempDefaultColor) {
+  Bouncer(float tempX, float tempY, float tempSpeed, float tempSize, color tempDefaultColor) {
     x = tempX;
-    y = tempY;
-    vx = tempVX;
-    vy = tempVY;
+    y = tempY; 
+    speed = tempSpeed;
+    vx += tempSpeed;
+    vy += tempSpeed;
     size = tempSize;
     defaultColor = tempDefaultColor;
     fillColor = defaultColor;
@@ -79,4 +82,5 @@ class Bouncer {
     fill(fillColor);
     ellipse(x, y, size, size);
   }
+  
 }
