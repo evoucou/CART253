@@ -28,12 +28,12 @@ class Bouncer {
   //
   // Creates a Bouncer with the provided values by remembering them.
 
-  Bouncer(float tempX, float tempY, float tempSpeed, float tempSize, color tempDefaultColor) {
+  Bouncer(float tempX, float tempY, float tempVX, float tempVY, float tempSize, color tempDefaultColor) {
     x = tempX;
     y = tempY; 
-    speed = tempSpeed;
-    vx += tempSpeed;
-    vy += tempSpeed;
+    //speed = tempSpeed;
+    vx = tempVX;
+    vy = tempVY;
     size = tempSize;
     defaultColor = tempDefaultColor;
     fillColor = defaultColor;
@@ -48,6 +48,38 @@ class Bouncer {
     y += vy;
 
     handleBounce();
+  }
+  
+  void setSpeed(float newSpeed) {
+    if (vx < 0) {
+      vx = -newSpeed;
+    }
+    else if (vx > 0) {
+      vx = newSpeed;
+    }
+    else if (vx == 0) {
+     if (random(1) < 0.5) {
+       vx = newSpeed;
+     }
+     else {
+       vx = -newSpeed;
+     }
+    }
+    
+    if (vy < 0) {
+      vy = -newSpeed;
+    }
+    else if (vy > 0) {
+     vy = newSpeed; 
+    }
+    else if (vy == 0) {
+     if (random(1) < 0.5) {
+       vy = newSpeed;
+     }
+     else {
+       vy = -newSpeed;
+     }
+    }
   }
 
   // handleBounce()
