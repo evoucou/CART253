@@ -26,7 +26,7 @@ String line = "";
 
 void setup() {
   size(640, 480);
-  
+
   // Set the text
   line = text;
   fill(255);
@@ -35,7 +35,7 @@ void setup() {
   // array adding new objects to it (Bouncers in this case)
   for (int i = 0; i < bouncers.length; i++) {
     // Each Bouncer just starts with random values 
-    bouncers[i] = new Bouncer(random(0, width), random(0, height), random(-5,5), random(-5,5), random(20, 50), color(255));
+    bouncers[i] = new Bouncer(random(0, width), random(0, height), random(-5, 5), random(-5, 5), random(20, 50), color(255));
   }
 
   // Start up the webcam
@@ -52,11 +52,11 @@ void setup() {
 void draw() {
   // A function that processes the current frame of video
   handleVideoInput();
-  
+
   // Draw the background
   background(0);
-  
-   // Draw the text
+
+  // Draw the text
   text(line, width/2 - textWidth(line)/2, height/2);
 
   // Our old friend the for-loop running through the length of an array to
@@ -108,6 +108,10 @@ void handleVideoInput() {
         // Bouncers' speed correlates with levels of red
         if (red(pixelColor) > 55 && green(pixelColor) < 45 && blue(pixelColor) < 45) {
           newSpeed = 10;
+        }
+        // Bouncers' speed correlates with levels of blue (stops)
+        if (red(pixelColor) < 45 && green(pixelColor) < 45 && blue(pixelColor) > 55) {
+          newSpeed = 0;
         }
       }
     }
