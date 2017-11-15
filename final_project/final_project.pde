@@ -1,159 +1,174 @@
-// Avatar
+// Santa Rush
 //
-// A class that defines an avatar that the player can move to go get bonus point scores
-// but he can also lose points by getting hit by the ball
+// A game inspired by Space Invaders in which you play santa and you need
+// to catch the toys that the Christmas elves are dropping.
+
+
+// Global variables for the elements
+Santa santa;
+Toy toy;
+Toy anotherToy;
+Toy moreToys;
+Elf elf;
 
 
 
-class Avatar {
-
-  /////////////// Properties ///////////////
-
-  // The inital location of the avatar
-  int avatarX;
-  int avatarY;
-
-  // The location everytime it resets
-  int avatarResetX;
-  int avatarResetY;
+// The distance from the edge of the window a paddle should be
+int santaInset = 8;
 
 
-  // The velocity of the avatar
-  int avatarVX;
-  int avatarVY;
+// The background image
+//PImage bgImage;
 
-  // The speed and size of the avatar
-  int avatarSpeed;
-  int avatarSize = 20;
+// 
+int score;
 
-  // The keys u make the avatar move, defined in constructor
-  char upKey;
-  char downKey;
-  char rightKey;
-  char leftKey;
+// setup()
+//
+// Sets the size and creates the paddles and ball
 
-  // Image of the avatar
-  PImage imagePlayer;
+void setup() {
+  // Set the size
+  size(640, 480);
 
-  /////////////// Constructor ///////////////
+  // Load the background image
+  //bgImage = loadImage("background.jpg");
 
-  Avatar (int _avatarX, int _avatarY, char _upKey, char _downKey, char _leftKey, char _rightKey, PImage _imagePlayer) {
-    avatarX = _avatarX;
-    avatarY = _avatarY;
-    avatarResetX = _avatarX;
-    avatarResetY = _avatarY;
+  // Create the paddles on either side of the screen. 
+  leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
+  rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
 
+  // Create both avatars at the center of the screen
+  avatarPlayer1 = new Avatar(width/2 - 35, height/2, 'r', 'c', 'd', 'f', loadImage("monster1.png"));
+  avatarPlayer2 = new Avatar(width/2 + 35, height/2, 'y', 'b', 'g', 'h', loadImage("monster2.png"));
 
-    imagePlayer = _imagePlayer;
+  // Create the ball at the centre of the screen
+  ball = new Ball(width/2, height/2);
 
-    upKey = _upKey;
-    downKey = _downKey;
-    leftKey = _leftKey;
-    rightKey = _rightKey;
+  // Create the random item opponent
+  item = new Item(random(0, width), random(0, height), loadImage("freeze.png"));
+}
+// draw()
+//
+// Handles all the magic of making the paddles and ball move, checking
+// if the ball has hit a paddle, and displaying everything.
+void draw() {
+
+  // Fill the background each frame so we have animation
+  background(bgImage);
+
+  // Set the players' score
+  text("RED MONSTER : "+scorePlayer1, 0+50, 50); 
+  text("GREEN MONSTER : "+scorePlayer2, width-130, 50); 
+  fill(color(255));
+
+  // Update the paddles, ball and avatars by calling their update methods
+  leftPaddle.update();
+  rightPaddle.update();
+  ball.update();
+  avatarPlayer1.update();
+  avatarPlayer2.update();
+
+  // Check if the ball has collided with either paddle
+  ball.collide(leftPaddle);
+  ball.collide(rightPaddle);
+  
+
+  if (leftPaddle.scorePointPlayer1()) {
+    // If the ball goes out of the screen on the right side, point for player 1
+    // The first one who gets to 25 wins
+      scorePlayer1 = 0;
+      scorePlayer1++;
+      println("+1 GREEN MONSTER");
   }
 
-  /////////////// Methods ///////////////
-
-  // update()
-  //
-  // This is called by the main program once per frame. It makes the avatar move.
-
-  void update() {
-    // First update the location based on the velocity (so the avatar moves)
-    avatarX += avatarVX;
-    avatarY += avatarVY;
-
-    // Restrains the avatar from going off the screen
-    avatarY = constrain(avatarY, 0 + avatarSize/2, height - avatarSize/2);
-    avatarX = constrain(avatarX, 0 + avatarSize/2, width - avatarSize/2);
+  if (rightPaddle.scorePointPlayer2()) {
+    // If the ball goes out of the screen on the left side, point for player 2
+    // The first one who gets to 25 wins 
+      scorePlayer2 = 0;
+      scorePlayer2++;
+      println("+1 RED MONSTER");
   }
 
-  // ballTouch
-  //
-  // Checks whether this avatar is colliding with the ball passed as an argument
-  // If it is, it makes the avatar restart at the center (reset) and the player
-  // loses 1 point
+  if (ball.ballMiddle()) {
+    // If it is, start the face-off (this is for the first frame)
+    ball.faceOff();
+  }
+  
+  if (ball.isOffScreen()) {
+    // If it has, reset the ball and call the face-off
+    ball.reset();
+    ball.faceOff();
+  }   
 
-  boolean ballTouch() {
-    // Calculate possible overlaps with the ball side by side
-    boolean insideLeft = (avatarX + avatarSize/2 > ball.x - ball.SIZE/2);
-    boolean insideRight = (avatarX - avatarSize/2 < ball.x + ball.SIZE/2);
-    boolean insideTop = (avatarY + avatarSize/2 > ball.y - ball.SIZE/2);
-    boolean insideBottom = (avatarY - avatarSize/2 < ball.y + ball.SIZE/2);
-    
-    return(insideLeft && insideRight && insideTop && insideBottom);
+
+  if (avatarPlayer1.ballTouch()) {
+    // Check if the ball overlaps with the avatar
+    //If it's the case, reset it to the center and the player loses a point
+    avatarPlayer1.avatarX = avatarPlayer1.avatarResetX;
+    avatarPlayer1.avatarY = avatarPlayer1.avatarResetY;
+    scorePlayer1--;
   }
 
-  // itemTouch
-  //
-  // Checks whether this avatar has touched the item
-
-  boolean itemTouch() {
-    // Calculate possible overlaps with the item side by side
-    boolean insideLeft = (avatarX + avatarSize/2 > item.x - item.size/2);
-    boolean insideRight = (avatarX - avatarSize/2 < item.x + item.size/2);
-    boolean insideTop = (avatarY + avatarSize/2 > item.y - item.size/2);
-    boolean insideBottom = (avatarY - avatarSize/2 < item.y + item.size/2);
-
-    return(insideLeft && insideRight && insideTop && insideBottom);
+  if (avatarPlayer2.ballTouch()) {
+    // Check if the ball overlaps with the avatar
+    //If it's the case, reset it to the center and the player loses a point
+    avatarPlayer2.avatarX = avatarPlayer2.avatarResetX;
+    avatarPlayer2.avatarY = avatarPlayer2.avatarResetY;
+    scorePlayer2--;
   }
 
-  // keyPressed()
-  //
-  // Called when keyPressed is called in the main program
-
-  void keyPressed() {
-    avatarSpeed = 5;
-
-    // Check if the key is our up key
-    if (key == upKey) {
-      // If so we want a negative y velocity
-      avatarVY = -avatarSpeed;
-    } // Otherwise check if the key is our down key 
-    else if (key == downKey) {
-      // If so we want a positive y velocity
-      avatarVY = avatarSpeed;
-    } // Otherwise check if the key is our down key 
-    else if (key == leftKey) {
-      // If so we want a negative x velocity
-      avatarVX = -avatarSpeed;
-    } // Otherwise check if the key is our down key 
-    else if (key == rightKey) {
-      // If so we want a positive x velocity
-      avatarVX = avatarSpeed;
-    }
+  if (avatarPlayer1.itemTouch()) {
+    // If it is, +1 for player 1
+    scorePlayer1++;
+    item.reset();
   }
 
-  // keyReleased()
-  //
-  // Called when keyReleased is called in the main program
-
-  void keyReleased() {
-    // Check if the key is our up key and the avatar is moving up
-    if (key == upKey && avatarVY < 0) {
-      // If so it should stop
-      avatarVY = 0;
-    } // Otherwise check if the key is our down key and avatar is moving down 
-    else if (key == downKey && avatarVY > 0) {
-      // Same
-      avatarVY = 0;
-    } // Otherwise check if the key is our left key and avatar is moving left
-    else if (key == leftKey && avatarVX < 0) {
-      // Same
-      avatarVX = 0;
-    } // Otherwise check if the key is our right key and avatar is moving right
-    else if (key == rightKey && avatarVX > 0) {
-      // Same
-      avatarVX = 0;
-    }
+  if (avatarPlayer2.itemTouch()) {
+    // If it is, +1 for player 2
+    scorePlayer2++;
+    item.reset();
   }
 
-  // display()
-  //
-  // Display the avatar at its location
 
-  void display() {
-    noFill();
-    rect(avatarX, avatarY, avatarSize, avatarSize);
-  }
+  // Display the paddles, the item, the balls, avatars and score
+  leftPaddle.display();
+  rightPaddle.display();
+  ball.display();
+  avatarPlayer1.display();
+  avatarPlayer2.display();
+  item.display();
+
+  // Display the images
+  image(avatarPlayer2.imagePlayer, avatarPlayer2.avatarX, avatarPlayer2.avatarY);
+  image(avatarPlayer1.imagePlayer, avatarPlayer1.avatarX, avatarPlayer1.avatarY);
+  image(item.image, item.x, item.y);
+  imageMode(CENTER);
+}
+
+
+// keyPressed()
+//
+// The paddles need to know if they should move based on a keypress
+// so when the keypress is detected in the main program we need to
+// tell the paddles
+
+void keyPressed() {
+  // Just call both paddles' and avatars' own keyPressed methods
+  leftPaddle.keyPressed();
+  rightPaddle.keyPressed();
+  avatarPlayer1.keyPressed();
+  avatarPlayer2.keyPressed();
+}
+
+// keyReleased()
+//
+// As for keyPressed, except for released!
+
+void keyReleased() {
+  // Call both paddles' and avatars' keyReleased methods
+  leftPaddle.keyReleased();
+  rightPaddle.keyReleased();
+  avatarPlayer1.keyReleased();
+  avatarPlayer2.keyReleased();
 }
