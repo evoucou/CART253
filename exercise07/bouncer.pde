@@ -74,6 +74,7 @@ class Bouncer {
     y = constrain(y, size/2, height-size/2);
   }
 
+
   // display()
   //
   // Draw an ellipse in the Bouncer's location, with its size
