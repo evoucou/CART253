@@ -7,7 +7,7 @@ class Santa {
 
   ///////// Properties //////////
 
-  int speed = 5;
+  int speed;
   int HEIGHT;
   int WIDTH;
 
@@ -19,12 +19,13 @@ class Santa {
 
   ///////// Constructor //////////
 
-  Santa(int tempX, int tempY, int tempVX, int tempVY) {
+  Santa(int tempX, int tempY, int tempVX, int tempVY, int tempSpeed) {
 
     x = tempX;
     y = tempY;
     vx = tempVX;
     vy = tempVY;
+    speed = tempSpeed;
   }
 
   ///////// Methods //////////
