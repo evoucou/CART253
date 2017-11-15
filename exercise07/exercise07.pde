@@ -1,7 +1,6 @@
-
 // Exercise 07
 //
-// Using sounds library
+// Using the sound library and bouncers
 
 // Import the library
 import processing.sound.*;
@@ -9,16 +8,17 @@ import processing.sound.*;
 // The SoundFile class comes with the library, it allows us to store
 // a sound in a variable
 SoundFile daddy;
+SoundFile ice;
 
 // Five defined bouncers which will create a random melody
 Bouncer daddyBouncer;
+Bouncer iceBouncer;
 
-// Set the instructions
+// Set the instructions at the beginning
 String text = "In this exercise, we experiment with a diversity of sounds ;";
 String text2 = "Press S,D,F,G OR H to generate bouncers and create weird music!";
 String line = "";
 String line2 = "";
-
 
 // setup()
 //
@@ -29,7 +29,7 @@ void setup() {
 
   // Creating a new SoundFile and giving it the path to our five files
   daddy = new SoundFile(this, "sounds/daddy.wav");
-  //tone = new SoundFile(this, "sounds/.wav");
+  ice = new SoundFile(this, "sounds/ice.wav");
   //tone = new SoundFile(this, "sounds/.wav");
   //tone = new SoundFile(this, "sounds/.wav");
   //tone = new SoundFile(this, "sounds/.wav");
@@ -40,11 +40,8 @@ void setup() {
   fill(255);
   textSize(15);
 
-
-  // Create the five bouncers
-
-  daddyBouncer = new Bouncer(width/2, height/2, 40, color(255));
-  //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
+  daddyBouncer = new Bouncer("sounds/daddy.wav", width/2, height/2, 40, color(255));
+  iceBouncer = new Bouncer("sounds/ice.wav", width/2, height/2, 40, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
@@ -60,6 +57,9 @@ void draw() {
   // Draw the background
   background(0);
 
+  //ice.play();
+  //daddy.play();
+
   // Draw the text
   text(line, width/2 - textWidth(line)/2, height/2-10);
   text(line2, width/2 - textWidth(line2)/2, height/2+10);
@@ -68,7 +68,11 @@ void draw() {
   // update and display objects, in this case Bouncers.
   daddyBouncer.display();
   daddyBouncer.update();
+
+  iceBouncer.display();
+  iceBouncer.update();
 }
+
 
 // keyPressed()
 //
@@ -78,5 +82,9 @@ void keyPressed() {
   if (key == 'd') {
     daddyBouncer.call();
     println("d");
+  }
+  if (key == 'i') {
+    iceBouncer.call();
+    println("i");
   }
 }

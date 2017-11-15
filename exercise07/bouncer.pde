@@ -1,9 +1,10 @@
 // Bouncer
 //
 // A class that defines a circle that can bounce around on the screen
-// at a specific velocity.
+// at a specific velocity and make a sound.
 
 class Bouncer {
+  
 
   // Variables for position
   float x;
@@ -24,12 +25,16 @@ class Bouncer {
 
   // The default fill colour of the Bouncer
   color defaultColor;
+  
+  // The sound linked with the bouncer
+  String sound;
 
   // Bouncer(tempX,tempY,tempVX,tempVY,tempSize,tempDefaultColor)
   //
   // Creates a Bouncer with the provided values by remembering them.
 
-  Bouncer(float tempX, float tempY, float tempSize, color tempDefaultColor) { 
+  Bouncer(String tempSound, float tempX, float tempY, float tempSize, color tempDefaultColor) { 
+    sound = tempSound;
     x = tempX;
     y = tempY;
     size = tempSize;
@@ -44,7 +49,7 @@ class Bouncer {
   void update() {
     x += vx;
     y += vy;
-
+    
     handleBounce();
   }
 
@@ -52,33 +57,29 @@ class Bouncer {
   // handleBounce()
   //
   // Checks if the bouncer is overlapping a side of the window
-  // and if so reverses its velocity appropriately
+  // and if so reverses its velocity appropriately AND plays a sound
 
   void handleBounce() {
     // Check the left and right
     if (x - size/2 < 0 || x + size/2 > width) {
       // Bounce on the x-axis
       vx = -vx;
+      // Play the sound
     }
 
     // Check the top and bottom
     if (y - size/2 < 0 || y + size/2 > height) {
       // Bounce on the y-axis
       vy = -vy;
+      // Play the sound
     }
+   
 
     // Make sure the Bouncer isn't off the edge
     x = constrain(x, size/2, width-size/2);
     y = constrain(y, size/2, height-size/2);
   }
-
-  // isOnScreen()
-  //
-  // Checks if the bouncer has appeared
-
-  //boolean isOnScreen() {
-  //return (x + size/2 > 0 || x - size/2 < width);
-  //}
+  
 
   // call()
   //
@@ -87,7 +88,11 @@ class Bouncer {
   void call() {
     speed = 5;
     vx = speed;
-    vy = speed;
+    vy = speed; 
+  }
+  
+    void playSound() {
+    sound.play();
   }
 
   // display()
