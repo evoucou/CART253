@@ -43,7 +43,7 @@ void setup() {
 
   // Create the five bouncers
 
-  daddyBouncer = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 40, color(255));
+  daddyBouncer = new Bouncer(width/2, height/2, 40, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
@@ -53,7 +53,7 @@ void setup() {
 
 // draw()
 //
-// Call the bouncer's functions
+// Call the bouncer's functions and draw the text
 
 void draw() {
 
@@ -70,9 +70,13 @@ void draw() {
   daddyBouncer.update();
 }
 
-// Verifies if the keys are pressed to start the bouncers
+// keyPressed()
+//
+// Verify if the keys are pressed to make the bouncers move
+
 void keyPressed() {
   if (key == 'd') {
-    daddy.play();
+    daddyBouncer.call();
+    println("d");
   }
 }

@@ -12,9 +12,9 @@ class Bouncer {
   // Variables for velocity
   float vx;
   float vy;
-  
+
   // Variable for speed
-  float speed;
+  float speed = 0;
 
   // The size of the Bouncer
   float size;
@@ -29,11 +29,9 @@ class Bouncer {
   //
   // Creates a Bouncer with the provided values by remembering them.
 
-  Bouncer(float tempX, float tempY, float tempVX, float tempVY, float tempSize, color tempDefaultColor) {
+  Bouncer(float tempX, float tempY, float tempSize, color tempDefaultColor) { 
     x = tempX;
-    y = tempY; 
-    vx = tempVX;
-    vy = tempVY;
+    y = tempY;
     size = tempSize;
     defaultColor = tempDefaultColor;
     fillColor = defaultColor;
@@ -49,7 +47,7 @@ class Bouncer {
 
     handleBounce();
   }
-  
+
 
   // handleBounce()
   //
@@ -74,6 +72,23 @@ class Bouncer {
     y = constrain(y, size/2, height-size/2);
   }
 
+  // isOnScreen()
+  //
+  // Checks if the bouncer has appeared
+
+  //boolean isOnScreen() {
+  //return (x + size/2 > 0 || x - size/2 < width);
+  //}
+
+  // call()
+  //
+  // Call the bouncer so it starts moving
+
+  void call() {
+    speed = 5;
+    vx = speed;
+    vy = speed;
+  }
 
   // display()
   //
@@ -84,5 +99,4 @@ class Bouncer {
     fill(fillColor);
     ellipse(x, y, size, size);
   }
-  
 }
