@@ -4,7 +4,7 @@
 // at a specific velocity and make a sound.
 
 class Bouncer {
-  
+
 
   // Variables for position
   float x;
@@ -25,7 +25,7 @@ class Bouncer {
 
   // The default fill colour of the Bouncer
   color defaultColor;
-  
+
   // The sound linked with the bouncer
   SoundFile sound;
 
@@ -49,7 +49,7 @@ class Bouncer {
   void update() {
     x += vx;
     y += vy;
-    
+
     handleBounce();
   }
 
@@ -75,22 +75,32 @@ class Bouncer {
       // Play the sound
       sound.play();
     }
-   
+
 
     // Make sure the Bouncer isn't off the edge
     x = constrain(x, size/2, width-size/2);
     y = constrain(y, size/2, height-size/2);
   }
-  
+
 
   // call()
   //
   // Call the bouncer so it starts moving
 
   void call() {
-    speed = 5;
+    speed = random(3,12);
     vx = speed;
-    vy = speed; 
+    vy = speed;
+  }
+
+  // stop()
+  //
+  // Stops the bouncer
+
+  void freeze() {
+    speed = 0;
+    vx = speed;
+    vy = speed;
   }
 
   // display()
