@@ -27,13 +27,13 @@ class Bouncer {
   color defaultColor;
   
   // The sound linked with the bouncer
-  String sound;
+  SoundFile sound;
 
   // Bouncer(tempX,tempY,tempVX,tempVY,tempSize,tempDefaultColor)
   //
   // Creates a Bouncer with the provided values by remembering them.
 
-  Bouncer(String tempSound, float tempX, float tempY, float tempSize, color tempDefaultColor) { 
+  Bouncer(SoundFile tempSound, float tempX, float tempY, float tempSize, color tempDefaultColor) { 
     sound = tempSound;
     x = tempX;
     y = tempY;
@@ -65,6 +65,7 @@ class Bouncer {
       // Bounce on the x-axis
       vx = -vx;
       // Play the sound
+      sound.play();
     }
 
     // Check the top and bottom
@@ -72,6 +73,7 @@ class Bouncer {
       // Bounce on the y-axis
       vy = -vy;
       // Play the sound
+      sound.play();
     }
    
 
@@ -89,10 +91,6 @@ class Bouncer {
     speed = 5;
     vx = speed;
     vy = speed; 
-  }
-  
-    void playSound() {
-    sound.play();
   }
 
   // display()

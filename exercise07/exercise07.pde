@@ -40,8 +40,8 @@ void setup() {
   fill(255);
   textSize(15);
 
-  daddyBouncer = new Bouncer("sounds/daddy.wav", width/2, height/2, 40, color(255));
-  iceBouncer = new Bouncer("sounds/ice.wav", width/2, height/2, 40, color(255));
+  daddyBouncer = new Bouncer(daddy, width/2, height/2, 40, color(255));
+  iceBouncer = new Bouncer(ice, width/2, height/2, 40, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
   //bouncerDaddy = new Bouncer(width/2, height/2, random(-5, 5), random(-5, 5), 30, color(255));
