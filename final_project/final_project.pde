@@ -4,14 +4,14 @@
 // to catch the toys that the Christmas elves are dropping.
 
 
-// Global variables for the elements
+// We generate Santa
 Santa santa;
-Toy toy;
-Toy anotherToy;
-Toy moreToys;
-Elf elf;
 
+// We generate our array of toys
+//Toy[] toys = new Toy[5];
 
+// We generate our array of Christmas elves
+//Elf[] elves = new Elf[12];
 
 // The distance from the edge of the window a paddle should be
 int santaInset = 8;
@@ -21,7 +21,7 @@ int santaInset = 8;
 //PImage bgImage;
 
 // 
-int score;
+//int score;
 
 // setup()
 //
@@ -34,141 +34,105 @@ void setup() {
   // Load the background image
   //bgImage = loadImage("background.jpg");
 
-  // Create the paddles on either side of the screen. 
-  leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
-  rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
+  // Create Santa at the bottom
+  santa = new Santa(width/2 - santa.WIDTH/2, santaInset, 5, 5);
 
-  // Create both avatars at the center of the screen
-  avatarPlayer1 = new Avatar(width/2 - 35, height/2, 'r', 'c', 'd', 'f', loadImage("monster1.png"));
-  avatarPlayer2 = new Avatar(width/2 + 35, height/2, 'y', 'b', 'g', 'h', loadImage("monster2.png"));
+  // Create the elves at the top with the loop
+  /*for (int i = 0; i < elves.length; i++) {
+    elves[i] = new Elf(random(0, width), random(0, height), random(-5, 5), random(-5, 5), random(20, 50), color(255));
 
-  // Create the ball at the centre of the screen
-  ball = new Ball(width/2, height/2);
+    // Create the toys with the loop
+    for (int i = 0; i < toys.length; i++) {
+      toys[i] = new Toy(random(0, width), random(0, height), random(-5, 5), random(-5, 5), random(20, 50), color(255));
+    }*/
+  }
 
-  // Create the random item opponent
-  item = new Item(random(0, width), random(0, height), loadImage("freeze.png"));
-}
-// draw()
-//
-// Handles all the magic of making the paddles and ball move, checking
-// if the ball has hit a paddle, and displaying everything.
-void draw() {
+  // draw()
+  //
+  // Handles all the magic of making the paddles and ball move, checking
+  // if the ball has hit a paddle, and displaying everything.
+  void draw() {
 
-  // Fill the background each frame so we have animation
-  background(bgImage);
+    // Fill the background each frame so we have animation
+    //background(bgImage);
+    background(color(0));
 
-  // Set the players' score
-  text("RED MONSTER : "+scorePlayer1, 0+50, 50); 
-  text("GREEN MONSTER : "+scorePlayer2, width-130, 50); 
-  fill(color(255));
+    // Set the timer
+    //text("REMAINING TIME : "+scorePlayer1, width-50, 50); 
+    //fill(color(255));
 
-  // Update the paddles, ball and avatars by calling their update methods
-  leftPaddle.update();
-  rightPaddle.update();
-  ball.update();
-  avatarPlayer1.update();
-  avatarPlayer2.update();
-
-  // Check if the ball has collided with either paddle
-  ball.collide(leftPaddle);
-  ball.collide(rightPaddle);
-  
-
-  if (leftPaddle.scorePointPlayer1()) {
-    // If the ball goes out of the screen on the right side, point for player 1
-    // The first one who gets to 25 wins
+    // Update the elements
+    santa.update();
+    
+    // Check if the toy has collided with Santa
+ 
+    /*if (leftPaddle.scorePointPlayer1()) {
+      // If the ball goes out of the screen on the right side, point for player 1
+      // The first one who gets to 25 wins
       scorePlayer1 = 0;
       scorePlayer1++;
       println("+1 GREEN MONSTER");
-  }
+    }  
 
-  if (rightPaddle.scorePointPlayer2()) {
-    // If the ball goes out of the screen on the left side, point for player 2
-    // The first one who gets to 25 wins 
-      scorePlayer2 = 0;
+
+    if (avatarPlayer1.ballTouch()) {
+      // Check if the ball overlaps with the avatar
+      //If it's the case, reset it to the center and the player loses a point
+      avatarPlayer1.avatarX = avatarPlayer1.avatarResetX;
+      avatarPlayer1.avatarY = avatarPlayer1.avatarResetY;
+      scorePlayer1--;
+    }
+
+    if (avatarPlayer2.ballTouch()) {
+      // Check if the ball overlaps with the avatar
+      //If it's the case, reset it to the center and the player loses a point
+      avatarPlayer2.avatarX = avatarPlayer2.avatarResetX;
+      avatarPlayer2.avatarY = avatarPlayer2.avatarResetY;
+      scorePlayer2--;
+    }
+
+    if (avatarPlayer1.itemTouch()) {
+      // If it is, +1 for player 1
+      scorePlayer1++;
+      item.reset();
+    }
+
+    if (avatarPlayer2.itemTouch()) {
+      // If it is, +1 for player 2
       scorePlayer2++;
-      println("+1 RED MONSTER");
-  }
-
-  if (ball.ballMiddle()) {
-    // If it is, start the face-off (this is for the first frame)
-    ball.faceOff();
-  }
-  
-  if (ball.isOffScreen()) {
-    // If it has, reset the ball and call the face-off
-    ball.reset();
-    ball.faceOff();
-  }   
+      item.reset();
+    }*/
 
 
-  if (avatarPlayer1.ballTouch()) {
-    // Check if the ball overlaps with the avatar
-    //If it's the case, reset it to the center and the player loses a point
-    avatarPlayer1.avatarX = avatarPlayer1.avatarResetX;
-    avatarPlayer1.avatarY = avatarPlayer1.avatarResetY;
-    scorePlayer1--;
-  }
-
-  if (avatarPlayer2.ballTouch()) {
-    // Check if the ball overlaps with the avatar
-    //If it's the case, reset it to the center and the player loses a point
-    avatarPlayer2.avatarX = avatarPlayer2.avatarResetX;
-    avatarPlayer2.avatarY = avatarPlayer2.avatarResetY;
-    scorePlayer2--;
-  }
-
-  if (avatarPlayer1.itemTouch()) {
-    // If it is, +1 for player 1
-    scorePlayer1++;
-    item.reset();
-  }
-
-  if (avatarPlayer2.itemTouch()) {
-    // If it is, +1 for player 2
-    scorePlayer2++;
-    item.reset();
-  }
+    // Display the elements
+    //toys[i].display();
+    //elves[i].display();
+    santa.display();
 
 
-  // Display the paddles, the item, the balls, avatars and score
-  leftPaddle.display();
-  rightPaddle.display();
-  ball.display();
-  avatarPlayer1.display();
-  avatarPlayer2.display();
-  item.display();
-
-  // Display the images
-  image(avatarPlayer2.imagePlayer, avatarPlayer2.avatarX, avatarPlayer2.avatarY);
-  image(avatarPlayer1.imagePlayer, avatarPlayer1.avatarX, avatarPlayer1.avatarY);
-  image(item.image, item.x, item.y);
-  imageMode(CENTER);
+    // Display the images
+    /*image(avatarPlayer2.imagePlayer, avatarPlayer2.avatarX, avatarPlayer2.avatarY);
+    image(avatarPlayer1.imagePlayer, avatarPlayer1.avatarX, avatarPlayer1.avatarY);
+    image(item.image, item.x, item.y);
+    imageMode(CENTER);
+  }*/
 }
 
 
-// keyPressed()
-//
-// The paddles need to know if they should move based on a keypress
-// so when the keypress is detected in the main program we need to
-// tell the paddles
+  // keyPressed()
+  //
+  // Santa needs to know if he should move based on keyPressed
+  // When the keys are released, he stops moving
 
-void keyPressed() {
-  // Just call both paddles' and avatars' own keyPressed methods
-  leftPaddle.keyPressed();
-  rightPaddle.keyPressed();
-  avatarPlayer1.keyPressed();
-  avatarPlayer2.keyPressed();
-}
+  void keyPressed() {
+    santa.keyPressed();
+  }
 
-// keyReleased()
-//
-// As for keyPressed, except for released!
+  // keyReleased()
+  //
+  // When the keys are released, he stops moving
 
-void keyReleased() {
-  // Call both paddles' and avatars' keyReleased methods
-  leftPaddle.keyReleased();
-  rightPaddle.keyReleased();
-  avatarPlayer1.keyReleased();
-  avatarPlayer2.keyReleased();
-}
+  void keyReleased() {
+    // Call both paddles' and avatars' keyReleased methods
+    santa.keyReleased();
+  }
