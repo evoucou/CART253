@@ -10,11 +10,12 @@ Santa santa;
 // We generate our array of toys
 //Toy[] toys = new Toy[5];
 
-// We generate our array of Christmas elves
-//Elf[] elves = new Elf[12];
+//We generate our array of Christmas elves
+Elf[] elves = new Elf[12];
 
 // The distance from the edge of the window a paddle should be
-int santaInset = 8;
+int santaInset = 10;
+int elfInset = 80;
 
 
 // The background image
@@ -38,13 +39,14 @@ void setup() {
   santa = new Santa(width/2, height - santaInset, 5);
 
   // Create the elves at the top with the loop
-  /*for (int i = 0; i < elves.length; i++) {
-    elves[i] = new Elf(random(0, width), random(0, height), random(-5, 5), random(-5, 5), random(20, 50), color(255));
-
+  for (int i = 0; i < elves.length; i++) {
+    elves[i] = new Elf(width/2, elfInset, 3); }
+/*
     // Create the toys with the loop
     for (int i = 0; i < toys.length; i++) {
       toys[i] = new Toy(random(0, width), random(0, height), random(-5, 5), random(-5, 5), random(20, 50), color(255));
-    }*/
+    }
+    */
   }
 
   // draw()
@@ -64,59 +66,66 @@ void setup() {
     // Update the elements
     santa.update();
     
+    for (int i = 0; i < elves.length; i++) {
+    elves[i].update();
+    }
+
     // Check if the toy has collided with Santa
- 
+
     /*if (leftPaddle.scorePointPlayer1()) {
-      // If the ball goes out of the screen on the right side, point for player 1
-      // The first one who gets to 25 wins
-      scorePlayer1 = 0;
-      scorePlayer1++;
-      println("+1 GREEN MONSTER");
-    }  
-
-
-    if (avatarPlayer1.ballTouch()) {
-      // Check if the ball overlaps with the avatar
-      //If it's the case, reset it to the center and the player loses a point
-      avatarPlayer1.avatarX = avatarPlayer1.avatarResetX;
-      avatarPlayer1.avatarY = avatarPlayer1.avatarResetY;
-      scorePlayer1--;
-    }
-
-    if (avatarPlayer2.ballTouch()) {
-      // Check if the ball overlaps with the avatar
-      //If it's the case, reset it to the center and the player loses a point
-      avatarPlayer2.avatarX = avatarPlayer2.avatarResetX;
-      avatarPlayer2.avatarY = avatarPlayer2.avatarResetY;
-      scorePlayer2--;
-    }
-
-    if (avatarPlayer1.itemTouch()) {
-      // If it is, +1 for player 1
-      scorePlayer1++;
-      item.reset();
-    }
-
-    if (avatarPlayer2.itemTouch()) {
-      // If it is, +1 for player 2
-      scorePlayer2++;
-      item.reset();
-    }*/
+     // If the ball goes out of the screen on the right side, point for player 1
+     // The first one who gets to 25 wins
+     scorePlayer1 = 0;
+     scorePlayer1++;
+     println("+1 GREEN MONSTER");
+     }  
+     
+     
+     if (avatarPlayer1.ballTouch()) {
+     // Check if the ball overlaps with the avatar
+     //If it's the case, reset it to the center and the player loses a point
+     avatarPlayer1.avatarX = avatarPlayer1.avatarResetX;
+     avatarPlayer1.avatarY = avatarPlayer1.avatarResetY;
+     scorePlayer1--;
+     }
+     
+     if (avatarPlayer2.ballTouch()) {
+     // Check if the ball overlaps with the avatar
+     //If it's the case, reset it to the center and the player loses a point
+     avatarPlayer2.avatarX = avatarPlayer2.avatarResetX;
+     avatarPlayer2.avatarY = avatarPlayer2.avatarResetY;
+     scorePlayer2--;
+     }
+     
+     if (avatarPlayer1.itemTouch()) {
+     // If it is, +1 for player 1
+     scorePlayer1++;
+     item.reset();
+     }
+     
+     if (avatarPlayer2.itemTouch()) {
+     // If it is, +1 for player 2
+     scorePlayer2++;
+     item.reset();
+     }*/
 
 
     // Display the elements
     //toys[i].display();
-    //elves[i].display();
     santa.display();
+    
+    for (int i = 0; i < elves.length; i++) {
+    elves[i].display();
+    }
 
 
     // Display the images
     /*image(avatarPlayer2.imagePlayer, avatarPlayer2.avatarX, avatarPlayer2.avatarY);
-    image(avatarPlayer1.imagePlayer, avatarPlayer1.avatarX, avatarPlayer1.avatarY);
-    image(item.image, item.x, item.y);
-    imageMode(CENTER);
-  }*/
-}
+     image(avatarPlayer1.imagePlayer, avatarPlayer1.avatarX, avatarPlayer1.avatarY);
+     image(item.image, item.x, item.y);
+     imageMode(CENTER);
+     }*/
+  }
 
 
   // keyPressed()
