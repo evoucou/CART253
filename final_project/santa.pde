@@ -8,8 +8,8 @@ class Santa {
   ///////// Properties //////////
 
   int speed;
-  int HEIGHT;
-  int WIDTH;
+  int HEIGHT = 10;
+  int WIDTH = 30;
 
   int x;
   int y;
@@ -19,12 +19,12 @@ class Santa {
 
   ///////// Constructor //////////
 
-  Santa(int tempX, int tempY, int tempVX, int tempVY, int tempSpeed) {
+  Santa(int tempX, int tempY, int tempSpeed) {
 
     x = tempX;
     y = tempY;
-    vx = tempVX;
-    vy = tempVY;
+    vx = 0;
+    vy = 0;
     speed = tempSpeed;
   }
 
@@ -77,9 +77,9 @@ class Santa {
   void keyReleased() {
     if (key == CODED) {
       if (keyCode == LEFT && vx < 0) {
-        vy = 0;
+        vx = 0;
       } else if (keyCode == RIGHT && vx > 0) {
-        vy = 0;
+        vx = 0;
       }
     }
   }

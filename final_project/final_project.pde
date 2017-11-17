@@ -35,7 +35,7 @@ void setup() {
   //bgImage = loadImage("background.jpg");
 
   // Create Santa at the bottom
-  santa = new Santa(width/2 - santa.WIDTH/2, santaInset, 5, 5, 5);
+  santa = new Santa(width/2, height - santaInset, 5);
 
   // Create the elves at the top with the loop
   /*for (int i = 0; i < elves.length; i++) {
