@@ -11,15 +11,19 @@ Santa santa;
 //Toy[] toys = new Toy[5];
 
 //We generate our array of Christmas elves
-Elf[] elves = new Elf[12];
+Elf[] elves = new Elf[6];
+Elf[] elves2 = new Elf[6];
 
 // The distance from the edge of the window a paddle should be
-int santaInset = 10;
-int elfInset = 80;
-
+int santaMargin = 10;
+int elfMargin = 120;
+int elfDistance = 50;
+int elfXPos = (elfDistance += 100);
 
 // The background image
 //PImage bgImage;
+
+
 
 // 
 //int score;
@@ -36,11 +40,13 @@ void setup() {
   //bgImage = loadImage("background.jpg");
 
   // Create Santa at the bottom
-  santa = new Santa(width/2, height - santaInset, 5);
+  santa = new Santa(width/2, height - santaMargin);
 
   // Create the elves at the top with the loop
   for (int i = 0; i < elves.length; i++) {
-    elves[i] = new Elf(width/2, elfInset, 3); }
+    elves[i] = new Elf(elfXPos, elfMargin); //<>//
+    elves2[i] = new Elf(elfXPos, elfMargin + 50);
+  }
 /*
     // Create the toys with the loop
     for (int i = 0; i < toys.length; i++) {
@@ -68,6 +74,7 @@ void setup() {
     
     for (int i = 0; i < elves.length; i++) {
     elves[i].update();
+    elves2[i].update();
     }
 
     // Check if the toy has collided with Santa
@@ -116,6 +123,7 @@ void setup() {
     
     for (int i = 0; i < elves.length; i++) {
     elves[i].display();
+    elves2[i].display();
     }
 
 

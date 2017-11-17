@@ -13,20 +13,23 @@ class Elf {
 
   int x;
   int y;
-  int vx;
+  int vx = 3;
+  
+  int distance = 20;
 
 
   ///////// Constructor //////////
 
-  Elf(int tempX, int tempY, int tempVX) {
+  Elf(int tempX, int tempY) {
 
     x = tempX;
     y = tempY;
-    vx = tempVX;
+    
   }
 
   ///////// Methods //////////
 
+  
   // update()
   //
   // Updates position based on velocity
@@ -36,9 +39,9 @@ class Elf {
     
     //x = constrain(x, 0 + WIDTH/2, width - WIDTH/2);
 
-    // Check if the elf is going off the screen (and adding margins)
+    // Check if the elf is going further than the 50 px margins on both sides
+    // and if it is, reverse its velocity
     if (x - WIDTH/2 < 50 || x + WIDTH/2 > width - 50) {
-      // If it is, then make it "bounce" by reversing its velocity
       vx = -vx;
     }
   }

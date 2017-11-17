@@ -7,7 +7,7 @@ class Santa {
 
   ///////// Properties //////////
 
-  int speed;
+  int speed = 5;
   int HEIGHT = 10;
   int WIDTH = 30;
 
@@ -19,13 +19,12 @@ class Santa {
 
   ///////// Constructor //////////
 
-  Santa(int tempX, int tempY, int tempSpeed) {
+  Santa(int tempX, int tempY) {
 
     x = tempX;
     y = tempY;
     vx = 0;
     vy = 0;
-    speed = tempSpeed;
   }
 
   ///////// Methods //////////
@@ -62,10 +61,8 @@ class Santa {
     if (key == CODED) {
       if (keyCode == LEFT) {
         vx = -speed;
-        println("LEFT");
       } else if (keyCode == RIGHT) {
         vx = speed;
-        println("RIGHT");
       }
     }
   }
