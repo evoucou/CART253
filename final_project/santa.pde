@@ -8,8 +8,7 @@ class Santa {
   ///////// Properties //////////
 
   int speed = 5;
-  int HEIGHT = 10;
-  int WIDTH = 30;
+  int SIZE = 30;
 
   int x;
   int y;
@@ -37,7 +36,7 @@ class Santa {
     x += vx;
     y += vy;
 
-    x = constrain(x, 0 + WIDTH/2, width - WIDTH/2);
+    x = constrain(x, 0 + SIZE/2, width - SIZE/2);
   }
 
   // display()
@@ -50,7 +49,7 @@ class Santa {
     rectMode(CENTER);
 
     // Draw the paddle as a rectangle
-    rect(x, y, WIDTH, HEIGHT);
+    rect(x, y, SIZE, SIZE);
   }
 
   // keyPressed()
