@@ -24,6 +24,8 @@ int elfMargin = 120;
 int elfDistance;
 int elfXPos = 75;
 
+int strikes = 3;
+
 // The background image
 //PImage bgImage;
 
@@ -53,10 +55,9 @@ void setup() {
 
   // Create the toys with the loop
   for (int i = 0; i < toys.length; i++) {
-    toys[i] = new Toy(elfXPos, 10, 3);
+    toys[i] = new Toy(20, 10, 3);
     toys[i].toyStart();
   }
- 
 }
 
 // draw()
@@ -75,7 +76,7 @@ void draw() {
 
   // Update the elements
   santa.update();
- 
+
 
   for (int i = 0; i < columns; i++) {
     upperRow[i].update();
@@ -84,8 +85,16 @@ void draw() {
 
   for (int i = 0; i < toys.length; i++) {
     toys[i].update();
-    toys[i].collide(santa);
     toys[i].toyFreq();
+    //toys[i].collide(santa);
+
+    if (toys[i].santaCollide()) {
+      println("collide");
+      toys[i].reset();
+    }  /*else if (toys[i].noCollide()) {
+      strikes--;
+      println("-1");
+    }*/
   }
 
   // Check if the toy has collided with Santa
