@@ -4,7 +4,7 @@
 
 
 class Toy {
-  
+
   ///////// Properties //////////
 
   int speed;
@@ -14,6 +14,11 @@ class Toy {
   int y;
   int vy;
 
+  boolean timerRunning = false;
+  int startTime = 0;
+  
+  boolean reset = false;
+
 
   ///////// Constructor //////////
 
@@ -22,7 +27,7 @@ class Toy {
     x = tempX;
     y = tempY;
     speed = tempSpeed;
-    
+
     vy = 0;
   }
 
@@ -42,6 +47,35 @@ class Toy {
   // display()
   //
   // Display the toy at its location
+  
+  void toyStart() {
+    startTime = millis();
+    timerRunning = true;
+  }
+
+  void toyFreq() { 
+    if (timerRunning) {
+      int timeElapsed = (millis() - startTime)/1000;
+      println(timeElapsed);
+
+      if (timeElapsed == 5) {
+        vy = 3;
+      }
+    }
+  }
+  
+     void collide(Santa other) {
+
+    if (y > other.y && y < other.y + other.SIZE) {
+      println("collide");
+      reset = true;
+    }
+    if (reset == true) {
+    
+    }
+  }
+ 
+
 
   void display() {
     noStroke();

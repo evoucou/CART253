@@ -3,6 +3,7 @@
 // A game inspired by Space Invaders in which you play santa and you need
 // to catch the toys that the Christmas elves are dropping.
 
+int columns = 7;
 
 // We generate Santa
 Santa santa;
@@ -11,8 +12,9 @@ Santa santa;
 Toy[] toys = new Toy[5];
 
 //We generate our array of Christmas elves
-Elf[] elves = new Elf[6];
-Elf[] elves2 = new Elf[6];
+Elf[] upperRow = new Elf[columns];
+Elf[] lowerRow = new Elf[columns];
+
 
 // The distance from the edge of the window the elements should be
 int santaMargin = 10;
@@ -40,9 +42,9 @@ void setup() {
   santa = new Santa(width/2, height - santaMargin);
 
   // Create the elves at the top with the loop
-  for (int i = 0; i < elves.length; i++) {
-    elves[i] = new Elf(elfXPos, elfMargin);
-    elves2[i] = new Elf(elfXPos, elfMargin + 50);
+  for (int i = 0; i < columns; i++) {
+    upperRow[i] = new Elf(elfXPos, elfMargin);
+    lowerRow[i] = new Elf(elfXPos, elfMargin + 50);
 
     // To define the elf's x position (so they're not on top of each other),
     // we first add its size + incremented distance between each.
@@ -51,8 +53,10 @@ void setup() {
 
   // Create the toys with the loop
   for (int i = 0; i < toys.length; i++) {
-    toys[i] = new Toy(10, 10, 3);
+    toys[i] = new Toy(elfXPos, 10, 3);
+    toys[i].toyStart();
   }
+ 
 }
 
 // draw()
@@ -71,14 +75,17 @@ void draw() {
 
   // Update the elements
   santa.update();
+ 
 
-  for (int i = 0; i < elves.length; i++) {
-    elves[i].update();
-    elves2[i].update();
+  for (int i = 0; i < columns; i++) {
+    upperRow[i].update();
+    lowerRow[i].update();
   }
 
   for (int i = 0; i < toys.length; i++) {
     toys[i].update();
+    toys[i].collide(santa);
+    toys[i].toyFreq();
   }
 
   // Check if the toy has collided with Santa
@@ -124,12 +131,12 @@ void draw() {
   // Display the elements
   santa.display();
 
-  for (int i = 0; i < elves.length; i++) {
-    elves[i].display();
-    elves2[i].display();
+  for (int i = 0; i < columns; i++) {
+    upperRow[i].display();
+    lowerRow[i].display();
   }
-  
-    for (int i = 0; i < toys.length; i++) {
+
+  for (int i = 0; i < toys.length; i++) {
     toys[i].display();
   }
 

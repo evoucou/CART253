@@ -51,6 +51,8 @@ class Santa {
     // Draw the paddle as a rectangle
     rect(x, y, SIZE, SIZE);
   }
+  
+
 
   // keyPressed()
   //

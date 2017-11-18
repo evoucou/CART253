@@ -10,22 +10,21 @@ class Elf {
   //int speed;
   int SIZE = 25;
 
-  float x;
+  int x;
   int y;
   int vx = 3;
 
 
   ///////// Constructor //////////
 
-  Elf(float tempX, int tempY) {
+  Elf(int tempX, int tempY) {
     x = tempX;
-    y = tempY;   
-
+    y = tempY;
   }
 
   ///////// Methods //////////
 
-  
+
   // update()
   //
   // Updates position based on velocity
@@ -39,8 +38,8 @@ class Elf {
       vx = -vx;
     }
   }
- 
-  
+
+
   // display()
   //
   // Display the elves
