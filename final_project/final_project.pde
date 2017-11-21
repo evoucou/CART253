@@ -1,7 +1,9 @@
-// Santa Rush //<>//
+// Santa Rush //<>// //<>//
 //
 // A game inspired by Space Invaders in which you play santa and you need
 // to catch the toys that the Christmas elves are dropping.
+
+boolean start;
 
 int columns = 7;
 
@@ -24,7 +26,13 @@ int elfMargin = 120;
 int elfDistance;
 int elfXPos = 75;
 
+// Number of "lives"
 int strikes = 3;
+
+// Variables for timer
+boolean timerRunning = false;
+int startTime = 0;
+
 
 // The background image
 //PImage bgImage;
@@ -70,10 +78,6 @@ void draw() {
   //background(bgImage);
   background(color(0));
 
-  // Set the timer
-  //text("REMAINING TIME : "+scorePlayer1, width-50, 50); 
-  //fill(color(255));
-
   // Update the elements
   santa.update();
 
@@ -89,66 +93,50 @@ void draw() {
     //toys[i].collide(santa);
 
     if (toys[i].santaCollide()) {
-      println("collide");
       toys[i].reset();
     }  /*else if (toys[i].noCollide()) {
-      strikes--;
-      println("-1");
-    }*/
+     strikes--;
+     println("-1");
+     }*/
+    timesUp();
+  }
+}
+
+// timesUp()
+//
+// Because the goal of the game is to last 5 minutes without losing all your lives,
+// we have to set a timer to 5 minutes and then end the game. 
+// Verify if the time is up
+
+void timesUp() { 
+
+  if (timerRunning) {
+
+    int timeElapsed = (millis() - startTime)/1000;
+    println("GAME TIMER:"+timeElapsed);
+
+    if (timeElapsed == 300) {
+      println("YOU WIN");
+    }
   }
 
-  // Check if the toy has collided with Santa
+  // Display the elements only if the player has started the game with spacebar
+  if (startGame()) {
 
-  /*if (leftPaddle.scorePointPlayer1()) {
-   // If the ball goes out of the screen on the right side, point for player 1
-   // The first one who gets to 25 wins
-   scorePlayer1 = 0;
-   scorePlayer1++;
-   println("+1 GREEN MONSTER");
-   }  
-   
-   
-   if (avatarPlayer1.ballTouch()) {
-   // Check if the ball overlaps with the avatar
-   //If it's the case, reset it to the center and the player loses a point
-   avatarPlayer1.avatarX = avatarPlayer1.avatarResetX;
-   avatarPlayer1.avatarY = avatarPlayer1.avatarResetY;
-   scorePlayer1--;
-   }
-   
-   if (avatarPlayer2.ballTouch()) {
-   // Check if the ball overlaps with the avatar
-   //If it's the case, reset it to the center and the player loses a point
-   avatarPlayer2.avatarX = avatarPlayer2.avatarResetX;
-   avatarPlayer2.avatarY = avatarPlayer2.avatarResetY;
-   scorePlayer2--;
-   }
-   
-   if (avatarPlayer1.itemTouch()) {
-   // If it is, +1 for player 1
-   scorePlayer1++;
-   item.reset();
-   }
-   
-   if (avatarPlayer2.itemTouch()) {
-   // If it is, +1 for player 2
-   scorePlayer2++;
-   item.reset();
-   }*/
+    // The timer has to start
+    timerRunning = true;
 
+    santa.display();
 
-  // Display the elements
-  santa.display();
+    for (int i = 0; i < columns; i++) {
+      upperRow[i].display();
+      lowerRow[i].display();
+    }
 
-  for (int i = 0; i < columns; i++) {
-    upperRow[i].display();
-    lowerRow[i].display();
+    for (int i = 0; i < toys.length; i++) {
+      toys[i].display();
+    }
   }
-
-  for (int i = 0; i < toys.length; i++) {
-    toys[i].display();
-  }
-
 
   // Display the images
   /*image(avatarPlayer2.imagePlayer, avatarPlayer2.avatarX, avatarPlayer2.avatarY);
@@ -158,14 +146,20 @@ void draw() {
    }*/
 }
 
+// Boolean that verifies if the spacebar key has been pressed to start the game
+boolean startGame() {
+  return(key == ' ');
+}
 
 // keyPressed()
 //
 // Santa needs to know if he should move based on keyPressed
 // When the keys are released, he stops moving
+// We also call startGame or else program won't recognize spacebar has been pressed
 
 void keyPressed() {
   santa.keyPressed();
+  startGame();
 }
 
 // keyReleased()

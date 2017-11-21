@@ -66,7 +66,7 @@ class Toy {
       int timeElapsed = (millis() - startTime)/1000;
       println(timeElapsed);
 
-      if (timeElapsed == 5) {
+      if (timeElapsed == 2) {
         vy = 3;
       }
     }
@@ -82,6 +82,7 @@ class Toy {
    }
    }
    */
+   
   boolean santaCollide() {
     //return (y > santa.y && y < santa.y + santa.SIZE);
 
@@ -104,8 +105,6 @@ class Toy {
 
     return(insideLeft && insideRight && insideTop && insideBottom);
   }*/
-
-
 
 
   void display() {
