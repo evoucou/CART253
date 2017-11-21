@@ -31,12 +31,6 @@ class Elf {
 
   void update() {
     x += vx;
-
-    // Check if the elf is going further than the 50 px margins on both sides
-    // and if it is, reverse its velocity
-    if (x < 75 || x > width - 75) {
-      vx = -vx;
-    }
   }
 
 
