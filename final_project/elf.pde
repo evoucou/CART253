@@ -12,7 +12,7 @@ class Elf {
 
   int x;
   int y;
-  int vx = 3;
+  int vx = 2;
 
 
   ///////// Constructor //////////

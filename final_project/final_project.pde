@@ -15,6 +15,16 @@ Toy[] toys = new Toy[5];
 Elf[] upperRow = new Elf[columns];
 Elf[] lowerRow = new Elf[columns];
 
+//We generate our snowflakes
+int quantity = 200;
+float [] flakeX = new float[quantity];
+float [] flakeY = new float[quantity];
+int [] flakeSize = new int[quantity];
+int [] flakeDirection = new int[quantity];
+int minFlakeSize = 1;
+int maxFlakeSize = 5;
+
+
 // The distance from the edge of the window the elements should be
 int santaMargin = 10;
 int elfMargin = 120;
@@ -42,6 +52,9 @@ boolean playing = false;
 void setup() {
   // Set the size
   size(640, 480);
+  noStroke();
+  smooth();
+  fill(50);
 
   // Load the background image
   //bgImage = loadImage("background.jpg");
@@ -63,6 +76,14 @@ void setup() {
   for (int i = 0; i < toys.length; i++) {
     toys[i] = new Toy(20, 10, 3);
     toys[i].toyStart();
+  }
+
+  // Create our snowflakes
+  for (int i = 0; i < quantity; i++) {
+    flakeSize[i] = round(random(minFlakeSize, maxFlakeSize));
+    flakeX[i] = random(0, width);
+    flakeY[i] = random(0, height);
+    flakeDirection[i] = round(random(0, 1));
   }
 }
 
@@ -86,8 +107,9 @@ void draw() {
     for (int i = 0; i < columns; i++) {
       upperRow[i].update();
       lowerRow[i].update();
-    }
-    if (upperRow[upperRow.length - 1].x > width || upperRow[0].x < 0) {
+    } 
+    // Tell the elves to move together
+    if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
       for (int i = 0; i < columns; i++) {
         upperRow[i].vx = -upperRow[i].vx;
         lowerRow[i].vx = -lowerRow[i].vx;
@@ -105,7 +127,27 @@ void draw() {
        strikes--;
        println("-1");
        }*/
+       
       timerStart();
+    }
+  }
+
+  // Regenerate the snowflakes each frame
+  for (int i = 0; i < flakeX.length; i++) {
+
+    ellipse(flakeX[i], flakeY[i], flakeSize[i], flakeSize[i]);
+
+    if (flakeDirection[i] == 0) {
+      flakeX[i] += map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
+    } else {
+      flakeX[i] -= map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
+    }
+
+    flakeY[i] += flakeSize[i] + flakeDirection[i]; 
+
+    if (flakeX[i] > width + flakeSize[i] || flakeX[i] < -flakeSize[i] || flakeY[i] > height + flakeSize[i]) {
+      flakeX[i] = random(0, width);
+      flakeY[i] = -flakeSize[i];
     }
   }
 }
@@ -172,3 +214,8 @@ void keyReleased() {
   // Call both paddles' and avatars' keyReleased methods
   santa.keyReleased();
 }
+
+// DISCLAIMER
+//
+// Snowflakes code found here: http://solemone.de/demos/snow-effect-processing/
+// I did not code them.
