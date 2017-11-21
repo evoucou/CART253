@@ -26,8 +26,8 @@ class Toy {
 
     x = tempX;
     y = tempY;
-    tempY = newY;
-    tempX = newX;
+    newY = tempY;
+    newX = tempX;
     vx = tempVX;
   }
 
@@ -67,8 +67,9 @@ class Toy {
     if (timerRunning) {
       int timeElapsed = (millis() - startTime)/1000;
 
-      if (timeElapsed == 6) {
+      if (timeElapsed == 5) {
         vy = 3;
+        vx = 0;
       }
     }
   }

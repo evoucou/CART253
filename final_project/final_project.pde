@@ -73,7 +73,7 @@ void setup() {
     elfXPos = 25 + (elfDistance += 50);
   }
 
-  // Create the toys with the loop
+  // Create the toys with the loop at an elf's location
   for (int i = 0; i < toys.length; i++) {
     toys[i] = new Toy(upperRow[3].x, lowerRow[3].y + (lowerRow[3].SIZE + toyMargin), 2);
     toys[i].toyStart();
@@ -122,7 +122,7 @@ void draw() {
       if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
         toys[i].vx = -toys[i].vx;
       }
-      toys[i].update();
+        toys[i].update();
       toys[i].toyFreq();
       //toys[i].collide(santa);
 
