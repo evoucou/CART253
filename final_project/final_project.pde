@@ -28,6 +28,7 @@ int maxFlakeSize = 5;
 // The distance from the edge of the window the elements should be
 int santaMargin = 10;
 int elfMargin = 120;
+int toyMargin = 10;
 
 // The distance and position of an elf in its array
 int elfDistance;
@@ -38,8 +39,8 @@ int strikes = 3;
 
 // Variables for the timer
 boolean timerRunning = false;
-int startTime = 0;
 boolean playing = false;
+int startTime = 0;
 
 
 // The background image
@@ -74,7 +75,7 @@ void setup() {
 
   // Create the toys with the loop
   for (int i = 0; i < toys.length; i++) {
-    toys[i] = new Toy(20, 10, 3);
+    toys[i] = new Toy(upperRow[3].x, lowerRow[3].y + (lowerRow[3].SIZE + toyMargin), 2);
     toys[i].toyStart();
   }
 
@@ -117,37 +118,38 @@ void draw() {
     }
 
     for (int i = 0; i < toys.length; i++) {
+      // Tell the toy to follow the elve's x trajectory
+      if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
+        toys[i].vx = -toys[i].vx;
+      }
       toys[i].update();
       toys[i].toyFreq();
       //toys[i].collide(santa);
 
       if (toys[i].santaCollide()) {
         toys[i].reset();
-      }  /*else if (toys[i].noCollide()) {
-       strikes--;
-       println("-1");
-       }*/
-       
+      }
+
       timerStart();
     }
-  }
 
-  // Regenerate the snowflakes each frame
-  for (int i = 0; i < flakeX.length; i++) {
+    // Regenerate the snowflakes each frame
+    for (int i = 0; i < flakeX.length; i++) {
 
-    ellipse(flakeX[i], flakeY[i], flakeSize[i], flakeSize[i]);
+      ellipse(flakeX[i], flakeY[i], flakeSize[i], flakeSize[i]);
 
-    if (flakeDirection[i] == 0) {
-      flakeX[i] += map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
-    } else {
-      flakeX[i] -= map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
-    }
+      if (flakeDirection[i] == 0) {
+        flakeX[i] += map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
+      } else {
+        flakeX[i] -= map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
+      }
 
-    flakeY[i] += flakeSize[i] + flakeDirection[i]; 
+      flakeY[i] += flakeSize[i] + flakeDirection[i]; 
 
-    if (flakeX[i] > width + flakeSize[i] || flakeX[i] < -flakeSize[i] || flakeY[i] > height + flakeSize[i]) {
-      flakeX[i] = random(0, width);
-      flakeY[i] = -flakeSize[i];
+      if (flakeX[i] > width + flakeSize[i] || flakeX[i] < -flakeSize[i] || flakeY[i] > height + flakeSize[i]) {
+        flakeX[i] = random(0, width);
+        flakeY[i] = -flakeSize[i];
+      }
     }
   }
 }
@@ -166,6 +168,7 @@ void timerStart() {
     // Verify if the time is up
     if (timeElapsed == 300) {
       println("YOU WIN");
+      playing = false;
     }
   }
 

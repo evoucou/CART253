@@ -7,14 +7,14 @@ class Toy {
 
   ///////// Properties //////////
 
-  int speed;
-  int SIZE = 20;
+  int SIZE = 25;
 
   int x;
   int y;
   int newX;
   int newY;
-  int vy;
+  int vy = 0;
+  int vx;
 
   boolean timerRunning = false;
   int startTime = 0;
@@ -22,18 +22,17 @@ class Toy {
 
   ///////// Constructor //////////
 
-  Toy(int tempX, int tempY, int tempSpeed) {
+  Toy(int tempX, int tempY, int tempVX) {
 
     x = tempX;
     y = tempY;
     tempY = newY;
     tempX = newX;
-    speed = tempSpeed;
-
-    vy = 0;
+    vx = tempVX;
   }
 
   ///////// Methods //////////
+ 
 
   // update()
   //
@@ -41,8 +40,9 @@ class Toy {
 
   void update() {
     y += vy;
+    x += vx;
 
-    x = constrain(x, 0, width);
+    x = constrain(x, 50, width-50);
     y = constrain(y, 30, height);
   }
 
@@ -51,6 +51,8 @@ class Toy {
     y = newY;
     vy = 0;
   }
+  
+  
 
   // display()
   //
@@ -64,9 +66,8 @@ class Toy {
   void toyFreq() { 
     if (timerRunning) {
       int timeElapsed = (millis() - startTime)/1000;
-      println(timeElapsed);
 
-      if (timeElapsed == 2) {
+      if (timeElapsed == 6) {
         vy = 3;
       }
     }
