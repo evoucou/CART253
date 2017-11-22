@@ -1,7 +1,9 @@
-// Santa Rush //<>// //<>//
+// Santa Rush //<>//
 //
 // A game inspired by Space Invaders in which you play santa and you need
 // to catch the toys that the Christmas elves are dropping.
+//
+// PRESS SPACEBAR TO BEGIN
 
 int columns = 7;
 
@@ -9,7 +11,7 @@ int columns = 7;
 Santa santa;
 
 // We generate our array of toys
-Toy[] toys = new Toy[5];
+Toy[] toys = new Toy[1];
 
 //We generate our array of Christmas elves
 Elf[] upperRow = new Elf[columns];
@@ -29,6 +31,8 @@ int maxFlakeSize = 5;
 int santaMargin = 10;
 int elfMargin = 120;
 int toyMargin = 10;
+
+int randomElf = floor(random(1, 6));
 
 // The distance and position of an elf in its array
 int elfDistance;
@@ -75,8 +79,8 @@ void setup() {
 
   // Create the toys with the loop at an elf's location
   for (int i = 0; i < toys.length; i++) {
-    toys[i] = new Toy(upperRow[3].x, lowerRow[3].y + (lowerRow[3].SIZE + toyMargin), 2);
-    toys[i].toyStart();
+    toys[i] = new Toy(lowerRow[randomElf].x, lowerRow[randomElf].y + (lowerRow[randomElf].SIZE + toyMargin), 2);
+    //toys[i].toyStart();
   }
 
   // Create our snowflakes
@@ -97,6 +101,7 @@ void draw() {
   // Fill the background each frame so we have animation
   //background(bgImage);
   background(color(0));
+
 
   // We only do the following if the game is playing
   if (playing) {
@@ -122,13 +127,8 @@ void draw() {
       if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
         toys[i].vx = -toys[i].vx;
       }
-        toys[i].update();
-      toys[i].toyFreq();
-      //toys[i].collide(santa);
-
-      if (toys[i].santaCollide()) {
-        toys[i].reset();
-      }
+      toys[i].update();
+      //toys[i].toyFreq();
 
       timerStart();
     }
@@ -154,6 +154,7 @@ void draw() {
   }
 }
 
+
 // timerStart()
 //
 // Start the timer (5 minutes)
@@ -163,27 +164,48 @@ void timerStart() {
   if (timerRunning) {
 
     int timeElapsed = (millis() - startTime)/1000;
-    println("GAME TIMER:"+timeElapsed);
+    //println("GAME TIMER:"+timeElapsed);
 
     // Verify if the time is up
     if (timeElapsed == 300) {
       println("YOU WIN");
       playing = false;
     }
-  }
 
-  // Display the elements only if the game is playing
-  if (playing) {
+    // After 3 seconds, the elves drop a toy
+    for (int i = 0; i < toys.length; i++) {
+      if (timeElapsed > 3 && timeElapsed < 5.5) {
 
-    santa.display();
-
-    for (int i = 0; i < columns; i++) {
-      upperRow[i].display();
-      lowerRow[i].display();
+        toys[i].vx = 0;
+        toys[i].vy = 3;   
+        
+        // If the toy is falling, it is displayed
+        if (toys[i].fall()) {
+          toys[i].display();
+        }
+        // If the toy doesn't collide with Santa, player loses a strike
+        if (toys[i].santaCollide()) {
+          //toys[i].reset();
+          //toys[i].vy = 0;
+          println("collide");
+          println("STRIKE:"+strikes);
+        } else if (toys[i].y == height) {
+          strikes--;
+          println("STRIKE:"+strikes);
+          toys[i].reset();
+        }
+      }
     }
 
-    for (int i = 0; i < toys.length; i++) {
-      toys[i].display();
+    // Display the elements only if the game is playing
+    if (playing) {
+
+      santa.display();
+
+      for (int i = 0; i < columns; i++) {
+        upperRow[i].display();
+        lowerRow[i].display();
+      }
     }
   }
 }
