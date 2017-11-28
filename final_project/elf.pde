@@ -12,14 +12,15 @@ class Elf {
 
   int x;
   int y;
-  int vx = 2;
+  int vx;
 
 
   ///////// Constructor //////////
 
-  Elf(int tempX, int tempY) {
+  Elf(int tempX, int tempY, int tempVX) {
     x = tempX;
     y = tempY;
+    vx = tempVX;
   }
 
   ///////// Methods //////////

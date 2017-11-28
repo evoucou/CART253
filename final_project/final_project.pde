@@ -5,13 +5,13 @@
 //
 // PRESS SPACEBAR TO BEGIN
 
-int columns = 7;
+int columns = 6;
 
 // We generate Santa
 Santa santa;
 
 // We generate our array of toys
-Toy[] toys = new Toy[1];
+Toy[] toys = new Toy[6];
 
 //We generate our array of Christmas elves
 Elf[] upperRow = new Elf[columns];
@@ -34,10 +34,9 @@ int toyMargin = 10;
 
 int randomElf = floor(random(1, 6));
 
-// The distance and position of an elf in its array
-int elfDistance;
-int elfXPos = 75;
-
+// The distance and initial position of an elf in its array
+int elfDistance = 50;
+int elfXPos = width/2;
 // Number of "lives"
 int strikes = 3;
 
@@ -69,13 +68,16 @@ void setup() {
 
   // Create the elves at the top with the loop
   for (int i = 0; i < columns; i++) {
-    upperRow[i] = new Elf(elfXPos, elfMargin);
-    lowerRow[i] = new Elf(elfXPos, elfMargin + 50);
-
+    
     // To define the elf's x position (so they're not on top of each other),
     // we first add its size + incremented distance between each.
-    elfXPos = 25 + (elfDistance += 50);
+    elfXPos = (elfXPos += elfDistance);
+    
+    upperRow[i] = new Elf(elfXPos + 50*4, elfMargin, 2);
+    lowerRow[i] = new Elf(elfXPos, elfMargin + 50, -2); 
+ //<>//
   }
+
 
   // Create the toys with the loop at an elf's location
   for (int i = 0; i < toys.length; i++) {
@@ -109,24 +111,31 @@ void draw() {
     // Update the elements
     santa.update();
 
-
     for (int i = 0; i < columns; i++) {
       upperRow[i].update();
       lowerRow[i].update();
     } 
-    // Tell the elves to move together
-    if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
-      for (int i = 0; i < columns; i++) {
+    
+    // Tell the elves to move together (their velocity is different but they change
+    // direction at the same time)
+    for (int i = 0; i < columns; i++) {
+      if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
         upperRow[i].vx = -upperRow[i].vx;
         lowerRow[i].vx = -lowerRow[i].vx;
       }
+    /*} IF I WANT THEM TO BEHAVE SEPARATELY, THIS IS THE CODE
+    for (int i = 0; i < columns; i++) {
+      if (lowerRow[lowerRow.length - 1].x > width - 50 || lowerRow[0].x < 50) {
+        lowerRow[i].vx = -lowerRow[i].vx;
+      }*/
     }
 
     for (int i = 0; i < toys.length; i++) {
       // Tell the toy to follow the elve's x trajectory
       if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
-        toys[i].vx = -toys[i].vx;
+        toys[i].vx = -toys[i].vx; 
       }
+ 
       toys[i].update();
       //toys[i].toyFreq();
 
@@ -178,7 +187,7 @@ void timerStart() {
 
         toys[i].vx = 0;
         toys[i].vy = 3;   
-        
+
         // If the toy is falling, it is displayed
         if (toys[i].fall()) {
           toys[i].display();

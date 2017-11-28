@@ -9,7 +9,7 @@ class Toy {
 
   int SIZE = 25;
 
-  int x;
+  float x;
   int y;
   int resetX;
   int resetY;
