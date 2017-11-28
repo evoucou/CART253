@@ -1,4 +1,4 @@
-// Santa Rush //<>//
+// Santa Rush //<>// //<>//
 //
 // A game inspired by Space Invaders in which you play santa and you need
 // to catch the toys that the Christmas elves are dropping.
@@ -11,7 +11,7 @@ int columns = 6;
 Santa santa;
 
 // We generate our array of toys
-Toy[] toys = new Toy[6];
+Toy[] toys = new Toy[4];
 
 //We generate our array of Christmas elves
 Elf[] upperRow = new Elf[columns];
@@ -26,13 +26,16 @@ int [] flakeDirection = new int[quantity];
 int minFlakeSize = 1;
 int maxFlakeSize = 5;
 
+boolean toyFall = false;
+
+int presentDelay = 3;
+
 
 // The distance from the edge of the window the elements should be
 int santaMargin = 10;
 int elfMargin = 120;
 int toyMargin = 10;
 
-int randomElf = floor(random(1, 6));
 
 // The distance and initial position of an elf in its array
 int elfDistance = 50;
@@ -68,19 +71,18 @@ void setup() {
 
   // Create the elves at the top with the loop
   for (int i = 0; i < columns; i++) {
-    
+
     // To define the elf's x position (so they're not on top of each other),
     // we first add its size + incremented distance between each.
     elfXPos = (elfXPos += elfDistance);
-    
-    upperRow[i] = new Elf(elfXPos + 50*4, elfMargin, 2);
-    lowerRow[i] = new Elf(elfXPos, elfMargin + 50, -2); 
- //<>//
-  }
 
+    upperRow[i] = new Elf(elfXPos + 50*4, elfMargin, 2);
+    lowerRow[i] = new Elf(elfXPos, elfMargin + 50, -2);
+  }
 
   // Create the toys with the loop at an elf's location
   for (int i = 0; i < toys.length; i++) {
+    int randomElf = floor(random(1, 6));
     toys[i] = new Toy(lowerRow[randomElf].x, lowerRow[randomElf].y + (lowerRow[randomElf].SIZE + toyMargin), 2);
     //toys[i].toyStart();
   }
@@ -115,7 +117,7 @@ void draw() {
       upperRow[i].update();
       lowerRow[i].update();
     } 
-    
+
     // Tell the elves to move together (their velocity is different but they change
     // direction at the same time)
     for (int i = 0; i < columns; i++) {
@@ -123,52 +125,33 @@ void draw() {
         upperRow[i].vx = -upperRow[i].vx;
         lowerRow[i].vx = -lowerRow[i].vx;
       }
-    /*} IF I WANT THEM TO BEHAVE SEPARATELY, THIS IS THE CODE
-    for (int i = 0; i < columns; i++) {
-      if (lowerRow[lowerRow.length - 1].x > width - 50 || lowerRow[0].x < 50) {
-        lowerRow[i].vx = -lowerRow[i].vx;
-      }*/
+      /*} IF I WANT THEM TO BEHAVE SEPARATELY, THIS IS THE CODE
+       for (int i = 0; i < columns; i++) {
+       if (lowerRow[lowerRow.length - 1].x > width - 50 || lowerRow[0].x < 50) {
+       lowerRow[i].vx = -lowerRow[i].vx;
+       }*/
     }
 
-    for (int i = 0; i < toys.length; i++) {
-      // Tell the toy to follow the elve's x trajectory
-      if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
-        toys[i].vx = -toys[i].vx; 
-      }
- 
-      toys[i].update();
-      //toys[i].toyFreq();
+    //for (int i = 0; i < toys.length; i++) {
+    //  // Tell the toy to behave exactly like the elves (so it tracks their position)
+    //  if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
+    //    toys[i].vx = -toys[i].vx;
+    //  }
+    //}
 
-      timerStart();
-    }
+    //toys[i].toyFreq();
 
-    // Regenerate the snowflakes each frame
-    for (int i = 0; i < flakeX.length; i++) {
-
-      ellipse(flakeX[i], flakeY[i], flakeSize[i], flakeSize[i]);
-
-      if (flakeDirection[i] == 0) {
-        flakeX[i] += map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
-      } else {
-        flakeX[i] -= map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
-      }
-
-      flakeY[i] += flakeSize[i] + flakeDirection[i]; 
-
-      if (flakeX[i] > width + flakeSize[i] || flakeX[i] < -flakeSize[i] || flakeY[i] > height + flakeSize[i]) {
-        flakeX[i] = random(0, width);
-        flakeY[i] = -flakeSize[i];
-      }
-    }
+    handlePresents();
+    handleSnow();
   }
 }
 
 
-// timerStart()
+// handlePresents()
 //
 // Start the timer (5 minutes)
 
-void timerStart() { 
+void handlePresents() { 
 
   if (timerRunning) {
 
@@ -181,31 +164,47 @@ void timerStart() {
       playing = false;
     }
 
+
     // After 3 seconds, the elves drop a toy
     for (int i = 0; i < toys.length; i++) {
-      if (timeElapsed > 3 && timeElapsed < 5.5) {
 
+      // If the toy is falling, it is displayed
+      if (toyFall) {
         toys[i].vx = 0;
-        toys[i].vy = 3;   
+        toys[i].vy = 3;
+        toys[i].update();
+        toys[i].display();
+        //println("Falling...");
+      }
 
-        // If the toy is falling, it is displayed
-        if (toys[i].fall()) {
-          toys[i].display();
-        }
+      //println(timeElapsed, presentDelay);
+      if (timeElapsed > presentDelay) {
+        //println("timeElapsed > presentDelay");
+        toyFall = true;
+
         // If the toy doesn't collide with Santa, player loses a strike
         if (toys[i].santaCollide()) {
+          println("santaCollide");
           //toys[i].reset();
           //toys[i].vy = 0;
+          toyFall = false;
           println("collide");
           println("STRIKE:"+strikes);
-        } else if (toys[i].y == height) {
+          toys[i].reset();
+          presentDelay = timeElapsed + 3;
+          //toys[i].toyStart();
+        } else if (toys[i].y >= height) {
+          println(toys[i].y);
+          println("present off bottom");
           strikes--;
           println("STRIKE:"+strikes);
+          toyFall = false;
+          //toys[i].fall() = false;
           toys[i].reset();
+          presentDelay = timeElapsed + 3;
         }
       }
     }
-
     // Display the elements only if the game is playing
     if (playing) {
 
@@ -229,13 +228,35 @@ void startGame() {
   playing = true;
 }
 
+
+void handleSnow() {
+  // Regenerate the snowflakes each frame
+  for (int i = 0; i < flakeX.length; i++) {
+
+    ellipse(flakeX[i], flakeY[i], flakeSize[i], flakeSize[i]);
+
+    if (flakeDirection[i] == 0) {
+      flakeX[i] += map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
+    } else {
+      flakeX[i] -= map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
+    }
+
+    flakeY[i] += flakeSize[i] + flakeDirection[i]; 
+
+    if (flakeX[i] > width + flakeSize[i] || flakeX[i] < -flakeSize[i] || flakeY[i] > height + flakeSize[i]) {
+      flakeX[i] = random(0, width);
+      flakeY[i] = -flakeSize[i];
+    }
+  }
+}
+
 // keyPressed()
 //
 // Santa needs to know if he should move based on keyPressed. We also call startGame when spacebar is pressed
 
 void keyPressed() {
   santa.keyPressed();
-  if (key == ' ') {
+  if (key == ' ' && !playing) {
     startGame();
   }
 }

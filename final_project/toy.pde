@@ -55,6 +55,7 @@ class Toy {
     y = resetY;
 
     vx = resetVX;
+    vy = 0;
   }
 
 
@@ -80,9 +81,9 @@ class Toy {
    }
    }*/
 
-  boolean fall() {
+  /*boolean fall() {
    return(vy == 3 && vx == 0);
-  }
+  }*/
    
    
           /*startTime = millis();
