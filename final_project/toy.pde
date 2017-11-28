@@ -16,6 +16,8 @@ class Toy {
   int resetVX;
   int vy = 0;
   int vx;
+  
+  Elf myElf;
 
   //boolean timerRunning = false;
   //int startTime = 0;
@@ -23,15 +25,17 @@ class Toy {
 
   ///////// Constructor //////////
 
-  Toy(int tempX, int tempY, int tempVX) {
+  Toy(Elf tempElf) {
 
-    x = tempX;
-    y = tempY;
+    myElf = tempElf;
+    
+    //x = tempX;
+    //y = tempY;
 
-    resetY = tempY;
-    resetX = tempX;
+    //resetY = tempY;
+    //resetX = tempX;
 
-    vx = tempVX;
+    //vx = tempVX;
     //resetVX = tempVX;
   }
 
@@ -51,10 +55,11 @@ class Toy {
   }
 
   void reset() {
-    x = resetX;
-    y = resetY;
+    //x = resetX;
+    //y = resetY;
 
-    vx = resetVX;
+    //vx = resetVX;
+    y = -100;
     vy = 0;
   }
 
@@ -103,8 +108,16 @@ class Toy {
   }
 
 
+  void fall() {
+   x = myElf.x;
+   y = myElf.y;
+   vy = 3;
+  }
+
 
   void display() {
+    if (vy == 0) return;
+    
     noStroke();
     fill(color(250));
     rectMode(CENTER);

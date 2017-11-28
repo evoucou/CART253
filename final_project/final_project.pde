@@ -82,8 +82,15 @@ void setup() {
 
   // Create the toys with the loop at an elf's location
   for (int i = 0; i < toys.length; i++) {
-    int randomElf = floor(random(1, 6));
-    toys[i] = new Toy(lowerRow[randomElf].x, lowerRow[randomElf].y + (lowerRow[randomElf].SIZE + toyMargin), 2);
+    float r = random(1);
+    int randomElfIndex = 0;
+    if (r < 0.5) {
+      randomElfIndex = floor(random(0, lowerRow.length));
+      toys[i] = new Toy(lowerRow[randomElfIndex]);
+    } else {
+      randomElfIndex = floor(random(0, upperRow.length));
+      toys[i] = new Toy(upperRow[randomElfIndex]);
+    }
     //toys[i].toyStart();
   }
 
@@ -112,6 +119,7 @@ void draw() {
 
     // Update the elements
     santa.update();
+    santa.display();
 
     for (int i = 0; i < columns; i++) {
       upperRow[i].update();
@@ -125,6 +133,9 @@ void draw() {
         upperRow[i].vx = -upperRow[i].vx;
         lowerRow[i].vx = -lowerRow[i].vx;
       }
+      upperRow[i].display();
+      lowerRow[i].display();
+
       /*} IF I WANT THEM TO BEHAVE SEPARATELY, THIS IS THE CODE
        for (int i = 0; i < columns; i++) {
        if (lowerRow[lowerRow.length - 1].x > width - 50 || lowerRow[0].x < 50) {
@@ -141,7 +152,10 @@ void draw() {
 
     //toys[i].toyFreq();
 
-    handlePresents();
+    // Display the elements only if the game is playing
+
+
+    handleToys();
     handleSnow();
   }
 }
@@ -151,11 +165,12 @@ void draw() {
 //
 // Start the timer (5 minutes)
 
-void handlePresents() { 
+void handleToys() { 
 
   if (timerRunning) {
 
     int timeElapsed = (millis() - startTime)/1000;
+
     //println("GAME TIMER:"+timeElapsed);
 
     // Verify if the time is up
@@ -165,54 +180,47 @@ void handlePresents() {
     }
 
 
+
     // After 3 seconds, the elves drop a toy
     for (int i = 0; i < toys.length; i++) {
 
       // If the toy is falling, it is displayed
-      if (toyFall) {
-        toys[i].vx = 0;
-        toys[i].vy = 3;
-        toys[i].update();
-        toys[i].display();
-        //println("Falling...");
-      }
+      //if (toyFall) {
+      //toys[i].vx = 0;
+      //toys[i].vy = 3;
+      toys[i].update();
+      //if (toys[i].vy != 0) {
+      toys[i].display();
+      //}
+      //println("Falling...");
+      //}
 
       //println(timeElapsed, presentDelay);
-      if (timeElapsed > presentDelay) {
+      if (timeElapsed > presentDelay && toys[i].vy == 0) {
         //println("timeElapsed > presentDelay");
-        toyFall = true;
+        toys[i].fall();
 
         // If the toy doesn't collide with Santa, player loses a strike
-        if (toys[i].santaCollide()) {
-          println("santaCollide");
-          //toys[i].reset();
-          //toys[i].vy = 0;
-          toyFall = false;
-          println("collide");
-          println("STRIKE:"+strikes);
-          toys[i].reset();
-          presentDelay = timeElapsed + 3;
-          //toys[i].toyStart();
-        } else if (toys[i].y >= height) {
-          println(toys[i].y);
-          println("present off bottom");
-          strikes--;
-          println("STRIKE:"+strikes);
-          toyFall = false;
-          //toys[i].fall() = false;
-          toys[i].reset();
-          presentDelay = timeElapsed + 3;
-        }
       }
-    }
-    // Display the elements only if the game is playing
-    if (playing) {
 
-      santa.display();
+      if (toys[i].santaCollide()) {
+        toys[i].reset();
+        //toys[i].vy = 0;
+        //toyFall = false;
+        println("STRIKE:"+strikes);
+        //toys[i].reset();
+        presentDelay = timeElapsed + 3;
+        //toys[i].toyStart();
+      } else if (toys[i].y >= height) {
+        println(toys[i].y);
+        strikes--;
+        println("STRIKE:"+strikes);
+        //toyFall = false;
+        //toys[i].fall() = false;
+        toys[i].reset();
+        //toys[i].vy = 0;
 
-      for (int i = 0; i < columns; i++) {
-        upperRow[i].display();
-        lowerRow[i].display();
+        presentDelay = timeElapsed + 3;
       }
     }
   }
