@@ -40,6 +40,7 @@ int toyMargin = 10;
 // The distance and initial position of an elf in its array
 int elfDistance = 50;
 int elfXPos = width/2;
+
 // Number of "lives"
 int strikes = 3;
 
@@ -161,7 +162,7 @@ void draw() {
 }
 
 
-// handlePresents()
+// handleToys()
 //
 // Start the timer (5 minutes)
 
@@ -219,8 +220,8 @@ void handleToys() {
         //toys[i].fall() = false;
         toys[i].reset();
         //toys[i].vy = 0;
-
-        presentDelay = timeElapsed + 3;
+        presentDelay = timeElapsed + 6;
+        gameOver();
       }
     }
   }
@@ -234,6 +235,14 @@ void startGame() {
   startTime = millis();
   timerRunning = true;
   playing = true;
+}
+
+void gameOver() {
+  if (strikes == 0) {
+
+    playing = false;
+    println(" you lose ");
+  }
 }
 
 
