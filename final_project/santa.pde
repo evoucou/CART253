@@ -52,7 +52,7 @@ class Santa {
     rectMode(CENTER);
 
     // Draw the paddle as a rectangle
-    //rect(x, y, SIZE, SIZE);
+    rect(x, y, SIZE, SIZE);
   }
   
 

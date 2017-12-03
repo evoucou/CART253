@@ -1,4 +1,4 @@
-// Santa Rush //<>// //<>//
+// Santa Rush //<>// //<>// //<>//
 //
 // A game inspired by Space Invaders in which you play santa and you need
 // to catch the toys that the Christmas elves are dropping.
@@ -6,12 +6,6 @@
 // PRESS SPACEBAR TO BEGIN
 
 // Images
-PImage santaImg;
-PImage elvesImg;
-PImage teddyImg;
-PImage cubesImg;
-PImage carImg;
-
 int columns = 6;
 
 // We generate Santa
@@ -56,6 +50,9 @@ boolean timerRunning = false;
 boolean playing = false;
 int startTime = 0;
 
+// Generate random images for the toys
+PImage images[] = new PImage[3]; 
+
 
 // The background image
 //PImage bgImage;
@@ -85,22 +82,25 @@ void setup() {
     // we first add its size + incremented distance between each.
     elfXPos = (elfXPos += elfDistance);
 
-    upperRow[i] = new Elf(elfXPos + 50*4, elfMargin, 2);
-    lowerRow[i] = new Elf(elfXPos, elfMargin + 50, -2);
+    upperRow[i] = new Elf(elfXPos + 50*4, elfMargin, 2, loadImage("elf.png"));
+    lowerRow[i] = new Elf(elfXPos, elfMargin + 50, -2, loadImage("elf.png"));
   }
 
   // Create the toys with the loop at an elf's location
   for (int i = 0; i < toys.length; i++) {
     float r = random(1);
     int randomElfIndex = 0;
+    images[0] = loadImage("car.png");
+    images[1] = loadImage("teddy.png");
+    images[2] = loadImage("tambourin.png");
+    
     if (r < 0.5) {
-      
       randomElfIndex = floor(random(0, lowerRow.length));
-      toys[i] = new Toy(lowerRow[randomElfIndex], 9);
+      toys[i] = new Toy(lowerRow[randomElfIndex], 9, images[floor(random(0, 2))]);
     } else {
 
       randomElfIndex = floor(random(0, upperRow.length));
-      toys[i] = new Toy(upperRow[randomElfIndex], 3);
+      toys[i] = new Toy(upperRow[randomElfIndex], 3, images[floor(random(0, 2))]);
     }
   }
 
@@ -143,8 +143,8 @@ void draw() {
         upperRow[i].vx = -upperRow[i].vx;
         lowerRow[i].vx = -lowerRow[i].vx;
       }
-      
-    
+
+
       upperRow[i].display();
       lowerRow[i].display();
 
@@ -191,24 +191,23 @@ void handleToys() {
       if (timeElapsed > presentDelay && toys[i].vy == 0) {
         //println("timeElapsed > presentDelay");
         toys[i].fall();
-  
+
 
         // If the toy doesn't collide with Santa, player loses a strike
       }      
 
       if (toys[i].santaCollide()) {
-   //toyDelay = floor(random(1,8));
-        
+        //toyDelay = floor(random(1,8));
+
         toys[i].reset();
-        presentDelay = timeElapsed + 3; //<>//
-        
+        presentDelay = timeElapsed + 3;
       } else if (toys[i].y >= height) {
-       //toyDelay = floor(random(1,8));
-        
+        //toyDelay = floor(random(1,8));
+
         strikes--;
         toys[i].reset();
         presentDelay = timeElapsed + 3;
- 
+
         //gameOver();
       }
     }
@@ -263,8 +262,8 @@ void keyPressed() {
   if (key == ' ' && !playing) {
     startGame();
     for (int i = 0; i < toys.length; i++) {
-    toys[i].delayStart(); 
-  }
+      toys[i].delayStart();
+    }
   }
 }
 

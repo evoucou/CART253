@@ -22,6 +22,8 @@ class Toy {
   boolean timerRunning = false;
   int startTime = 0;
   
+  PImage img;
+  
   Elf myElf;
   
   //int startTime = 0;
@@ -33,10 +35,11 @@ class Toy {
 
   ///////// Constructor //////////
 
-  Toy(Elf tempElf, int tempDelay) { 
+  Toy(Elf tempElf, int tempDelay, PImage tempImg) { 
 
     myElf = tempElf;
     delay = tempDelay;    
+    img = tempImg;
     tempDelay = (millis() - startTime)/1000;
 
 

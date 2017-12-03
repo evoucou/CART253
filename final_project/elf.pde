@@ -13,14 +13,17 @@ class Elf {
   int x;
   int y;
   int vx;
+  
+  PImage img;
 
 
   ///////// Constructor //////////
 
-  Elf(int tempX, int tempY, int tempVX) {
+  Elf(int tempX, int tempY, int tempVX, PImage tempImg) {
     x = tempX;
     y = tempY;
     vx = tempVX;
+    img = tempImg;
   }
 
   ///////// Methods //////////
