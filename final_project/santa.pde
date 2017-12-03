@@ -14,14 +14,17 @@ class Santa {
   int y;
   int vx;
   int vy;
+  
+  PImage img;
 
 
   ///////// Constructor //////////
 
-  Santa(int tempX, int tempY) {
+  Santa(int tempX, int tempY, PImage tempImg) {
 
     x = tempX;
     y = tempY;
+    img = tempImg;
     vx = 0;
     vy = 0;
   }
@@ -49,7 +52,7 @@ class Santa {
     rectMode(CENTER);
 
     // Draw the paddle as a rectangle
-    rect(x, y, SIZE, SIZE);
+    //rect(x, y, SIZE, SIZE);
   }
   
 

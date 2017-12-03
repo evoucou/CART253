@@ -5,6 +5,13 @@
 //
 // PRESS SPACEBAR TO BEGIN
 
+// Images
+PImage santaImg;
+PImage elvesImg;
+PImage teddyImg;
+PImage cubesImg;
+PImage carImg;
+
 int columns = 6;
 
 // We generate Santa
@@ -29,7 +36,7 @@ int maxFlakeSize = 5;
 boolean toyFall = false;
 
 int presentDelay;
-int toyDelay;
+//int toyDelay;
 
 // The distance from the edge of the window the elements should be
 int santaMargin = 10;
@@ -69,7 +76,7 @@ void setup() {
   //bgImage = loadImage("background.jpg");
 
   // Create Santa at the bottom
-  santa = new Santa(width/2, height - santaMargin);
+  santa = new Santa(width/2, height - santaMargin, loadImage("santa.png"));
 
   // Create the elves at the top with the loop
   for (int i = 0; i < columns; i++) {
@@ -89,11 +96,11 @@ void setup() {
     if (r < 0.5) {
       
       randomElfIndex = floor(random(0, lowerRow.length));
-      toys[i] = new Toy(lowerRow[randomElfIndex]);
+      toys[i] = new Toy(lowerRow[randomElfIndex], 9);
     } else {
 
       randomElfIndex = floor(random(0, upperRow.length));
-      toys[i] = new Toy(upperRow[randomElfIndex]);
+      toys[i] = new Toy(upperRow[randomElfIndex], 3);
     }
   }
 
@@ -147,12 +154,7 @@ void draw() {
        lowerRow[i].vx = -lowerRow[i].vx;
        }*/
     }
-    
-     for (int i = 0; i < toys.length; i++) {
 
-      // If the toy is falling, it is displayed
-      toys[i].handleTime();
-    }
 
     handleToys();
     handleSnow();
@@ -198,16 +200,15 @@ void handleToys() {
    //toyDelay = floor(random(1,8));
         
         toys[i].reset();
-        toys[i].delayStart();
-        presentDelay = timeElapsed + 3;
+        presentDelay = timeElapsed + 3; //<>//
         
       } else if (toys[i].y >= height) {
        //toyDelay = floor(random(1,8));
         
         strikes--;
         toys[i].reset();
-        toys[i].delayStart();
         presentDelay = timeElapsed + 3;
+ 
         //gameOver();
       }
     }
@@ -261,6 +262,9 @@ void keyPressed() {
   santa.keyPressed();
   if (key == ' ' && !playing) {
     startGame();
+    for (int i = 0; i < toys.length; i++) {
+    toys[i].delayStart(); 
+  }
   }
 }
 

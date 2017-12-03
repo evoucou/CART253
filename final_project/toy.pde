@@ -21,7 +21,6 @@ class Toy {
   
   boolean timerRunning = false;
   int startTime = 0;
-  int timeElapsed;
   
   Elf myElf;
   
@@ -34,10 +33,13 @@ class Toy {
 
   ///////// Constructor //////////
 
-  Toy(Elf tempElf) { 
+  Toy(Elf tempElf, int tempDelay) { 
 
     myElf = tempElf;
-    
+    delay = tempDelay;    
+    tempDelay = (millis() - startTime)/1000;
+
+
     //x = tempX;
     //y = tempY;
 
@@ -77,14 +79,6 @@ class Toy {
    timerRunning = true;
    }
 
-  void handleTime() {
-  
-    if (timerRunning) {
-    timeElapsed = (millis() - startTime)/1000;
-    println("DELAY"+delay);
-    //toyDelay = timeElapsed + delay;
-  }
-}
 
   // display()
   //
@@ -142,3 +136,27 @@ class Toy {
   }
 
 }
+
+/*
+class Button {
+  int x;
+  int y;
+  int size;
+  Button() {
+    x = width/2;
+    y = height/2;
+    size = width/4;
+  }
+  void mouseClicked() {
+    // Without this if statement, the Button would say it
+    // was clicked whenever the user clicked ANYWHERE
+    // With this if statement, the Button will say it is
+    // clicked ONLY if the click was inside its circle
+    if (dist(mouseX,mouseY,x,y) < size/2) {
+      println("Button was clicked!");
+    }
+  }
+  void display() {
+    ellipse(x,y,size,size);
+  }
+}*/
