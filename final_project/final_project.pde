@@ -28,8 +28,8 @@ int maxFlakeSize = 5;
 
 boolean toyFall = false;
 
-int presentDelay = 3;
-
+int presentDelay;
+int toyDelay;
 
 // The distance from the edge of the window the elements should be
 int santaMargin = 10;
@@ -63,6 +63,7 @@ void setup() {
   noStroke();
   smooth();
   fill(50);
+  startTime = millis();
 
   // Load the background image
   //bgImage = loadImage("background.jpg");
@@ -86,13 +87,14 @@ void setup() {
     float r = random(1);
     int randomElfIndex = 0;
     if (r < 0.5) {
+      
       randomElfIndex = floor(random(0, lowerRow.length));
       toys[i] = new Toy(lowerRow[randomElfIndex]);
     } else {
+
       randomElfIndex = floor(random(0, upperRow.length));
       toys[i] = new Toy(upperRow[randomElfIndex]);
     }
-    //toys[i].toyStart();
   }
 
   // Create our snowflakes
@@ -134,6 +136,8 @@ void draw() {
         upperRow[i].vx = -upperRow[i].vx;
         lowerRow[i].vx = -lowerRow[i].vx;
       }
+      
+    
       upperRow[i].display();
       lowerRow[i].display();
 
@@ -143,24 +147,17 @@ void draw() {
        lowerRow[i].vx = -lowerRow[i].vx;
        }*/
     }
+    
+     for (int i = 0; i < toys.length; i++) {
 
-    //for (int i = 0; i < toys.length; i++) {
-    //  // Tell the toy to behave exactly like the elves (so it tracks their position)
-    //  if (upperRow[upperRow.length - 1].x > width - 50 || upperRow[0].x < 50) {
-    //    toys[i].vx = -toys[i].vx;
-    //  }
-    //}
-
-    //toys[i].toyFreq();
-
-    // Display the elements only if the game is playing
-
+      // If the toy is falling, it is displayed
+      toys[i].handleTime();
+    }
 
     handleToys();
     handleSnow();
   }
 }
-
 
 // handleToys()
 //
@@ -180,48 +177,38 @@ void handleToys() {
       playing = false;
     }
 
-
-
     // After 3 seconds, the elves drop a toy
     for (int i = 0; i < toys.length; i++) {
 
       // If the toy is falling, it is displayed
-      //if (toyFall) {
-      //toys[i].vx = 0;
-      //toys[i].vy = 3;
       toys[i].update();
-      //if (toys[i].vy != 0) {
       toys[i].display();
-      //}
-      //println("Falling...");
-      //}
+
 
       //println(timeElapsed, presentDelay);
       if (timeElapsed > presentDelay && toys[i].vy == 0) {
         //println("timeElapsed > presentDelay");
         toys[i].fall();
+  
 
         // If the toy doesn't collide with Santa, player loses a strike
-      }
+      }      
 
       if (toys[i].santaCollide()) {
+   //toyDelay = floor(random(1,8));
+        
         toys[i].reset();
-        //toys[i].vy = 0;
-        //toyFall = false;
-        println("STRIKE:"+strikes);
-        //toys[i].reset();
+        toys[i].delayStart();
         presentDelay = timeElapsed + 3;
-        //toys[i].toyStart();
+        
       } else if (toys[i].y >= height) {
-        println(toys[i].y);
+       //toyDelay = floor(random(1,8));
+        
         strikes--;
-        println("STRIKE:"+strikes);
-        //toyFall = false;
-        //toys[i].fall() = false;
         toys[i].reset();
-        //toys[i].vy = 0;
-        presentDelay = timeElapsed + 6;
-        gameOver();
+        toys[i].delayStart();
+        presentDelay = timeElapsed + 3;
+        //gameOver();
       }
     }
   }
@@ -232,7 +219,6 @@ void handleToys() {
 // Tell the program what to do once the game starts
 
 void startGame() {
-  startTime = millis();
   timerRunning = true;
   playing = true;
 }
