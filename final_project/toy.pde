@@ -11,48 +11,27 @@ class Toy {
 
   float x;
   int y;
-  int resetX;
-  int resetY;
-  int resetVX;
   int vy = 0;
   int vx;
-  
+
   int delay;
-  
+
   boolean timerRunning = false;
   int startTime = 0;
-  
+
   PImage img;
   PImage newImg;
- 
-  Elf myElf;
-  
-  //int startTime = 0;
-  //boolean timerRunning = true;
 
-  //boolean timerRunning = false;
-  //int startTime = 0;
+  Elf myElf;
 
 
   ///////// Constructor //////////
 
-  Toy(Elf tempElf, int tempDelay, PImage tempImg) { 
+  Toy(Elf tempElf, PImage tempImg) { 
 
-    myElf = tempElf;
-    delay = tempDelay;    
+    myElf = tempElf;    
     img = tempImg;
-    newImg = tempImg;
-    tempDelay = (millis() - startTime)/1000;
 
-
-    //x = tempX;
-    //y = tempY;
-
-    //resetY = tempY;
-    //resetX = tempX;
-
-    //vx = tempVX;
-    //resetVX = tempVX;
   }
 
   ///////// Methods //////////
@@ -70,48 +49,23 @@ class Toy {
     y = constrain(y, 30, height);
   }
 
-  void reset() {
-    //x = resetX;
-    //y = resetY;
-
-    //vx = resetVX;
-    y = -200;
-    vy = 0;
-    img = newImg;
-  }
-  
-    void delayStart() {
-   startTime = millis();
-   timerRunning = true;
-   }
-
-
-  // display()
+  // reset()
   //
-  // Display the toy at its location
+  // What happens when the toy resets
+  
+  void reset() {
+    y = -100;
+    vy = 0;
+  }
 
-  /*void countMillis() { 
-   if (timerRunning) {
-   int timeElapsed = (millis() - startTime)/1000;
-   println("TOY FALL"+timeElapsed);
-   
-   if (timeElapsed == 3) {
-   vy = 0;
-   vx = 0;
-   }
-   }
-   }*/
+  //void timerStart() {
+  //  startTime = millis();
+  //  timerRunning = true;
+  //}
 
-  /*boolean fall() {
-   return(vy == 3 && vx == 0);
-  }*/
-   
-   
-          /*startTime = millis();
-   timerRunning = true;
-   countMillis();
-   }*/
-
+  // santaCollide()
+  //
+  // Checks every side of the toy to see if it has collided
 
   boolean santaCollide() {
 
@@ -122,48 +76,27 @@ class Toy {
 
     return(insideLeft && insideRight && insideTop);
   }
+  
+  // fall()
+  //
+  // Where the toy falls from and its velocity
 
   void fall() {    
-   x = myElf.x;
-   y = myElf.y;
-   vy = 3;
+    x = myElf.x;
+    y = myElf.y;
+    vy = 3;
   }
 
+  // display()
+  //
+  // Displays the toy and its image
 
   void display() {
     if (vy == 0) return;
     image(img, x, y);
-    
+
     noStroke();
     fill(color(250));
     rectMode(CENTER);
-
-    // Draw the paddle as a rectangle
-    //rect(x, y, SIZE, SIZE);
   }
-
 }
-
-/*
-class Button {
-  int x;
-  int y;
-  int size;
-  Button() {
-    x = width/2;
-    y = height/2;
-    size = width/4;
-  }
-  void mouseClicked() {
-    // Without this if statement, the Button would say it
-    // was clicked whenever the user clicked ANYWHERE
-    // With this if statement, the Button will say it is
-    // clicked ONLY if the click was inside its circle
-    if (dist(mouseX,mouseY,x,y) < size/2) {
-      println("Button was clicked!");
-    }
-  }
-  void display() {
-    ellipse(x,y,size,size);
-  }
-}*/

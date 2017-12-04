@@ -1,30 +1,35 @@
-// Santa Rush //<>// //<>// //<>//
+// Santa Rush //<>// //<>// //<>// //<>//
 //
 // A game inspired by Space Invaders in which you play santa and you need
 // to catch the toys that the Christmas elves are dropping.
 //
 // PRESS SPACEBAR TO BEGIN
 
-String textBeginning = "Use the left and right arrow keys to move Santa\nPress spacebar to start.";
-String gameOver = "Game over! Press spacebar to retry.";
-String line = "";
-String blank = "";
+// Imports sound library
+import processing.sound.*;
 
-
-// Images
-int columns = 6;
-
-// We generate Santa
+// Generates Santa
 Santa santa;
 
-// We generate our array of toys
-Toy[] toys = new Toy[4];
+// Generates the array of toys
+Toy[] toys = new Toy[3];
+int randomToyImg;
+int randomElfIndex;
+int presentDelay;
 
-//We generate our array of Christmas elves
+// Generates the array of images for the toys
+PImage images[] = new PImage[3]; 
+
+// Generates the array of Christmas elves
+int columns = 6;
 Elf[] upperRow = new Elf[columns];
 Elf[] lowerRow = new Elf[columns];
 
-//We generate our snowflakes
+// The distance and initial position of an elf in its array
+int elfDistance = 60;
+int elfXPos = width/2;
+
+// Generates snowflakes
 int quantity = 200;
 float [] flakeX = new float[quantity];
 float [] flakeY = new float[quantity];
@@ -33,53 +38,51 @@ int [] flakeDirection = new int[quantity];
 int minFlakeSize = 1;
 int maxFlakeSize = 5;
 
-boolean toyFall = false;
+// Generates text
+String textBeginning = "Use the left and right arrow keys to move Santa\nPress spacebar to start.";
+String retry = "Game over! Press spacebar to retry.";
+String victory = "You won!";
+String timer;
+String line = "";
+String blank = "";
 
-int presentDelay;
-//int toyDelay;
+// Loads the elements for music, images and fonts
+SoundFile music;
+PImage bg;
+PFont font;
 
-// The distance from the edge of the window the elements should be
+// The distance from the edge of the window
 int santaMargin = 60;
 int elfMargin = 130;
 int toyMargin = 10;
 
-
-// The distance and initial position of an elf in its array
-int elfDistance = 60;
-int elfXPos = width/2;
-
-// Number of "lives"
-int strikes;
-
-// Variables for the timer
+// General variables for the game
 boolean timerRunning = false;
 boolean playing = false;
-boolean over = false;
+boolean gameOver = false;
+boolean win = false;
 int startTime = 0;
-
-// Generate the images array for the toys
-PImage images[] = new PImage[3]; 
-
-PImage bg;
-PFont font;
+int strikes;
 
 // setup()
 //
-// Sets the size and creates the paddles and ball
+// Sets the size and creates the elements
 
 void setup() {
-  // Set the size
+
   size(740, 580);
   noStroke();
   noFill();
   smooth();
   startTime = millis();
+  
+  // Creates the music file
+  music = new SoundFile(this, "/Users/Marie-Eve/Documents/cart253/final_project/music.mp3");
 
-
-  // Create Santa at the bottom
+  // Creates Santa at the bottom
   santa = new Santa(width/2, height - santaMargin, loadImage("santa.png"));
 
-  // Create the elves at the top with the loop
+  // Creates the elves at the top with the loop
   for (int i = 0; i < columns; i++) {
 
     // To define the elf's x position (so they're not on top of each other),
@@ -90,27 +93,30 @@ void setup() {
     lowerRow[i] = new Elf(elfXPos, elfMargin + 80, -2, loadImage("elf.png"));
   }
 
-  // Create the toys with the loop at an elf's location
-  for (int i = 0; i < toys.length; i++) {
-    float r = random(1);
-    int randomElfIndex = 0;
-    int randomToyImg = 0;
-    images[0] = loadImage("car.png");
-    images[1] = loadImage("teddy.png");
-    images[2] = loadImage("tambourin.png");
+   // Creates the array of toys
+   for (int i = 0; i < toys.length; i++) {  
+      float r = random(1);
+      
+      // Generates the images inside the array
+      images[0] = loadImage("car.png");
+      images[1] = loadImage("teddy.png");
+      images[2] = loadImage("tambourin.png");
 
-    if (r < 0.5) {
-      randomToyImg = floor(random(0, images.length));
-      randomElfIndex = floor(random(0, lowerRow.length));
-      toys[i] = new Toy(lowerRow[randomElfIndex], 9, images[randomToyImg]);
-    } else {
-      randomToyImg = floor(random(0, images.length));
-      randomElfIndex = floor(random(0, upperRow.length));
-      toys[i] = new Toy(upperRow[randomElfIndex], 3, images[randomToyImg]);
+      // Controls the "randomness" so that toys are generated from the upper row and lower row equally
+      if (r < 0.5) {
+        // Generates random values to determine which image will be displayed
+        // and from which elf it will fall. 
+        randomToyImg = floor(random(0, images.length));
+        randomElfIndex = floor(random(0, lowerRow.length));
+        toys[i] = new Toy(lowerRow[randomElfIndex], images[randomToyImg]);
+      } else {
+        randomToyImg = floor(random(0, images.length));
+        randomElfIndex = floor(random(0, upperRow.length));
+        toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]);
+      }
     }
-  }
-
-  // Create our snowflakes
+  
+  // Creates our snowflakes
   for (int i = 0; i < quantity; i++) {
     flakeSize[i] = round(random(minFlakeSize, maxFlakeSize));
     flakeX[i] = random(0, width);
@@ -121,14 +127,15 @@ void setup() {
 
 // draw()
 //
-// Handles all the magic of making the elements move  and displaying/updating everything.
+// Handles all the magic of making the elements move and displaying/updating everything.
 
 void draw() {
 
-  // Load the background image
+  // Loads the background image
   bg = loadImage("bg.jpg");
   background(bg);
 
+  // Loads text
   font = createFont("arial", 18);
   textAlign(CENTER, CENTER); // Center align both horizontally and vertically
   textLeading(34); // Line height for text
@@ -136,12 +143,13 @@ void draw() {
   fill(color(227, 6, 19));
   text(line, width/2, height/2);
 
-
-  // We only do the following if the game is playing
+  // Only do the following if the game is playing
   if (playing) {
 
+    // No text is displayed
     line = blank;
 
+    // Creates the images
     for (int i = 0; i < columns; i++) {
       image(upperRow[i].img, upperRow[i].x, upperRow[i].y);
       image(lowerRow[i].img, lowerRow[i].x, lowerRow[i].y);
@@ -149,23 +157,20 @@ void draw() {
     image(santa.img, santa.x, santa.y);
     imageMode(CENTER);
 
-    // Update the elements
+    // Updates the elements
     santa.update();
     santa.display();
 
     for (int i = 0; i < columns; i++) {
       upperRow[i].update();
       lowerRow[i].update();
-    } 
-
-    // Tell the elves to move together (their velocity is different but they change
-    // direction at the same time)
-    for (int i = 0; i < columns; i++) {
+      
+    // Tells the elves to reverse direction at the same time
+    // if they hit the 20px margin on each side
       if (upperRow[upperRow.length - 1].x > width - 20 || upperRow[0].x < 20) {
         upperRow[i].vx = -upperRow[i].vx;
         lowerRow[i].vx = -lowerRow[i].vx;
       }
-
       upperRow[i].display();
       lowerRow[i].display();
 
@@ -173,73 +178,29 @@ void draw() {
        for (int i = 0; i < columns; i++) {
        if (lowerRow[lowerRow.length - 1].x > width - 50 || lowerRow[0].x < 50) {
        lowerRow[i].vx = -lowerRow[i].vx;
-       }*/
-    }
-  } else if (over != true) {
+       }*/   
+    }   
+  } else if (!gameOver && !win) {
+    // If the game is not running and the player hasn't won or lost yet, it means
+    // it displays the indications at the beginning
     line = textBeginning;
-  } else {
-    line = gameOver;
+  } else if (gameOver) {
+    // If the player has lost, it displays the try again text
+    line = retry;
+  } else if (win) {
+    // If the player has won, it displays the victory text
+    line = victory;
   }
+
+  // Calls the handle functions for the elements
   handleSnow();
   handleToys();
-}
-
-// handleToys()
-//
-// Start the timer (5 minutes)
-
-void handleToys() { 
-  if (playing) {
-
-    int timeElapsed = (millis() - startTime)/1000;
-
-    //println("GAME TIMER:"+timeElapsed);
-
-    // Verify if the time is up
-    if (timeElapsed == 300) {
-      println("YOU WIN");
-      playing = false;
-    }
-
-    // After 3 seconds, the elves drop a toy
-    for (int i = 0; i < toys.length; i++) {
-
-      // If the toy is falling, it is displayed
-      toys[i].update();
-      toys[i].display();
-
-
-      //println(timeElapsed, presentDelay);
-      if (timeElapsed > presentDelay && toys[i].vy == 0) {
-        //println("timeElapsed > presentDelay");
-        toys[i].fall();
-
-
-        // If the toy doesn't collide with Santa, player loses a strike
-      }      
-
-      if (toys[i].santaCollide()) {
-        //toyDelay = floor(random(1,8));
-
-        toys[i].reset();
-        presentDelay = timeElapsed + 3;
-        //image(toys[i].newImg, toys[i].x, toys[i].y);
-      } else if (toys[i].y >= height) {
-        //toyDelay = floor(random(1,8));
-
-        strikes--;
-        toys[i].reset();
-        presentDelay = timeElapsed + 3;
-        //image(toys[i].newImg, toys[i].x, toys[i].y);
-        gameOver();
-      }
-    }
-  }
+  handleTime();
 }
 
 // startGame()
 //
-// Tell the program what to do once the game starts
+// Tells the program to start the timer and resets the number of strikes to 3
 
 void startGame() {
   timerRunning = true;
@@ -247,14 +208,104 @@ void startGame() {
   strikes = 3;
 }
 
-void gameOver() {
-  if (strikes == 0) {
+// handleToys()
+//
+// Tells the program how the toys behave
 
-    over = true;
-    playing = false;
-    println(" you lose ");
+void handleToys() { 
+
+    if (playing) {
+        for (int i = 0; i < toys.length; i++) {
+
+      // Displays and update the toys
+      toys[i].update();
+      toys[i].display();
+
+      // If the toy's velocity is 0, then it should fall because it means it has been reinitialized
+      if (/*toys[i].delay > presentDelay  &&*/ toys[i].vy == 0) {
+        toys[i].fall();
+      }    
+
+      // If the toy collides with santa, it resets the toy and regenerates it so
+      // it has a new position and image
+      if (toys[i].santaCollide()) {
+        toys[i].reset();
+        //presentDelay = toys[i].delay;
+        
+        // Same code as in setup
+        float r = random(1);
+        images[0] = loadImage("car.png");
+        images[1] = loadImage("teddy.png");
+        images[2] = loadImage("tambourin.png");
+
+        if (r < 0.5) {
+          randomToyImg = floor(random(0, images.length));
+          randomElfIndex = floor(random(0, lowerRow.length));
+          toys[i] = new Toy(lowerRow[randomElfIndex], images[randomToyImg]);
+        } else {
+          randomToyImg = floor(random(0, images.length));
+          randomElfIndex = floor(random(0, upperRow.length));
+          toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]);
+        }
+        
+      // Or else if the toy doesn't collide with Santa and touches the bottom,
+      // it resets the toy as well and regenerates it but the player also loses a strike
+      } else if (toys[i].y >= height) {        
+        strikes--;
+        handleStrikes();
+        toys[i].reset();
+        //presentDelay = toys[i].delay;
+
+        // Same code as in setup
+        float r = random(1);
+        images[0] = loadImage("car.png");
+        images[1] = loadImage("teddy.png");
+        images[2] = loadImage("tambourin.png");
+
+        if (r < 0.5) {
+          randomToyImg = floor(random(0, images.length));
+          randomElfIndex = floor(random(0, lowerRow.length));
+          toys[i] = new Toy(lowerRow[randomElfIndex], images[randomToyImg]);
+        } else {
+          randomToyImg = floor(random(0, images.length));
+          randomElfIndex = floor(random(0, upperRow.length));
+          toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]);
+        }
+      }
+    }
   }
 }
+
+// handleTime()
+//
+// Tells the program what to do once the time is up
+
+void handleTime() {
+
+  int timeElapsed = (millis() - startTime)/1000;
+
+  // If a minute has passed and the player hasn't lost yet, then he wins
+  if (timeElapsed == 60) {
+    playing = false;
+    win = true;
+  }
+}
+
+// handleStrikes()
+//
+// Tells the program what happens when the player loses all his strikes
+
+void handleStrikes() {
+  if (strikes == 0) {
+    // It's Game Over
+    gameOver = true;
+    playing = false;
+  }
+}
+
+// handleSnow()
+//
+// Tells the program how snow should behave
 
 void handleSnow() {
   // Regenerate the snowflakes each frame
@@ -281,23 +332,30 @@ void handleSnow() {
 
 // keyPressed()
 //
-// Santa needs to know if he should move based on keyPressed. We also call startGame when spacebar is pressed
+// Calls Santa's keyPressed function with spacebar
+// Also calls startGame and starts the music when spacebar is pressed
 
 void keyPressed() {
   santa.keyPressed();
   if (key == ' ' && !playing) {
-    startGame();
+    // !playing is really important because without it the player would be able
+    // to restart the timer anytime
+    startGame(); 
     for (int i = 0; i < toys.length; i++) {
+    }
+    if (!gameOver && !win) {
+    // This ensures that the music doesn't start playing more than once
+    // only at the beginning of the game
+      music.loop();
     }
   }
 }
 
 // keyReleased()
 //
-// When the keys are released, he stops moving
+// Calls Santa's keyReleased function
 
 void keyReleased() {
-  // Call both paddles' and avatars' keyReleased methods
   santa.keyReleased();
 }
 

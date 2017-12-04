@@ -44,17 +44,14 @@ class Santa {
 
   // display()
   //
-  // Display Santa at its location
+  // Displays Santa at its location
 
   void display() {
     noStroke();
     fill(color(250));
     rectMode(CENTER);
-    
-    
-   //rect(x,y,SIZE,SIZE);
+
   }
-  
 
 
   // keyPressed()

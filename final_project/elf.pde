@@ -2,7 +2,6 @@
 //
 // A class that defines Santa's little helpers at the top
 
-
 class Elf {
 
   ///////// Properties //////////
@@ -40,7 +39,7 @@ class Elf {
 
   // display()
   //
-  // Display the elves
+  // Displays the elves
 
   void display() {
     noStroke();
