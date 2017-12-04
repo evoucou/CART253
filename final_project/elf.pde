@@ -47,7 +47,5 @@ class Elf {
     fill(color(250));
     rectMode(CENTER);
 
-    // Draw the elves as a rectangle
-    rect(x, y, SIZE, SIZE);
   }
 }

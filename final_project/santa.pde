@@ -8,7 +8,7 @@ class Santa {
   ///////// Properties //////////
 
   int speed = 5;
-  int SIZE = 30;
+  int SIZE = 45;
 
   int x;
   int y;
@@ -50,9 +50,9 @@ class Santa {
     noStroke();
     fill(color(250));
     rectMode(CENTER);
-
-    // Draw the paddle as a rectangle
-    rect(x, y, SIZE, SIZE);
+    
+    
+   //rect(x,y,SIZE,SIZE);
   }
   
 

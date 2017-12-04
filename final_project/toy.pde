@@ -23,7 +23,8 @@ class Toy {
   int startTime = 0;
   
   PImage img;
-  
+  PImage newImg;
+ 
   Elf myElf;
   
   //int startTime = 0;
@@ -40,6 +41,7 @@ class Toy {
     myElf = tempElf;
     delay = tempDelay;    
     img = tempImg;
+    newImg = tempImg;
     tempDelay = (millis() - startTime)/1000;
 
 
@@ -73,8 +75,9 @@ class Toy {
     //y = resetY;
 
     //vx = resetVX;
-    y = -100;
+    y = -200;
     vy = 0;
+    img = newImg;
   }
   
     void delayStart() {
@@ -129,13 +132,14 @@ class Toy {
 
   void display() {
     if (vy == 0) return;
+    image(img, x, y);
     
     noStroke();
     fill(color(250));
     rectMode(CENTER);
 
     // Draw the paddle as a rectangle
-    rect(x, y, SIZE, SIZE);
+    //rect(x, y, SIZE, SIZE);
   }
 
 }
