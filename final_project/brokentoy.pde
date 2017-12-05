@@ -1,9 +1,9 @@
-// Toy
+// Broken toy
 //
-// A class that defines a toy dropped by the elves
+// A class that defines the broken toy dropped by the elves
 
 
-class Toy {
+class brokenToy {
 
   ///////// Properties //////////
 
@@ -27,7 +27,7 @@ class Toy {
 
   ///////// Constructor //////////
 
-  Toy(Elf tempElf, PImage tempImg) { 
+  brokenToy(Elf tempElf, PImage tempImg) { 
 
     myElf = tempElf;    
     img = tempImg;

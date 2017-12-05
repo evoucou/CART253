@@ -1,4 +1,4 @@
-// Santa Rush //<>// //<>// //<>// //<>//
+// Santa Rush //<>//
 //
 // A game inspired by Space Invaders in which you play santa and you need
 // to catch the toys that the Christmas elves are dropping.
@@ -11,6 +11,7 @@ Santa santa;
 
 // Generates the array of toys
 Toy[] toys = new Toy[3];
+brokenToy[] brokenToys = new brokenToy[2];
 int randomToyImg;
 int randomElfIndex;
 
@@ -77,7 +78,7 @@ void setup() {
   noStroke();
 
   // Creates the music file
-  music = new SoundFile(this, "/Users/Marie-Eve/Documents/cart253/final_project/music.mp3");
+  music = new SoundFile(this, "/Users/Marie-Eve/Documents/cart253/final_project/data/sounds/music.mp3");
 
   // Creates Santa at the bottom
   santa = new Santa(width/2, height - santaMargin, loadImage("santa.png"));
@@ -89,8 +90,8 @@ void setup() {
     // we first add its size + incremented distance between each.
     elfXPos = (elfXPos += elfDistance);
 
-    upperRow[i] = new Elf(elfXPos + 10, elfMargin, 2, loadImage("elf.png"));
-    lowerRow[i] = new Elf(elfXPos + 200, elfMargin + 80, -2, loadImage("elf.png"));
+    upperRow[i] = new Elf(elfXPos + 10, elfMargin, 2, loadImage("data/elf.png"));
+    lowerRow[i] = new Elf(elfXPos + 200, elfMargin + 80, -2, loadImage("data/elf.png"));
   }
 
   // Creates the array of toys
@@ -98,9 +99,9 @@ void setup() {
     float r = random(1);
 
     // Generates the images inside the array
-    images[0] = loadImage("car.png");
-    images[1] = loadImage("teddy.png");
-    images[2] = loadImage("tambourin.png");
+    images[0] = loadImage("data/car.png");
+    images[1] = loadImage("data/teddy.png");
+    images[2] = loadImage("data/tambourin.png");
 
     // Controls the "randomness" so that toys are generated equally on lower and upper row
     if (r < 0.5) {
@@ -114,9 +115,20 @@ void setup() {
       presentDelay[i] = floor(random(1, 8));
       randomToyImg = floor(random(0, images.length));
       randomElfIndex = floor(random(0, upperRow.length));
-      toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]);
-    }
+      toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]); 
+    }  
   }
+  
+    for (int i = 0; i <brokenToys.length; i++) { 
+      float r = random(1);
+      if (r < 0.5) {
+        randomElfIndex = floor(random(0, upperRow.length));
+      brokenToys[i] = new brokenToy(upperRow[randomElfIndex], loadImage("data/brokentoy.png"));
+    } else {
+       randomElfIndex = floor(random(0, upperRow.length));
+      brokenToys[i] = new brokenToy(lowerRow[randomElfIndex], loadImage("data/brokentoy.png"));
+    }
+    }
 
   // Creates our snowflakes
   for (int i = 0; i < quantity; i++) {
@@ -134,7 +146,7 @@ void setup() {
 void draw() {
 
   // Loads the background image
-  bgImage = loadImage("bg.jpg");
+  bgImage = loadImage("data/bg.jpg");
   background(bgImage);
 
   // Loads text
@@ -225,9 +237,9 @@ void handleToys() {
       toys[i].fall();
     }    
 
-    images[0] = loadImage("car.png");
-    images[1] = loadImage("teddy.png");
-    images[2] = loadImage("tambourin.png");
+    images[0] = loadImage("data/car.png");
+    images[1] = loadImage("data/teddy.png");
+    images[2] = loadImage("data/tambourin.png");
 
     // If the toy collides with santa, it resets the toy and regenerates it so
     // it has a new position and image
@@ -237,10 +249,10 @@ void handleToys() {
       
       if (timeElapsed < 30) {
         // At the beginning, toys spawn less frequently
-        presentDelay[i] = timeElapsed + floor(random(4, 10));
+        presentDelay[i] = timeElapsed + floor(random(3,8));
       } else {
         // If it's past 30 seconds, more toys are spawned
-        presentDelay[i] = timeElapsed + floor(random(1, 3));
+        presentDelay[i] = timeElapsed + floor(random(1,3));
       }
 
       // Same code as in setup
@@ -263,10 +275,10 @@ void handleToys() {
       toys[i].reset();
       if (timeElapsed < 30) {
         // At the beginning, toys spawn less frequently
-        presentDelay[i] = timeElapsed + floor(random(4, 10));
+        presentDelay[i] = timeElapsed + floor(random(3,8));
       } else {
         // If it's past 30 seconds, toys are spawned more frequently
-        presentDelay[i] = timeElapsed + floor(random(1, 3));
+        presentDelay[i] = timeElapsed + floor(random(1,3));
       }
 
       // Same code as in setup
