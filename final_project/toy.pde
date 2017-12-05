@@ -20,10 +20,10 @@ class Toy {
   int startTime = 0;
 
   PImage img;
-  PImage newImg;
 
+  // Creates a new elf inside the toy class so that we can track
+  //  its position in the main game
   Elf myElf;
-
 
   ///////// Constructor //////////
 
@@ -31,7 +31,6 @@ class Toy {
 
     myElf = tempElf;    
     img = tempImg;
-
   }
 
   ///////// Methods //////////
@@ -65,7 +64,7 @@ class Toy {
 
   // santaCollide()
   //
-  // Checks every side of the toy to see if it has collided
+  // Checks every side of the toy to see if it has collided with Santa
 
   boolean santaCollide() {
 
@@ -81,7 +80,8 @@ class Toy {
   //
   // Where the toy falls from and its velocity
 
-  void fall() {    
+  void fall() {
+    // Tells the toy to fall from an elf's position
     x = myElf.x;
     y = myElf.y;
     vy = 3;
@@ -92,11 +92,9 @@ class Toy {
   // Displays the toy and its image
 
   void display() {
+    // If the toy isn't falling, it isn't displayed
     if (vy == 0) return;
     image(img, x, y);
-
-    noStroke();
-    fill(color(250));
     rectMode(CENTER);
   }
 }

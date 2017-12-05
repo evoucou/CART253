@@ -42,8 +42,6 @@ class Elf {
   // Displays the elves
 
   void display() {
-    noStroke();
-    fill(color(250));
     rectMode(CENTER);
 
   }

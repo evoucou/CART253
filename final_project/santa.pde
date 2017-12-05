@@ -7,7 +7,7 @@ class Santa {
 
   ///////// Properties //////////
 
-  int speed = 5;
+  int speed = 8;
   int SIZE = 45;
 
   int x;
@@ -47,8 +47,6 @@ class Santa {
   // Displays Santa at its location
 
   void display() {
-    noStroke();
-    fill(color(250));
     rectMode(CENTER);
 
   }
