@@ -27,7 +27,7 @@ Elf[] lowerRow = new Elf[columns];
 
 // The distance and initial position of an elf in its array
 int elfDistance = 60;
-int elfXPos = width/2;
+int elfXPos = 50;
 
 // Generates snowflakes
 int quantity = 200;
@@ -89,8 +89,8 @@ void setup() {
     // we first add its size + incremented distance between each.
     elfXPos = (elfXPos += elfDistance);
 
-    upperRow[i] = new Elf(elfXPos + 50*4, elfMargin, 2, loadImage("elf.png"));
-    lowerRow[i] = new Elf(elfXPos, elfMargin + 80, -2, loadImage("elf.png"));
+    upperRow[i] = new Elf(elfXPos + 10, elfMargin, 2, loadImage("elf.png"));
+    lowerRow[i] = new Elf(elfXPos + 200, elfMargin + 80, -2, loadImage("elf.png"));
   }
 
   // Creates the array of toys
@@ -170,7 +170,7 @@ void draw() {
 
       // Tells the elves to reverse direction at the same time
       // if they hit the 20px margin on each side
-      if (upperRow[upperRow.length - 1].x > width - 20 || upperRow[0].x < 20) {
+      if (lowerRow[columns - 1].x > width - 50 || lowerRow[0].x < 50) {
         upperRow[i].vx = -upperRow[i].vx;
         lowerRow[i].vx = -lowerRow[i].vx;
       }
