@@ -11,7 +11,7 @@ Santa santa;
 
 // Generates the array of toys
 Toy[] toys = new Toy[3];
-brokenToy[] brokenToys = new brokenToy[2];
+brokenToy brokenToys;
 int randomToyImg;
 int randomElfIndex;
 
@@ -20,6 +20,7 @@ PImage images[] = new PImage[3];
 
 // Generates the array for toys delay
 int[] presentDelay = new int[3];
+int presentDelayBroken;
 
 // Generates the array of Christmas elves
 int columns = 6;
@@ -41,19 +42,22 @@ int maxFlakeSize = 5;
 
 // Generates text
 String textBeginning = "Use the left and right arrow keys to move Santa\nPress spacebar to start.";
-String retry = "Game over! Press spacebar to retry.";
-String victory = "You won! Press spacebar to replay.";
+String ulose = "Game over!";
+String retry = "Press spacebar to retry.";
+String uwin = "You won!";
 String line = "";
+String line2 = "";
 String blank = "";
 String timerCount;
 String strikeCount;
-String losePoint = "-1";
 
 
 // Loads the elements for music, images and fonts
 SoundFile music;
 PImage bgImage;
-PFont font;
+PImage home;
+PFont h1;
+PFont h2;
 
 // The distance from the edge of the window
 int santaMargin = 60;
@@ -100,35 +104,39 @@ void setup() {
 
     // Generates the images inside the array
     images[0] = loadImage("data/car.png");
-    images[1] = loadImage("data/teddy.png");
-    images[2] = loadImage("data/tambourin.png");
+    images[1] = loadImage("data/tambourin.png");
+    images[2] = loadImage("data/teddy.png");
 
     // Controls the "randomness" so that toys are generated equally on lower and upper row
     if (r < 0.5) {
       // Generates random values to determine which image will be displayed
       // and from which elf it will fall. 
       presentDelay[i] = floor(random(1, 8));
-      randomToyImg = floor(random(0, images.length));
+      randomToyImg = floor(random(0, 1));
       randomElfIndex = floor(random(0, lowerRow.length));
       toys[i] = new Toy(lowerRow[randomElfIndex], images[randomToyImg]);
+    } else if (r < 0.7) {
+      presentDelay[i] = floor(random(1, 8));
+      randomToyImg = floor(random(0, 1));
+      randomElfIndex = floor(random(0, upperRow.length));
+      toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]);
     } else {
       presentDelay[i] = floor(random(1, 8));
-      randomToyImg = floor(random(0, images.length));
+      //randomToyImg = floor(random(0, images.length));
       randomElfIndex = floor(random(0, upperRow.length));
-      toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]); 
-    }  
+      toys[i] = new Toy(upperRow[randomElfIndex], images[2]);
+    }
   }
-  
-    for (int i = 0; i <brokenToys.length; i++) { 
-      float r = random(1);
-      if (r < 0.5) {
-        randomElfIndex = floor(random(0, upperRow.length));
-      brokenToys[i] = new brokenToy(upperRow[randomElfIndex], loadImage("data/brokentoy.png"));
-    } else {
-       randomElfIndex = floor(random(0, upperRow.length));
-      brokenToys[i] = new brokenToy(lowerRow[randomElfIndex], loadImage("data/brokentoy.png"));
-    }
-    }
+
+  // Creates the broken toy
+  float r = random(1);
+  if (r < 0.5) {
+    randomElfIndex = floor(random(0, upperRow.length));
+    brokenToys = new brokenToy(upperRow[randomElfIndex], loadImage("data/brokentoy.png"));
+  } else {
+    randomElfIndex = floor(random(0, upperRow.length));
+    brokenToys = new brokenToy(lowerRow[randomElfIndex], loadImage("data/brokentoy.png"));
+  }
 
   // Creates our snowflakes
   for (int i = 0; i < quantity; i++) {
@@ -150,12 +158,12 @@ void draw() {
   background(bgImage);
 
   // Loads text
-  font = createFont("arial", 18);
+  h2 = createFont("Arial Bold", 14);
+  h1 = loadFont("data/fonts/Snowboarding-Only-55.vlw");
   textAlign(CENTER, CENTER); // Center align both horizontally and vertically
-  textLeading(30); // Line height for text
-  textFont(font);
-  fill(color(227, 6, 19));
   text(line, width/2, height/2);
+  text(line2, width/2, height/2 + 25);
+  fill(color(254, 0, 0));
 
 
   // Only do the following if the game is playing
@@ -163,6 +171,7 @@ void draw() {
 
     // No text is displayed
     line = blank;
+    line2 = blank;
 
     // Creates the images
     for (int i = 0; i < columns; i++) {
@@ -197,19 +206,33 @@ void draw() {
     }
 
     // Handles the toys and timer
-    handleToys(); 
+    handleToys();
+    handleBrokenToys();
     handleTime();
     handleStrikes();
+    
   } else if (!gameOver && !win) {
     // If the game is not running and the player hasn't won or lost yet, it means
     // it displays the indications at the beginning
     line = textBeginning;
+    line2 = blank;
+
+    home = loadImage("data/homepage.jpg");
+    image(home, 0, 0);
   } else if (gameOver) {
     // If the player has lost, it displays the try again text
-    line = retry;
+    fill(color(219, 0, 50));
+    textFont(h1, 55);
+    line = ulose;
+    line2 = retry;
+    textFont(h2, 14);
   } else if (win) {
     // If the player has won, it displays the victory text
-    line = victory;
+    fill(color(219, 0, 50));
+    textFont(h1, 55);
+    line = uwin;
+    textFont(h2, 14);
+    line2 = retry;
   }
 
   // Handles snow which is displayed even when the game is not running
@@ -219,6 +242,70 @@ void draw() {
 // handleToys()
 //
 // Tells the program how the toys behave
+
+
+void handleBrokenToys() { 
+
+  // Displays and update the toys
+  brokenToys.update();
+  brokenToys.display();
+
+  int timeElapsed = (millis() - startTime)/1000;
+
+  // If the toy's velocity is 0, then it should fall because it means it has been reinitialized
+  if ( timeElapsed > presentDelayBroken && brokenToys.vy == 0) {
+    brokenToys.fall();
+  }    
+
+  // If the toy collides with santa, it resets the toy and regenerates it so
+  // it has a new position and image
+  if (brokenToys.santaCollide()) {
+    brokenToys.reset();
+    strikes--;
+
+
+    if (timeElapsed < 30) {
+      // At the beginning, toys spawn less frequently
+      presentDelayBroken = timeElapsed + floor(random(6, 10));
+    } else {
+      // If it's past 30 seconds, more toys are spawned
+      presentDelayBroken = timeElapsed + floor(random(3, 6));
+    }
+
+    // Same code as in setup
+    float r = random(1);
+    if (r < 0.5) {
+      randomElfIndex = floor(random(0, lowerRow.length));
+      brokenToys = new brokenToy(lowerRow[randomElfIndex], loadImage("data/brokentoy.png"));
+    } else {
+      randomElfIndex = floor(random(0, upperRow.length));
+      brokenToys = new brokenToy(upperRow[randomElfIndex], loadImage("data/brokentoy.png"));
+    }
+
+    // Or else if the toy doesn't collide with Santa and touches the bottom,
+    // it resets the toy as well and regenerates it but the player also loses a strike
+  } else if (brokenToys.y >= height) {           
+    brokenToys.reset();
+
+    if (timeElapsed < 30) {
+      // At the beginning, toys spawn less frequently
+      presentDelayBroken = timeElapsed + floor(random(3, 8));
+    } else {
+      // If it's past 30 seconds, toys are spawned more frequently
+      presentDelayBroken = timeElapsed + floor(random(1, 3));
+    }
+
+    // Same code as in setup
+    float r = random(1);
+    if (r < 0.5) {
+      randomElfIndex = floor(random(0, lowerRow.length));
+      brokenToys = new brokenToy(lowerRow[randomElfIndex], loadImage("data/brokentoy.png"));
+    } else {
+      randomElfIndex = floor(random(0, upperRow.length));
+      brokenToys = new brokenToy(upperRow[randomElfIndex], loadImage("data/brokentoy.png"));
+    }
+  }
+}
 
 void handleToys() { 
 
@@ -245,52 +332,61 @@ void handleToys() {
     // it has a new position and image
     if (toys[i].santaCollide()) {
       toys[i].reset();
-     
-      
+
+
       if (timeElapsed < 30) {
         // At the beginning, toys spawn less frequently
-        presentDelay[i] = timeElapsed + floor(random(3,8));
+        presentDelay[i] = timeElapsed + floor(random(3, 10));
       } else {
         // If it's past 30 seconds, more toys are spawned
-        presentDelay[i] = timeElapsed + floor(random(1,3));
+        presentDelay[i] = timeElapsed + floor(random(1, 3));
       }
 
       // Same code as in setup
       float r = random(1);
-      if (r < 0.5) {
-        randomToyImg = floor(random(0, images.length));
+
+      if (r < 0.4) {
+        //randomToyImg = floor(random(0, 1));
         randomElfIndex = floor(random(0, lowerRow.length));
-        toys[i] = new Toy(lowerRow[randomElfIndex], images[randomToyImg]);
-      } else {
-        randomToyImg = floor(random(0, images.length));
+        toys[i] = new Toy(lowerRow[randomElfIndex], images[0]);
+      } else if (r < 0.8) {
+        //randomToyImg = floor(random(0, 1));
         randomElfIndex = floor(random(0, upperRow.length));
-        toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]);
+        toys[i] = new Toy(upperRow[randomElfIndex], images[1]);
+      } else {
+        randomElfIndex = floor(random(0, upperRow.length));
+        toys[i] = new Toy(upperRow[randomElfIndex], images[2]);
       }
 
       // Or else if the toy doesn't collide with Santa and touches the bottom,
       // it resets the toy as well and regenerates it but the player also loses a strike
     } else if (toys[i].y >= height) {        
       strikes--;    
- 
+
       toys[i].reset();
       if (timeElapsed < 30) {
         // At the beginning, toys spawn less frequently
-        presentDelay[i] = timeElapsed + floor(random(3,8));
+        presentDelay[i] = timeElapsed + floor(random(3, 10));
       } else {
         // If it's past 30 seconds, toys are spawned more frequently
-        presentDelay[i] = timeElapsed + floor(random(1,3));
+        presentDelay[i] = timeElapsed + floor(random(1, 3));
       }
 
       // Same code as in setup
       float r = random(1);
-      if (r < 0.5) {
-        randomToyImg = floor(random(0, images.length));
+
+      if (r < 0.4) {
+        //randomToyImg = floor(random(0, 1));
         randomElfIndex = floor(random(0, lowerRow.length));
-        toys[i] = new Toy(lowerRow[randomElfIndex], images[randomToyImg]);
-      } else {
-        randomToyImg = floor(random(0, images.length));
+        toys[i] = new Toy(lowerRow[randomElfIndex], images[0]);
+      } else if (r < 0.8) {
+        //randomToyImg = floor(random(0, 1));
         randomElfIndex = floor(random(0, upperRow.length));
-        toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]);
+        toys[i] = new Toy(upperRow[randomElfIndex], images[1]);
+      } else {
+        presentDelay[i] = floor(random(1, 8));
+        randomElfIndex = floor(random(0, upperRow.length));
+        toys[i] = new Toy(upperRow[randomElfIndex], images[2]);
       }
     }
   }
@@ -314,9 +410,9 @@ void startGame() {
 void handleTime() {
   int timeElapsed = (millis() - startTime)/1000;
 
-  timerCount = "TIMER: " + timeElapsed;
-  textSize(14);
-  text(timerCount, 50, 25);
+  timerCount = "timer  " + timeElapsed;
+  textFont(h2, 14);
+  text(timerCount, 70, 25);
 
   // If a minute has passed and the player hasn't lost yet, then he wins
   if (timeElapsed == 60) {
@@ -331,11 +427,10 @@ void handleTime() {
 
 void handleStrikes() {
 
-  strikeCount = "LIVES: " + strikes;
-  textSize(14);
-  text(strikeCount, width - 50, 25);
+  strikeCount = "lives  " + strikes;
+  text(strikeCount, width - 70, 25);
 
-  if (strikes == 0) {
+  if (strikes <= 0) {
     // It's Game Over
     gameOver = true;
     playing = false;
