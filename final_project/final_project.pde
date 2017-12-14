@@ -79,7 +79,7 @@ void setup() {
   noStroke();
 
   // Creates the music file
-  music = new SoundFile(this, "/Users/Marie-Eve/Documents/cart253/final_project/data/sounds/music.mp3");
+  music = new SoundFile(this, "cart253/final_project/data/sounds/music.mp3");
 
   // Creates Santa at the bottom
   santa = new Santa(width/2, height - santaMargin, loadImage("santa.png"));
