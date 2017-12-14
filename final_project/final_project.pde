@@ -27,9 +27,9 @@ int columns = 6;
 Elf[] upperRow = new Elf[columns];
 Elf[] lowerRow = new Elf[columns];
 
-// The distance and initial position of an elf in its array
-int elfDistance = 60;
-int elfXPos = 50;
+// The distance between each elf in the arrays
+int elfDistance = 35;
+int elfXPos;
 
 // Generates snowflakes
 int quantity = 200;
@@ -42,22 +42,19 @@ int maxFlakeSize = 5;
 
 // Generates text
 String textBeginning = "Use the left and right arrow keys to move Santa\nPress spacebar to start.";
-String ulose = "Game over!";
-String retry = "Press spacebar to retry.";
-String uwin = "You won!";
+String ulose = "Game over!\nPress spacebar to retry.";
+String uwin = "You won!\nPress spacebar to retry.";
 String line = "";
-String line2 = "";
 String blank = "";
 String timerCount;
 String strikeCount;
-
 
 // Loads the elements for music, images and fonts
 SoundFile music;
 PImage bgImage;
 PImage home;
-PFont h1;
-PFont h2;
+PFont font;
+PFont bigger;
 
 // The distance from the edge of the window
 int santaMargin = 60;
@@ -92,10 +89,11 @@ void setup() {
 
     // To define the elf's x position (so they're not on top of each other),
     // we first add its size + incremented distance between each.
-    elfXPos = (elfXPos += elfDistance);
-
-    upperRow[i] = new Elf(elfXPos + 10, elfMargin, 2, loadImage("data/elf.png"));
-    lowerRow[i] = new Elf(elfXPos + 200, elfMargin + 80, -2, loadImage("data/elf.png"));
+    elfXPos += elfDistance + 25;
+    
+    // 62*5, a random number which visually makes the elves look centered
+    upperRow[i] = new Elf(elfXPos + 62*5, elfMargin, 2, loadImage("data/elf.png"));
+    lowerRow[i] = new Elf(elfXPos, elfMargin + 80, -2, loadImage("data/elf.png"));
   }
 
   // Creates the array of toys
@@ -108,21 +106,22 @@ void setup() {
     images[2] = loadImage("data/teddy.png");
 
     // Controls the "randomness" so that toys are generated equally on lower and upper row
+    // and also, less toys with the teddy bear image are generated, because the broken toy
+    // is also a teddy bear so we do not want too many to spawn.
     if (r < 0.5) {
       // Generates random values to determine which image will be displayed
-      // and from which elf it will fall. 
-      presentDelay[i] = floor(random(1, 8));
+      // and from which elf it will fall. Also gives a random initial presentDelay.
+      presentDelay[i] = floor(random(1, 10));
       randomToyImg = floor(random(0, 1));
       randomElfIndex = floor(random(0, lowerRow.length));
       toys[i] = new Toy(lowerRow[randomElfIndex], images[randomToyImg]);
     } else if (r < 0.7) {
-      presentDelay[i] = floor(random(1, 8));
+      presentDelay[i] = floor(random(1, 10));
       randomToyImg = floor(random(0, 1));
       randomElfIndex = floor(random(0, upperRow.length));
       toys[i] = new Toy(upperRow[randomElfIndex], images[randomToyImg]);
     } else {
-      presentDelay[i] = floor(random(1, 8));
-      //randomToyImg = floor(random(0, images.length));
+      presentDelay[i] = floor(random(1, 10));
       randomElfIndex = floor(random(0, upperRow.length));
       toys[i] = new Toy(upperRow[randomElfIndex], images[2]);
     }
@@ -158,20 +157,18 @@ void draw() {
   background(bgImage);
 
   // Loads text
-  h2 = createFont("Arial Bold", 14);
-  h1 = loadFont("data/fonts/Snowboarding-Only-55.vlw");
-  textAlign(CENTER, CENTER); // Center align both horizontally and vertically
+  font = createFont("Arial Bold", 15);
+  bigger = createFont("Arial Bold", 18);
   text(line, width/2, height/2);
-  text(line2, width/2, height/2 + 25);
-  fill(color(254, 0, 0));
 
+  textAlign(CENTER, CENTER); // Center align both horizontally and vertically
+  fill(240, 0, 0);
+
+  // No text is displayed at first
+  line = blank;
 
   // Only do the following if the game is playing
   if (playing) {
-
-    // No text is displayed
-    line = blank;
-    line2 = blank;
 
     // Creates the images
     for (int i = 0; i < columns; i++) {
@@ -186,57 +183,51 @@ void draw() {
     santa.display();
 
     for (int i = 0; i < columns; i++) {
+      // Calls the update and display functions
       upperRow[i].update();
       lowerRow[i].update();
-
-      // Tells the elves to reverse direction at the same time
-      // if they hit the 20px margin on each side
-      if (lowerRow[columns - 1].x > width - 50 || lowerRow[0].x < 50) {
-        upperRow[i].vx = -upperRow[i].vx;
-        lowerRow[i].vx = -lowerRow[i].vx;
-      }
       upperRow[i].display();
       lowerRow[i].display();
+    }
 
-      /*} IF I WANT THEM TO BEHAVE SEPARATELY, THIS IS THE CODE
-       for (int i = 0; i < columns; i++) {
-       if (lowerRow[lowerRow.length - 1].x > width - 50 || lowerRow[0].x < 50) {
-       lowerRow[i].vx = -lowerRow[i].vx;
-       }*/
+    for (int i = 0; i < columns; i++) {
+      // Tells the elves to reverse direction at the same time
+      // if they hit the 60px margin on each side.
+      if (lowerRow[lowerRow.length - 1].x > width - 60 || lowerRow[0].x < 60) {
+        lowerRow[i].vx = -lowerRow[i].vx;
+        upperRow[i].vx = -upperRow[i].vx;
+      }
     }
 
     // Handles the toys and timer
     handleToys();
     handleBrokenToys();
+
+    // Here we change the font class so the text at the top is smaller
+    textFont(font);    
     handleTime();
     handleStrikes();
-    
   } else if (!gameOver && !win) {
     // If the game is not running and the player hasn't won or lost yet, it means
     // it displays the indications at the beginning
     line = textBeginning;
-    line2 = blank;
-
     home = loadImage("data/homepage.jpg");
     image(home, 0, 0);
   } else if (gameOver) {
     // If the player has lost, it displays the try again text
-    fill(color(219, 0, 50));
-    textFont(h1, 55);
+    textFont(bigger);
     line = ulose;
-    line2 = retry;
-    textFont(h2, 14);
   } else if (win) {
     // If the player has won, it displays the victory text
-    fill(color(219, 0, 50));
-    textFont(h1, 55);
+    textFont(bigger);
     line = uwin;
-    textFont(h2, 14);
-    line2 = retry;
   }
 
   // Handles snow which is displayed even when the game is not running
   handleSnow();
+
+  // Switches the color back to red
+  fill(color(240, 0, 0));
 }
 
 // handleToys()
@@ -262,7 +253,6 @@ void handleBrokenToys() {
   if (brokenToys.santaCollide()) {
     brokenToys.reset();
     strikes--;
-
 
     if (timeElapsed < 30) {
       // At the beginning, toys spawn less frequently
@@ -325,14 +315,13 @@ void handleToys() {
     }    
 
     images[0] = loadImage("data/car.png");
-    images[1] = loadImage("data/teddy.png");
-    images[2] = loadImage("data/tambourin.png");
+    images[1] = loadImage("data/tambourin.png");
+    images[2] = loadImage("data/teddy.png");
 
     // If the toy collides with santa, it resets the toy and regenerates it so
     // it has a new position and image
     if (toys[i].santaCollide()) {
       toys[i].reset();
-
 
       if (timeElapsed < 30) {
         // At the beginning, toys spawn less frequently
@@ -346,11 +335,9 @@ void handleToys() {
       float r = random(1);
 
       if (r < 0.4) {
-        //randomToyImg = floor(random(0, 1));
         randomElfIndex = floor(random(0, lowerRow.length));
         toys[i] = new Toy(lowerRow[randomElfIndex], images[0]);
       } else if (r < 0.8) {
-        //randomToyImg = floor(random(0, 1));
         randomElfIndex = floor(random(0, upperRow.length));
         toys[i] = new Toy(upperRow[randomElfIndex], images[1]);
       } else {
@@ -362,8 +349,8 @@ void handleToys() {
       // it resets the toy as well and regenerates it but the player also loses a strike
     } else if (toys[i].y >= height) {        
       strikes--;    
-
       toys[i].reset();
+
       if (timeElapsed < 30) {
         // At the beginning, toys spawn less frequently
         presentDelay[i] = timeElapsed + floor(random(3, 10));
@@ -376,11 +363,9 @@ void handleToys() {
       float r = random(1);
 
       if (r < 0.4) {
-        //randomToyImg = floor(random(0, 1));
         randomElfIndex = floor(random(0, lowerRow.length));
         toys[i] = new Toy(lowerRow[randomElfIndex], images[0]);
       } else if (r < 0.8) {
-        //randomToyImg = floor(random(0, 1));
         randomElfIndex = floor(random(0, upperRow.length));
         toys[i] = new Toy(upperRow[randomElfIndex], images[1]);
       } else {
@@ -408,10 +393,10 @@ void startGame() {
 // Tells the program what to do once the time is up and displays the timer
 
 void handleTime() {
+
   int timeElapsed = (millis() - startTime)/1000;
 
   timerCount = "timer  " + timeElapsed;
-  textFont(h2, 14);
   text(timerCount, 70, 25);
 
   // If a minute has passed and the player hasn't lost yet, then he wins
@@ -430,7 +415,7 @@ void handleStrikes() {
   strikeCount = "lives  " + strikes;
   text(strikeCount, width - 70, 25);
 
-  if (strikes <= 0) {
+  if (strikes == 0) {
     // It's Game Over
     gameOver = true;
     playing = false;
@@ -475,6 +460,12 @@ void keyPressed() {
     // !playing is really important because without it the player would be able
     // to restart the timer anytime with spacebar
     startGame(); 
+    // We also reset the toys
+    for (int i = 0; i < toys.length; i++) {
+      toys[i].vy = 0;
+    }  
+    brokenToys.vy = 0;
+
     if (!gameOver && !win) {
       // This ensures that the music doesn't start playing more than once
       // only at the beginning of the game
